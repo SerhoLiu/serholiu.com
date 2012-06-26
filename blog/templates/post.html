@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}{{post.title}} - {{escape(context.sitename)}}{% end %}
+{% block head %}{{escape(post.content[0:168])}}{% end %}
+{% block content %}
+<div class="content-header post top-box">
+  <h2 class="content-title"><a href="/{{post.slug}}">{{post.title}}</a></h2>
+  <div class="content-info">
+    Post at: {{post.published}} |
+    Post in: <a href="/category/{{post.category}}">{{post.category}}</a>
+  </div>
+</div>
+  
+<div class="content-body bottom-box">
+  {{post.content}}
+  <div class="tag_list">Tags:
+    {% for tag in tags%}
+      <a href="/tag/{{tag}}">{{tag}}</a>
+    {% end %}&#160;&#160;&#160;&#160;&#160;&#160;如果有什么问题： <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#101;&#114;&#104;&#111;&#108;&#105;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#101;&#114;&#104;&#111;&#108;&#105;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+  </div>
+  {% if current_user %}
+    <a href="/post/update/{{post.id}}">Update</a>
+    <a href="/post/delete/{{post.id}}">Del</a>
+  {% end %}
+</div>
+{% end%}  
+  
+{% block nav %}
+  <div class="navigation clearfix">
+    <b>上一篇:</b>
+   {% if next_prev["next"] %} 
+    <a href="/{{next_prev["next"].slug}}" title="{{next_prev["next"].title}}" class="previous">
+    {{next_prev["next"].title}}
+    </a>
+    {% else %}
+    没有了
+    {% end %}
+    <span class="next"> 
+    {% if next_prev["prev"] %}
+    <b>下一篇:</b> 
+    <a href="/{{next_prev["prev"].slug}}" title="{{next_prev["prev"].title}}">
+    {{next_prev["prev"].title}}
+    </a>
+    {% else %}
+    没有了
+    {%end %}
+    </span>
+  </div>
+{% end %}

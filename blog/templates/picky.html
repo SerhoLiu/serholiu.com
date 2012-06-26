@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}{{title}} - I'm SErHo{% end %}
+{% block head %}{{escape(content[0:168])}}{% end %}
+{% block content %}
+<div class="content-header home top-box">
+    <h2 class="content-title">{{title}}</h2>
+</div>
+<div class="content-body bottom-box">
+    {{content}}
+    <hr>
+    <blockquote>
+      <small>{{published}} 
+        <a href="/picky/{{slug}}" title="{{title}}">{{title}}</a>
+      </small>
+    </blockquote>
+</div>
+{% end %}

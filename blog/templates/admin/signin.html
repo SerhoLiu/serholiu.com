@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Login--{{ context.sitename }}</title>
+    <link rel="stylesheet" href="{{ static_url("admin/admin.min.css") }}" type="text/css"/>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header box clearfix">
+        <div class="hright">
+          <a href="/post/picky"><button class="btn success">New Picky</button></a>
+        </div>
+        <div class="hleft box">
+          <h1><a href="/">{{ context.sitename }}</a></h1>
+        </div>
+      </div>
+      <div id="content">
+        <div class="signin">
+        <form action="/auth/signin" method="post" class="compose">
+          <div class="clearfix">
+            <div class="input">
+              <input name="email" type="text" class="span4" />
+            </div>
+          </div><!-- /clearfix -->
+          <div class="clearfix">
+            <div class="input">
+              <input name="password" type="password" class="span4"  />
+              
+            </div>
+          </div><!-- /clearfix --></div>
+       <div class="actions">
+            <div class="signin"><input type="submit" class="btn primary" value="登录"></div>
+          </div>
+    {{ xsrf_form_html() }}
+  </form>
+      </div>
+    </div>
+
+    <div id="footer">
+      <p>&copy; {{ context.sitename }} 2009-2012</p>
+    </div>
+  </body>  
+</html>
