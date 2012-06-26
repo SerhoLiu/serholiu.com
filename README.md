@@ -32,8 +32,10 @@ Picky 和 Post 相比，没有 tags 和 category。
 ## 使用方法
 
 依赖环境:
->1. [misaka][2]
-2. [pygments][3]
+>
+1. [Tornado][1]
+2. [misaka][2]
+3. [pygments][3]
 
 创建数据库: 使用 Sqlite3，请进入 tools 目录编辑 `create_db.py` 再执行 `python create_db.py`。
 
