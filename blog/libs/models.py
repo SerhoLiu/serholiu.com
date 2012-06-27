@@ -81,6 +81,8 @@ class PostMixin(object):
         p = self.get_post_by_id(id)
         if p.tags != post["tags"]:
             has_new_tag = True
+        else:
+            has_new_tag = False
         self.db.execute(sql, post["title"], post["slug"], post["content"],
                      post["tags"], post["category"], post["published"], id)
         if has_new_tag:
