@@ -1,0 +1,3 @@
+tornado==2.4
+misaka==1.0.2
+pygments==1.5
