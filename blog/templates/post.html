@@ -12,7 +12,7 @@
     {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>
     {% if current_user %}
     |<a href="/post/update/{{post.id}}">Update</a>
-    <a href="/post/delete/{{post.id}}">Del</a>
+     <a href="/post/delete/{{post.id}}">Del</a>
   {% end %}
   </div>
   {% if post.comment %}
@@ -31,9 +31,6 @@
     <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
     <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
     <![endif]>
-    <!--[if lt IE 9]>
-     <b>对不起，你的浏览器版本过低，留言无法支持，请使用IE9以上或者Chrome,Firefox,Opera等浏览器</b>
-    <![endif]-->
   {% end %}
 <div class="navigation clearfix">
    上一篇:
