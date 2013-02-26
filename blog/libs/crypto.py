@@ -2,7 +2,6 @@
 Django's standard crypto functions and utilities.
 """
 
-import hmac
 import struct
 import hashlib
 import binascii
@@ -13,8 +12,8 @@ trans_5c = "".join([chr(x ^ 0x5C) for x in xrange(256)])
 trans_36 = "".join([chr(x ^ 0x36) for x in xrange(256)])
 
 
-
-def get_random_string(length=12, allowed_chars='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
+def get_random_string(length=12, allowed_chars='abcdefghijklmnopqrstuvwxyz \
+                                    ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
     """
     Returns a random string of length characters from the set of a-z, A-Z, 0-9
     for use as a salt.
@@ -117,6 +116,7 @@ ALGORITHM = "pbkdf2_sha256"
 ITERATIONS = 5000
 DIGEST = hashlib.sha256
 
+
 def hex_password(password, salt=None, iterations=None):
     assert password
     if not salt:
@@ -127,6 +127,7 @@ def hex_password(password, salt=None, iterations=None):
     hash = pbkdf2(password, salt, iterations, digest=DIGEST)
     hash = hash.encode('base64').strip()
     return "%s$%d$%s$%s" % (ALGORITHM, ITERATIONS, salt, hash)
+
 
 def is_password(password, encoded):
     algorithm, iterations, salt, hash = encoded.split('$', 3)

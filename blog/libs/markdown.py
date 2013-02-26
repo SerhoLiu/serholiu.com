@@ -29,6 +29,7 @@ def render_post(string):
     content = markdown(body)
     return {"meta": meta, "content": content}
 
+
 def parse_meta(header):
     header = markdown(header)
     title = re.findall(r'<h1>(.*)</h1>', header)[0]
@@ -58,7 +59,6 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
         )
         return highlight(text, lexer, formatter)
         
-
     def autolink(self, link, is_email):
         if is_email:
             mailto = "".join(['&#%d;' % ord(letter) for letter in "mailto:"])

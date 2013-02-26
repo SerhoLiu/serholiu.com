@@ -2,16 +2,15 @@
 # -*- coding: utf-8 -*-
 
 import re
-#import tornado.gen
-from tornado.web import removeslash, asynchronous
-from tornado.httpclient import AsyncHTTPClient
+from tornado.web import removeslash
 from libs.log import access_log
 from libs.handler import BaseHandler
 from libs.crypto import is_password, get_random_string
 from libs.models import PostMixin, TagMixin
 from libs.markdown import render_post
-from libs.utils import authenticated, loads_repos
+from libs.utils import authenticated
 from config import PICKY_DIR
+
 
 class EntryHandler(BaseHandler, PostMixin):
 
@@ -33,8 +32,8 @@ class TagsHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="tag",
-                                    name=name, count=count)
+        self.render("archive.html", posts=posts, type="tag", name=name,
+            count=count)
 
 
 class CategoryHandler(BaseHandler, PostMixin):
@@ -47,6 +46,7 @@ class CategoryHandler(BaseHandler, PostMixin):
         count = len(posts)
         self.render("archive.html", posts=posts, type="category",
                                     name=category, count=count)
+
 
 class FeedHandler(BaseHandler, PostMixin):
 
@@ -101,14 +101,14 @@ class NewPostHandler(BaseHandler, PostMixin):
         if not markdown:
             self.redirect("/post/new")
         p = render_post(markdown)
-        if comment=='0':
+        if comment == '0':
             comment = 0
         post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
                 "tags": p["meta"]["tags"], "category": p["meta"]["category"],
                 "published": p["meta"]["published"],
-                "content": p["content"],"comment": comment}
+                "content": p["content"], "comment": comment}
 
-        post_id = self.create_new_post(**post)
+        self.create_new_post(**post)
         self.redirect("/%s" % p["meta"]["slug"])
         return
 
@@ -129,14 +129,14 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         print comment
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
-        if comment=='0':
+        if comment == '0':
             comment = 0
         p = render_post(markdown)
         post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
                 "tags": p["meta"]["tags"], "category": p["meta"]["category"],
                 "published": p["meta"]["published"],
                 "content": p["content"], "comment": comment}
-        result = self.update_post_by_id(int(id), **post)
+        self.update_post_by_id(int(id), **post)
         self.redirect("/%s" % p["meta"]["slug"])
         return
 
@@ -166,7 +166,7 @@ class PickyHandler(BaseHandler):
         published = p["meta"]["published"]
         content = p["content"]
         self.render("picky.html", title=title, slug=slug,
-                     published=published, content=content)
+            published=published, content=content)
 
 
 class PickyDownHandler(BaseHandler):
@@ -194,7 +194,7 @@ class NewPickyHandler(BaseHandler):
     def post(self):
         files = self.request.files['picky'][0]
         if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
-            f = open(PICKY_DIR + '/' + files['filename'],'w')
+            f = open(PICKY_DIR + '/' + files['filename'], 'w')
             f.write(files['body'])
             f.close()
             slug = files['filename'].split('.')[0]
@@ -248,22 +248,9 @@ class SignoutHandler(BaseHandler):
         if not user:
             self.redirect("/")
         salt = get_random_string()
-        is_ok = self.update_user_salt(user.id, salt)
+        self.update_user_salt(user.id, salt)
         self.clear_cookie("token")
         self.redirect("/")
-
-
-# class GithubHandler(BaseHandler):
-
-#     @asynchronous
-#     @tornado.gen.engine
-#     def get(self):
-#         http_client = AsyncHTTPClient()
-#         response = yield tornado.gen.Task(http_client.fetch,
-#             "https://api.github.com/users/SerhoLiu/repos?sort=updated")
-#         #print response.body
-#         repos = loads_repos(response.body)
-#         self.render("github.html", repos=repos)
 
 
 class PageNotFound(BaseHandler):
@@ -273,7 +260,6 @@ class PageNotFound(BaseHandler):
 
 handlers = [('/', HomeHandler),
             ('/([a-zA-Z0-9-]+)/*', EntryHandler),
-            #('/picky/repos', GithubHandler),
             ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
             ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
             ('/tag/([^/]+)/*', TagsHandler),
@@ -288,5 +274,5 @@ handlers = [('/', HomeHandler),
             ('/search/all', SearchHandler),
             ('/blog/all', ArchiveHandler),
             ('/blog/tags', TagListHandler),
-            (r'.*', PageNotFound), 
+            (r'.*', PageNotFound),
 ]

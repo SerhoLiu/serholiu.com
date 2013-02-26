@@ -8,12 +8,13 @@ from libs.utils import ObjectDict, get_home_time, format_time
 from libs.models import UserMixin
 from config import SITE_NAME
 
+
 class BaseHandler(tornado.web.RequestHandler, UserMixin):
 
     @property
     def db(self):
         return self.application.db
-    
+            
     def prepare(self):
         self._prepare_context()
         self._prepare_filters()
@@ -33,12 +34,12 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         if not user_id:
             return None
         user = self.get_user_by_id(int(user_id))
-        if user.salt!=salt.strip():
+        if user.salt != salt.strip():
             return None
         return user
 
     def get_error_html(self, status_code, **kwargs):
-        if status_code==404:
+        if status_code == 404:
             return self.render_string("e404.html")
         else:
             try:
@@ -52,7 +53,6 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             except Exception:
                 return super(BaseHandler, self).get_error_html(status_code, **kwargs)
         
-
     def _prepare_context(self):
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
@@ -62,9 +62,8 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         self._filters.get_home_time = get_home_time
         self._filters.time = format_time
 
-
     def abort(self, code):
-        if code==404:
+        if code == 404:
             raise tornado.web.HTTPError(404)
-        if code==403:
+        if code == 403:
             raise tornado.web.HTTPError(403)
