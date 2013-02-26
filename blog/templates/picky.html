@@ -2,16 +2,14 @@
 {% block title %}{{title}} - I'm SErHo{% end %}
 {% block head %}{{escape(content[0:168])}}{% end %}
 {% block content %}
-<div class="content-header home top-box">
-    <h2 class="content-title">{{title}}</h2>
-</div>
-<div class="content-body bottom-box">
+<article>
+    <h2 class="content-title"><a href="/picky/{{slug}}">{{title}}</a></h2>
     {{content}}
+</article>
     <hr>
     <blockquote>
-      <small>{{published}} 
-        <a href="/picky/{{slug}}" title="{{title}}">{{title}}</a>
+      <small> {{published}}
+        <a href="/picky/{{slug}}.md" title="{{title}}">Down Markdown File</a>
       </small>
     </blockquote>
-</div>
 {% end %}

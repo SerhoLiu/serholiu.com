@@ -1,12 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from tornado.web import removeslash, authenticated
+import re
+#import tornado.gen
+from tornado.web import removeslash, asynchronous
+from tornado.httpclient import AsyncHTTPClient
+from libs.log import access_log
 from libs.handler import BaseHandler
-from libs.crypto import hex_password, is_password, get_random_string
-from libs.models import PostMixin
+from libs.crypto import is_password, get_random_string
+from libs.models import PostMixin, TagMixin
 from libs.markdown import render_post
-from libs.utils import ObjectDict
+from libs.utils import authenticated, loads_repos
 from config import PICKY_DIR
 
 class EntryHandler(BaseHandler, PostMixin):
@@ -47,7 +51,7 @@ class CategoryHandler(BaseHandler, PostMixin):
 class FeedHandler(BaseHandler, PostMixin):
 
     def get(self):
-        posts = self.get_count_posts(10,True)
+        posts = self.get_count_posts(10)
         self.set_header("Content-Type", "application/atom+xml")
         self.render("feed.xml", posts=posts)
 
@@ -61,38 +65,53 @@ class SearchHandler(BaseHandler):
 class HomeHandler(BaseHandler, PostMixin):
 
     def get(self):
-        posts = self.get_count_posts(10)
+        posts = self.get_count_posts(5)
         self.render("index.html", posts=posts)
+            
 
-
-class ArchiveHandler(BaseHandler, PostMixin):
+class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
 
     def get(self):
         posts = self.get_count_posts()
         from libs.utils import archives_list
         count = len(posts)
-        self.render('archives.html', posts=posts, count=count, archives_list=archives_list)
+        tags = self.get_all_tag_count(30)
+        self.render('archives.html', posts=posts, count=count,
+            archives_list=archives_list, tags=tags)
+
+
+class TagListHandler(BaseHandler, TagMixin):
+
+    def get(self):
+        tags = self.get_all_tag_count()
+        count = len(tags)
+        self.render('taglist.html', tags=tags, count=count)
       
 
 class NewPostHandler(BaseHandler, PostMixin):
 
     @authenticated
     def get(self):
-        self.render("admin/new.html")
+        self.render("admin/post.html")
 
     @authenticated
     def post(self):
         markdown = self.get_argument("markdown", None)
+        comment = self.get_argument("comment", 1)
         if not markdown:
             self.redirect("/post/new")
         p = render_post(markdown)
+        if comment=='0':
+            comment = 0
         post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
                 "tags": p["meta"]["tags"], "category": p["meta"]["category"],
-                "published": p["meta"]["published"], "content": p["content"]}
+                "published": p["meta"]["published"],
+                "content": p["content"],"comment": comment}
 
         post_id = self.create_new_post(**post)
         self.redirect("/%s" % p["meta"]["slug"])
         return
+
 
 class UpdatePostHandler(BaseHandler, PostMixin):
 
@@ -106,15 +125,21 @@ class UpdatePostHandler(BaseHandler, PostMixin):
     @authenticated
     def post(self, id):
         markdown = self.get_argument("markdown", None)
+        comment = self.get_argument("comment", 1)
+        print comment
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
+        if comment=='0':
+            comment = 0
         p = render_post(markdown)
         post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
                 "tags": p["meta"]["tags"], "category": p["meta"]["category"],
-                "published": p["meta"]["published"], "content": p["content"]}
+                "published": p["meta"]["published"],
+                "content": p["content"], "comment": comment}
         result = self.update_post_by_id(int(id), **post)
         self.redirect("/%s" % p["meta"]["slug"])
         return
+
 
 class DeletePostHandler(BaseHandler, PostMixin):
 
@@ -124,40 +149,57 @@ class DeletePostHandler(BaseHandler, PostMixin):
         self.redirect("/")
         return
 
+
 class PickyHandler(BaseHandler):
 
     def get(self, slug):
-        tpl = PICKY_DIR + "/" + str(slug) + ".html"
-        self.render(tpl)
+        mdfile = PICKY_DIR + "/" + str(slug) + ".md"
+        try:
+            md = open(mdfile)
+        except IOError:
+            print "Not"
+            self.abort(404)
+        markdown = md.read()
+        md.close()
+        p = render_post(markdown)
+        title = p["meta"]["title"]
+        published = p["meta"]["published"]
+        content = p["content"]
+        self.render("picky.html", title=title, slug=slug,
+                     published=published, content=content)
+
+
+class PickyDownHandler(BaseHandler):
+
+    def get(self, slug):
+        mdfile = PICKY_DIR + "/" + str(slug)
+        try:
+            md = open(mdfile)
+        except IOError:
+            print "Not"
+            self.abort(404)
+        markdown = md.read()
+        md.close()
+        self.set_header("Content-Type", "text/x-markdown")
+        self.write(markdown)
 
 
 class NewPickyHandler(BaseHandler):
 
     @authenticated
     def get(self):
-        self.render("admin/new.html")
+        self.render("admin/picky.html")
 
     @authenticated
     def post(self):
-        markdown = self.get_argument("markdown", None)
-        if not markdown:
-            self.redirect("/picky/new")
-        p = render_post(markdown)
-        title = p["meta"]["title"]
-        slug = p["meta"]["slug"]
-        published = p["meta"]["published"]
-        content = p["content"]
-        html = self.render_string("picky.html", title=title, slug=slug,
-                               published=published, content=content)
-        self._create_html(html, slug)
-        self.redirect("/picky/%s" % slug)
-        return
-    
-    def _create_html(self, html, slug):
-        fpath = PICKY_DIR + "/" + str(slug) + ".html"
-        f = open(fpath, "w")
-        f.write(html)
-        f.close()
+        files = self.request.files['picky'][0]
+        if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
+            f = open(PICKY_DIR + '/' + files['filename'],'w')
+            f.write(files['body'])
+            f.close()
+            slug = files['filename'].split('.')[0]
+            self.redirect("/picky/%s" % slug)
+        self.redirect('/post/picky')
 
 
 class SigninHandler(BaseHandler):
@@ -174,7 +216,6 @@ class SigninHandler(BaseHandler):
         if (not email) or (not password):
             self.redirect("/auth/signin")
             return
-        import re
         pattern = r'^.+@[^.].*\.[a-z]{2,10}$'
         if isinstance(pattern, basestring):
             pattern = re.compile(pattern, flags=0)
@@ -185,6 +226,7 @@ class SigninHandler(BaseHandler):
 
         user = self.get_user_by_email(email)
         if not user:
+            access_log.error("Login Error for email: %s!" % email)
             self.redirect("/")
             return
         enpass = user.password
@@ -194,7 +236,8 @@ class SigninHandler(BaseHandler):
             self.redirect(self.get_argument("next", "/post/new"))
             return
         else:
-             self.redirect("/")
+            access_log.error("Login Error for password: %s!" % password)
+            self.redirect("/")
         return
 
 
@@ -209,6 +252,20 @@ class SignoutHandler(BaseHandler):
         self.clear_cookie("token")
         self.redirect("/")
 
+
+# class GithubHandler(BaseHandler):
+
+#     @asynchronous
+#     @tornado.gen.engine
+#     def get(self):
+#         http_client = AsyncHTTPClient()
+#         response = yield tornado.gen.Task(http_client.fetch,
+#             "https://api.github.com/users/SerhoLiu/repos?sort=updated")
+#         #print response.body
+#         repos = loads_repos(response.body)
+#         self.render("github.html", repos=repos)
+
+
 class PageNotFound(BaseHandler):
     def get(self):
         self.abort(404)
@@ -216,6 +273,9 @@ class PageNotFound(BaseHandler):
 
 handlers = [('/', HomeHandler),
             ('/([a-zA-Z0-9-]+)/*', EntryHandler),
+            #('/picky/repos', GithubHandler),
+            ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
+            ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
             ('/tag/([^/]+)/*', TagsHandler),
             ('/category/([^/]+)/*', CategoryHandler),
             ('/post/new', NewPostHandler),
@@ -227,5 +287,6 @@ handlers = [('/', HomeHandler),
             ('/blog/feed', FeedHandler),
             ('/search/all', SearchHandler),
             ('/blog/all', ArchiveHandler),
+            ('/blog/tags', TagListHandler),
             (r'.*', PageNotFound), 
 ]

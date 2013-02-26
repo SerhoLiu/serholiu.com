@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-import sys
 
 import tornado.httpserver
 import tornado.ioloop
@@ -20,10 +19,10 @@ class Application(tornado.web.Application):
     def __init__(self):
         handlers = handler
         settings = dict(
-                template_path=os.path.join(os.path.dirname(__file__), "templates"),
-                static_path=os.path.join(os.path.dirname(__file__), "static"),
-                xsrf_cookies=True,
-                cookie_secret=COOKIE_SECRET,
+                template_path = os.path.join(os.path.dirname(__file__), "templates"),
+                static_path = os.path.join(os.path.dirname(__file__), "static"),
+                xsrf_cookies = True,
+                cookie_secret = COOKIE_SECRET,
                 login_url="/auth/signin",
                 autoescape=None,
                 debug=True,

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Update--{{ context.sitename }}</title>
+    <title>Update Post--{{ context.sitename }}</title>
     <link rel="stylesheet" href="{{ static_url("admin/admin.min.css") }}" type="text/css"/>
   </head>
   <body>
@@ -20,6 +20,12 @@
           <div class="clearfix">
             <div class="input">
               <textarea name="markdown" class="span13" id="textarea" rows="30" required></textarea>
+              </span>
+            </div>
+          </div><!-- /clearfix -->
+           <div class="clearfix">
+            <div class="input">
+              关闭留言:<input type="checkbox" name="comment" id="" value="0" />
               </span>
             </div>
           </div><!-- /clearfix -->

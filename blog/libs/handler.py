@@ -13,7 +13,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
     @property
     def db(self):
         return self.application.db
-
+    
     def prepare(self):
         self._prepare_context()
         self._prepare_filters()
@@ -48,7 +48,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
                     for line in exception:
                         self.write(line)
                 else:
-                    self.write("ERROR")
+                    self.write("oOps...! I made ​​a mistake... ")
             except Exception:
                 return super(BaseHandler, self).get_error_html(status_code, **kwargs)
         

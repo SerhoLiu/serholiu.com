@@ -46,11 +46,8 @@ class PostMixin(object):
         posts = self.db.query(sql, category)
         return posts
 
-    def get_count_posts(self, count=None, feed=None):
-        if count and (not feed):
-            posts = self.db.query("SELECT slug,title,published FROM posts ORDER BY published "
-                                "DESC LIMIT ?;",count)
-        elif count and feed:
+    def get_count_posts(self, count=None):
+        if count:
             posts = self.db.query("SELECT * FROM posts ORDER BY published "
                                 "DESC LIMIT ?;",count)
         else:
@@ -63,11 +60,11 @@ class PostMixin(object):
             if not p: break
             post["slug"] += "-2"
 
-        sql = """INSERT INTO posts (title,slug,content,tags,category,published)
-                 VALUES (?,?,?,?,?,?);
+        sql = """INSERT INTO posts (title,slug,content,tags,category,published,comment)
+                 VALUES (?,?,?,?,?,?,?);
               """
         post_id = self.db.execute(sql, post["title"], post["slug"], post["content"],
-                              post["tags"], post["category"], post["published"])
+                              post["tags"], post["category"], post["published"], post['comment'])
         if post_id:
             tags = [tag.strip() for tag in post["tags"].split(",")]
             for tag in tags:
@@ -76,7 +73,7 @@ class PostMixin(object):
 
     def update_post_by_id(self, id, **post):
         sql = """UPDATE posts SET title=?,slug=?,content=?,tags=?,category=?,
-                 published=? WHERE id=?;
+                 published=?,comment=? WHERE id=?;
               """
         p = self.get_post_by_id(id)
         if p.tags != post["tags"]:
@@ -84,7 +81,8 @@ class PostMixin(object):
         else:
             has_new_tag = False
         self.db.execute(sql, post["title"], post["slug"], post["content"],
-                     post["tags"], post["category"], post["published"], id)
+                     post["tags"], post["category"], post["published"],
+                     post['comment'], id)
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
             old_tags = [tag.strip() for tag in p.tags.split(",")]
@@ -123,3 +121,19 @@ class PostMixin(object):
             prev -= 1
 
         return {"next": next_post, "prev": prev_post}
+
+class TagMixin(object):
+
+    def get_all_tag_count(self, number=None):
+        if number:
+            sql = """SELECT name, COUNT(name) AS num FROM tags
+                     GROUP BY name ORDER BY num DESC LIMIT ?;
+                  """
+            tags = self.db.query(sql, number)
+        else:
+            sql = """SELECT name, COUNT(name) AS num FROM tags
+                     GROUP BY name ORDER BY num DESC;
+                  """
+            tags = self.db.query(sql)
+        
+        return tags

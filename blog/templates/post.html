@@ -2,31 +2,41 @@
 {% block title %}{{post.title}} - {{escape(context.sitename)}}{% end %}
 {% block head %}{{escape(post.content[0:168])}}{% end %}
 {% block content %}
-<div class="content-header post top-box">
-  <h2 class="content-title"><a href="/{{post.slug}}">{{post.title}}</a></h2>
-  <div class="content-info">
-    Post at: {{post.published}} |
-    Post in: <a href="/category/{{post.category}}">{{post.category}}</a>
-  </div>
-</div>
-  
-<div class="content-body bottom-box">
+<article>
+  <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
   {{post.content}}
+</article>
   <div class="tag_list">Tags:
     {% for tag in tags%}
-      <a href="/tag/{{tag}}">{{tag}}</a>
-    {% end %}&#160;&#160;&#160;&#160;&#160;&#160;如果有什么问题： <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#101;&#114;&#104;&#111;&#108;&#105;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#115;&#101;&#114;&#104;&#111;&#108;&#105;&#117;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
-  </div>
-  {% if current_user %}
-    <a href="/post/update/{{post.id}}">Update</a>
+      <a href="/tag/{{tag}}">#{{tag}}</a>
+    {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>
+    {% if current_user %}
+    |<a href="/post/update/{{post.id}}">Update</a>
     <a href="/post/delete/{{post.id}}">Del</a>
   {% end %}
-</div>
-{% end%}  
-  
-{% block nav %}
-  <div class="navigation clearfix">
-    <b>上一篇:</b>
+  </div>
+  {% if post.comment %}
+   <![if !IE]>
+  <div id="disqus_thread"></div>
+    <script type="text/javascript">
+      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+      var disqus_shortname = 'serho'; // required: replace example with your forum shortname
+
+      /* * * DON'T EDIT BELOW THIS LINE * * */
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    <![endif]>
+    <!--[if lt IE 9]>
+     <b>对不起，你的浏览器版本过低，留言无法支持，请使用IE9以上或者Chrome,Firefox,Opera等浏览器</b>
+    <![endif]-->
+  {% end %}
+<div class="navigation clearfix">
+   上一篇:
    {% if next_prev["next"] %} 
     <a href="/{{next_prev["next"].slug}}" title="{{next_prev["next"].title}}" class="previous">
     {{next_prev["next"].title}}
@@ -36,7 +46,7 @@
     {% end %}
     <span class="next"> 
     {% if next_prev["prev"] %}
-    <b>下一篇:</b> 
+    下一篇:
     <a href="/{{next_prev["prev"].slug}}" title="{{next_prev["prev"].title}}">
     {{next_prev["prev"].title}}
     </a>
@@ -44,5 +54,9 @@
     没有了
     {%end %}
     </span>
-  </div>
+  </div>  
+{% end%}  
+  
+{% block nav %}
+
 {% end %}

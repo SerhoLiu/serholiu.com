@@ -54,9 +54,10 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
 
         formatter = HtmlFormatter(
             noclasses=False,
-            linenos=False,
+            linenos=True,
         )
         return highlight(text, lexer, formatter)
+        
 
     def autolink(self, link, is_email):
         if is_email:

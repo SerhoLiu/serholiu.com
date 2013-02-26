@@ -1,16 +1,12 @@
 {% extends "base.html" %}
 {% block title %}在《{{name}}》下的所有文章 - {{escape(context.sitename)}}{% end %}
 {% block content %}
-<div class="content-header home top-box">
-    <h2 class="content-title">在《{{name}}》下的所有文章</h2>
-  </div>
-  <div class="content-body bottom-box">
-
+    <h3>在《{{name}}》下的所有文章</h3>
     <section>
-      <ul>
+      <ul class="postsList">
        {%for post in posts %}
-        <li class="archiveli">
-          {{get_home_time(post.published)}}——<a href="/{{post.slug}}">{{post.title}}</a>
+        <li>
+          <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
         </li>
        {% end %}
       </ul>
@@ -19,5 +15,4 @@
     <blockquote>
       <small><a href="/{{type}}/{{name}}" title="Posts">{{count}}+</a></small>
     </blockquote>
-  </div>
 {% end %}

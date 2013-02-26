@@ -1,26 +1,13 @@
 {% extends "base.html" %}
 {% block title %}{{escape(context.sitename)}}{% end %}
 {% block content %}
-<div class="content-header home top-box">
-    <h2 class="content-title">Home</h2>
-  </div>
-  <div class="content-body bottom-box">
-    <p>嗨，这里是 SErHo 的个人主页，用来记录偶然的灵感、平静的生活和纯粹的思考。我相信人生是充满不确定的，而回首自己的往事，正是感悟这种不确定的美，它充满想象、它足够恐怖，它是耶和华，而我愿一直追随。</p>
-    <p>我在努力将写作变成一种创作，而不是单纯的记录。书写代码，也是一种思想上的写作，而我现在正在学习更多。这里有我的<a href="/picky/about-me">更多信息</a>，如果你愿意看的话。</p>
-  
 
-<h4>最近发布的文章</h4>
-
-<ul class="posts">
-  {% for post in posts %}
-    <li class="archiveli"><span>{{get_home_time(post.published)}}</span>——<a href="/{{post.slug}}">{{post.title}}</a></li>
-  {% end %} 
-</ul>
-
-
-  </div>
+{% for post in posts %}
+<div class="home-post">
+  <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
+  <article>{{post.content.split('<!--more-->')[0]}}</article>
+</div>  
+{% end %} 
+<div class="home-more"><a href="/blog/all"> Read More For This Blog</a></div>
 
 {% end %}
-{% block bottom %}
-
-  {% end %}

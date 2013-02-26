@@ -1,5 +1,6 @@
 *.py[co]
 *.db
+Makefile
 
 # Packages
 *.egg
