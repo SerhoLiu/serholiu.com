@@ -8,14 +8,14 @@
 
 ## 写作格式
 
-Post:  
+Post:
 
     # Title
 
-    -. slug: title
-    -. published: 2012-06-26 19:00
-    -. tags: Test, Tornado, Python
-    -. category: Work
+    - slug: title
+    - published: 2012-06-26 19:00
+    - tags: Test, Tornado, Python
+    - category: Work
 
     ------------------------------
 
