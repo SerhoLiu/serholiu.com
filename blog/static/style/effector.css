@@ -466,3 +466,10 @@ hr{margin:20px 0 19px;border:0;border-bottom:1px solid #ddd}
 .clearfix:before,.clearfix:after{content:"";display:table}
 .clearfix:after{clear:both}
 .clearfix{zoom:1}
+
+@font-face {
+  font-family: 'Quantico';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Quantico'), local('Quantico-Regular'), url(Quantico.woff) format('woff');
+}
