@@ -3,7 +3,7 @@ Allow: /*html$
 Disallow: /*?
 Disallow: /auth/
 Disallow: /post/new
-Disallow: /picky/new
+Disallow: /post/picky
 Disallow: /blog/feed
 
 # BEGIN XML-SITEMAP-PLUGIN
