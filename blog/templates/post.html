@@ -12,7 +12,7 @@
     {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>
     {% if current_user %}
     |<a href="/post/update/{{post.id}}">Update</a>
-     <a href="/post/delete/{{post.id}}">Del</a>
+     <a href="/post/delete/{{post.id}}?check={{signer}}">Del</a>
   {% end %}
   </div>
   {% if post.comment %}

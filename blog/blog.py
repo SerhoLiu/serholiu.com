@@ -8,7 +8,7 @@ from libs.handler import BaseHandler
 from libs.crypto import is_password, get_random_string
 from libs.models import PostMixin, TagMixin
 from libs.markdown import render_post
-from libs.utils import authenticated
+from libs.utils import authenticated, signer_code, unsigner_code
 from config import PICKY_DIR
 
 
@@ -21,7 +21,9 @@ class EntryHandler(BaseHandler, PostMixin):
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
         next_prev = self.get_next_prev_post(post.id)
-        self.render("post.html", post=post, tags=tags, next_prev=next_prev)
+        signer = signer_code(str(post.id))
+        self.render("post.html", post=post, tags=tags, next_prev=next_prev,
+                                    signer=signer)
 
 
 class TagsHandler(BaseHandler, PostMixin):
@@ -145,7 +147,10 @@ class DeletePostHandler(BaseHandler, PostMixin):
 
     @authenticated
     def get(self, id):
-        self.delete_post_by_id(int(id))
+        signer = self.get_argument("check", None)
+        print signer
+        if unsigner_code(signer) == id:
+            self.delete_post_by_id(int(id))
         self.redirect("/")
         return
 

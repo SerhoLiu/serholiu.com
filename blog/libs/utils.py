@@ -3,6 +3,10 @@
 import re
 import datetime
 import functools
+import base64
+from hashlib import sha1
+import hmac
+from config import COOKIE_SECRET
 
 
 class ObjectDict(dict):
@@ -38,7 +42,7 @@ def archives_list(posts):
     years = list(set([get_time_year(post.published) for post in posts]))
     years.sort(reverse=True)
     for year in years:
-        year_posts = [post for post in posts if get_time_year(post.published)==year]
+        year_posts = [post for post in posts if get_time_year(post.published) == year]
         yield (year, year_posts)
 
 
@@ -53,3 +57,29 @@ def authenticated(method):
             self.abort(403)
         return method(self, *args, **kwargs)
     return wrapper
+
+
+def base64_encode(string):
+    """base64 encodes a single string. The resulting string is safe for
+    putting into URLs.
+    """
+    return base64.urlsafe_b64encode(string).strip('=')
+
+
+def signer_code(id):
+    mac = hmac.new(COOKIE_SECRET, digestmod=sha1)
+    mac.update(id)
+    s = mac.digest()
+    signer = id + '.' + base64_encode(s)
+    return signer
+
+
+def unsigner_code(signer):
+    id, base64_s = signer.split('.')
+    mac = hmac.new(COOKIE_SECRET, digestmod=sha1)
+    mac.update(id)
+    s = mac.digest()
+    if base64_s == base64_encode(s):
+        return id
+    else:
+        return None
