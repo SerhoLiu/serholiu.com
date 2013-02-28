@@ -45,4 +45,3 @@ Picky 和 Post 相比，没有 tags 和 category。
 [2]: http://misaka.61924.nl/
 [3]: http://pygments.org/
 [4]: http://serholiu.com/tornado-nginx-supervisord
-
