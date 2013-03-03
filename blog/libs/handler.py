@@ -1,6 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+"""
+    扩展 `tornado.web.BaseHandler` 以方便添加模板 filter 和 全局变量，
+    并对默认的错误页进行修改。
+"""
+
 import traceback
 import tornado.web
 
@@ -20,6 +25,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         self._prepare_filters()
 
     def render_string(self, template_name, **kwargs):
+        """
+        重写 `render_string` 方法，以便加入自定义 filter 和自定义模板全局变量
+        """
         kwargs.update(self._filters)
         assert "context" not in kwargs, "context is a reserved keyword."
         kwargs["context"] = self._context
@@ -39,6 +47,12 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         return user
 
     def get_error_html(self, status_code, **kwargs):
+        """
+        请求错误处理：
+            1. 404 错误：将使用 `templates/e404.html` 作为 404 页面
+            2. 其它错误，如果在 `app.py` 中设置 `debug = True` 将会显示错误信息，否则
+               输出简单的提示。
+        """
         if status_code == 404:
             return self.render_string("e404.html")
         else:
@@ -54,10 +68,16 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
                 return super(BaseHandler, self).get_error_html(status_code, **kwargs)
         
     def _prepare_context(self):
+        """
+        将自定义变量传入模板，作为全局变量，引用时使用 `context.var` 的形式
+        """
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
 
     def _prepare_filters(self):
+        """
+        将自定义 filter 传入模板
+        """
         self._filters = ObjectDict()
         self._filters.get_home_time = get_home_time
         self._filters.time = format_time
