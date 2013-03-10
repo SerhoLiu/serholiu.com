@@ -41,6 +41,10 @@ Picky 和 Post 相比，没有 tags 和 category。
 
 部署建议: [在服务器上部署 Tornado 开发的网站][4]
 
+## License
+
+MIT LICENSE, see MIT-LICENSE.txt
+
 [1]: http://www.tornadoweb.org/
 [2]: http://misaka.61924.nl/
 [3]: http://pygments.org/
