@@ -8,7 +8,7 @@
 
 ## 写作格式
 
-Post:
+Post (请参考 post_example.md):
 
     # Title
 
@@ -27,7 +27,7 @@ Post:
     print math.sqrt(9)
     ```
 
-Picky 和 Post 相比，没有 tags 和 category。
+Picky 和 Post 相比，没有 tags 和 category (请参考 blog/picky)。
 
 ## 使用方法
 
