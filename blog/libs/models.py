@@ -85,9 +85,10 @@ class PostMixin(object):
                      post['comment'], id)
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
-            old_tags = [tag.strip() for tag in p.tags.split(",")]
-            for tag in old_tags:
-                self.db.execute("DELETE FROM tags WHERE name=? AND post_id=?;", tag, id)
+            #old_tags = [tag.strip() for tag in p.tags.split(",")]
+            #for tag in old_tags:
+            #    self.db.execute("DELETE FROM tags WHERE name=? AND post_id=?;", tag, id)
+            self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
             for tag in new_tags:
                 self.db.execute("INSERT INTO tags (name,post_id) VALUES (?,?);", tag, id)
         return True
@@ -105,6 +106,8 @@ class PostMixin(object):
         while 1:
             next_post = self.db.get("SELECT slug,title FROM posts WHERE id=?;", next)
             if next_post: break
+            # 100 是一估计量，当你发布文章又删除，造成 id 不连续，
+            # 如果之间差值大过100,就无法得到正确结果
             if count > 100:
                 next_post = None
                 break
@@ -112,7 +115,7 @@ class PostMixin(object):
             count += 1
 
         while 1:
-            if prev==0:
+            if prev == 0:
                 prev_post = None
                 break
             prev_post = self.db.get("SELECT slug,title FROM posts WHERE id=?;", prev)
@@ -121,6 +124,7 @@ class PostMixin(object):
             prev -= 1
 
         return {"next": next_post, "prev": prev_post}
+
 
 class TagMixin(object):
 
