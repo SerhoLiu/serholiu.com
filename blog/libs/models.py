@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 class UserMixin(object):
 
     def get_user_by_id(self, id):
@@ -17,6 +18,7 @@ class UserMixin(object):
             return False
         self.db.execute("UPDATE users SET salt=? WHERE id=?;", salt, id)
         return True
+
 
 class PostMixin(object):
 
@@ -39,7 +41,7 @@ class PostMixin(object):
         return posts
 
     def get_posts_by_category(self, category):
-        sql = """SELECT slug, title, published FROM posts 
+        sql = """SELECT slug, title, published FROM posts
                  WHERE category = ?
                  ORDER BY published desc;
               """
