@@ -1,16 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 import re
+import hmac
+import base64
 import datetime
 import functools
-import base64
+
 from hashlib import sha1
-import hmac
 from config import COOKIE_SECRET
 
 
 class ObjectDict(dict):
-    
     def __getattr__(self, key):
         if key in self:
             return self[key]
@@ -19,6 +19,9 @@ class ObjectDict(dict):
     def __setattr__(self, key, value):
         self[key] = value
 
+
+# 所有日期采用 `YYYY-MM-DD HH:MM` 格式字符串存储，
+# 下面的三个函数用于获取年月日、年和将字符串转换为时间对象
 
 def get_home_time(time):
     time = time.split(" ")[0].strip()
@@ -39,6 +42,9 @@ def format_time(time):
 
 
 def archives_list(posts):
+    """
+    生成文章存档，按年分类
+    """
     years = list(set([get_time_year(post.published) for post in posts]))
     years.sort(reverse=True)
     for year in years:
@@ -59,8 +65,11 @@ def authenticated(method):
     return wrapper
 
 
+# 因为删除文章链接使用的是 GET 而非 POST，所以无法使用 Tornado 自带的 xsrf
+# 预防方法，因此这里使用简单的加密方法，构造文章删除链接
 def base64_encode(string):
-    """base64 encodes a single string. The resulting string is safe for
+    """
+    base64 encodes a single string. The resulting string is safe for
     putting into URLs.
     """
     return base64.urlsafe_b64encode(string).strip('=')
