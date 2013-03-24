@@ -61,5 +61,6 @@ if __name__ == '__main__':
 
     print "数据库创建完毕，开始创建用户账户..."
     create_user(conn)
+    conn.close()
 
     print "用户创建成功，请务必将生成的数据库文件拷贝到 blog 目录下！！！"
