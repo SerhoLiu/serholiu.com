@@ -3,12 +3,14 @@
 
 import re
 from tornado.web import removeslash
+
 from libs.log import access_log
 from libs.handler import BaseHandler
 from libs.crypto import is_password, get_random_string
 from libs.models import PostMixin, TagMixin
 from libs.markdown import render_post
-from libs.utils import authenticated, signer_code, unsigner_code
+from libs.utils import authenticated, signer_code
+from libs.utils import unsigner_code, archives_list
 from config import PICKY_DIR
 
 
@@ -75,7 +77,6 @@ class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
 
     def get(self):
         posts = self.get_count_posts()
-        from libs.utils import archives_list
         count = len(posts)
         tags = self.get_all_tag_count(30)
         self.render('archives.html', posts=posts, count=count,
