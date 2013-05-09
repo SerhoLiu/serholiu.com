@@ -3,8 +3,8 @@
 
 import re
 from tornado.web import removeslash
+from tornado.log import access_log
 
-from libs.log import access_log
 from libs.handler import BaseHandler
 from libs.crypto import is_password, get_random_string
 from libs.models import PostMixin, TagMixin
@@ -232,7 +232,7 @@ class SigninHandler(BaseHandler):
 
         user = self.get_user_by_email(email)
         if not user:
-            access_log.error("Login Error for email: %s!" % email)
+            access_log.error("Login Error for email: %s" % email)
             self.redirect("/")
             return
         enpass = user.password
