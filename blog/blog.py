@@ -3,7 +3,10 @@
 
 import re
 from tornado.web import removeslash
-from tornado.log import access_log
+try:
+    from tornado.log import access_log
+except ImportError:
+    from libs.log import access_log
 
 from libs.handler import BaseHandler
 from libs.crypto import is_password, get_random_string
