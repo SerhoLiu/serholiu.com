@@ -9,7 +9,7 @@ except ImportError:
     from .libs.log import access_log
 
 from .libs.handler import BaseHandler
-from .libs.crypto import is_password, get_random_string
+from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import render_post
 from .libs.utils import authenticated, signer_code
@@ -238,8 +238,8 @@ class SigninHandler(BaseHandler):
             access_log.error("Login Error for email: %s" % email)
             self.redirect("/")
             return
-        enpass = user.password
-        if is_password(password, enpass):
+        encryped_pass = user.password
+        if PasswordCrypto.authenticate(password, encryped_pass):
             token = user.salt + "/" + str(user.id)
             self.set_secure_cookie("token", str(token))
             self.redirect(self.get_argument("next", "/post/new"))

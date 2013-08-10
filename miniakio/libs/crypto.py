@@ -137,5 +137,4 @@ class PasswordCrypto(object):
         if algorithm != cls.ALGORITHM:
             return False
         encrypted_new = cls.get_encrypted(password, salt, int(iterations))
-        print encrypted_new
         return constant_time_compare(encrypted, encrypted_new)
