@@ -11,7 +11,7 @@ except ImportError:
 from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
-from .libs.markdown import render_post
+from .libs.markdown import RenderMarkdownPost
 from .libs.utils import authenticated, signer_code
 from .libs.utils import unsigner_code, archives_list
 from blogconfig import PICKY_DIR
@@ -106,16 +106,14 @@ class NewPostHandler(BaseHandler, PostMixin):
         comment = self.get_argument("comment", 1)
         if not markdown:
             self.redirect("/post/new")
-        p = render_post(markdown)
+
+        render = RenderMarkdownPost(markdown)
+        post = render.get_render_post()
         if comment == '0':
             comment = 0
-        post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
-                "tags": p["meta"]["tags"], "category": p["meta"]["category"],
-                "published": p["meta"]["published"],
-                "content": p["content"], "comment": comment}
-
+        post.update({"comment": comment})
         self.create_new_post(**post)
-        self.redirect("/%s" % p["meta"]["slug"])
+        self.redirect("/%s" % post["slug"])
         return
 
 
@@ -135,15 +133,16 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         print comment
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
+
+        render = RenderMarkdownPost(markdown)
+        post = render.get_render_post()
+
         if comment == '0':
             comment = 0
-        p = render_post(markdown)
-        post = {"title": p["meta"]["title"], "slug": p["meta"]["slug"],
-                "tags": p["meta"]["tags"], "category": p["meta"]["category"],
-                "published": p["meta"]["published"],
-                "content": p["content"], "comment": comment}
+
+        post.update({"comment": comment})
         self.update_post_by_id(int(id), **post)
-        self.redirect("/%s" % p["meta"]["slug"])
+        self.redirect("/%s" % post["slug"])
         return
 
 
@@ -170,12 +169,12 @@ class PickyHandler(BaseHandler):
             self.abort(404)
         markdown = md.read()
         md.close()
-        p = render_post(markdown)
-        title = p["meta"]["title"]
-        published = p["meta"]["published"]
-        content = p["content"]
-        self.render("picky.html", title=title, slug=slug,
-            published=published, content=content)
+        render = RenderMarkdownPost(markdown)
+        post = render.get_render_post()
+        title = post["title"]
+        published = post["published"]
+        content = post["content"]
+        self.render("picky.html", post=post, slug=slug)
 
 
 class PickyDownHandler(BaseHandler):

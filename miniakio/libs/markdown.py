@@ -13,38 +13,6 @@ from tornado.escape import to_unicode
 from tornado.escape import xhtml_escape
 
 
-def render_post(string):
-    f = StringIO(string)
-    header = ''
-    body = None
-    for line in f:
-        if line.startswith('---'):
-            body = ''
-        elif body is not None:
-            body += line
-        else:
-            header += line
-
-    meta = parse_meta(header)
-    content = markdown(body)
-    return {"meta": meta, "content": content}
-
-
-def parse_meta(header):
-    header = markdown(header)
-    title = re.findall(r'<h1>(.*)</h1>', header)[0]
-
-    meta = {'title': title}
-    items = re.findall(r'<li>(.*?)</li>', header, re.S)
-    for item in items:
-        index = item.find(':')
-        key = item[:index].rstrip()
-        value = item[index + 1:].lstrip()
-        meta[key] = value
-
-    return meta
-
-
 class AkioRender(m.HtmlRenderer, m.SmartyPants):
     
     def block_code(self, text, lang):
@@ -94,3 +62,44 @@ def markdown(text):
         extensions=m.EXT_FENCED_CODE | m.EXT_AUTOLINK,
     )
     return md.render(text)
+
+
+class RenderMarkdownPost(object):
+
+    def __init__(self, markdown = None):
+        self.markdown = markdown
+
+    def get_render_post(self):
+        if not self.markdown:
+            return None
+        f = StringIO(self.markdown)
+        header = ''
+        body = None
+        for line in f:
+            if line.startswith('---'):
+                body = ''
+            elif body is not None:
+                body += line
+            else:
+                header += line
+
+        meta = self.__get_post_meta(header)
+        content = markdown(body)
+        meta.update({"content": content})
+        return meta
+
+
+    def __get_post_meta(self, header):
+        header = markdown(header)
+        title = re.findall(r'<h1>(.*)</h1>', header)[0]
+
+        meta = {'title': title}
+        items = re.findall(r'<li>(.*?)</li>', header, re.S)
+        for item in items:
+            index = item.find(':')
+            key = item[:index].rstrip()
+            value = item[index + 1:].lstrip()
+            meta[key] = value
+
+        return meta
+

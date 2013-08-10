@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-{% block title %}{{title}} - I'm SErHo{% end %}
-{% block head %}{{escape(content[0:168])}}{% end %}
+{% block title %}{{post["title"]}} - I'm SErHo{% end %}
+{% block head %}{{escape(post["content"][0:168])}}{% end %}
 {% block content %}
 <article>
-    <h2 class="content-title"><a href="/picky/{{slug}}">{{title}}</a></h2>
-    {{content}}
+    <h2 class="content-title"><a href="/picky/{{slug}}">{{post["title"]}}</a></h2>
+    {{post["content"]}}
 </article>
     <hr>
     <blockquote>
-      <small> {{published}}
-        <a href="/picky/{{slug}}.md" title="{{title}}">Down Markdown File</a>
+      <small> {{post["published"]}}
+        <a href="/picky/{{slug}}.md" title="{{post["title"]}}">Down Markdown File</a>
       </small>
     </blockquote>
 {% end %}
