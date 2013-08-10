@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}在《{{name}}》下的所有文章 - {{escape(context.sitename)}}{% end %}
+{% block content %}
+    <h3>在《{{name}}》下的所有文章</h3>
+    <section>
+      <ul class="postsList">
+       {%for post in posts %}
+        <li>
+          <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+        </li>
+       {% end %}
+      </ul>
+    </section>
+    <hr>
+    <blockquote>
+      <small><a href="/{{type}}/{{name}}" title="Posts">{{count}}+</a></small>
+    </blockquote>
+{% end %}

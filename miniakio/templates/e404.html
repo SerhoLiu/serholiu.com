@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}404,Not Found - {{escape(context.sitename)}}{% end %}
+{% block content %}
+<h2>Page Not Found</h2>
+    <img src="{{static_url('notfound.png')}}">
+    <section>
+      <div id="cse" style="width: 100%;">Loading</div>
+      <script src="http://www.google.com/jsapi" type="text/javascript"></script>
+      <script type="text/javascript"> 
+        google.load('search', '1', {language : 'zh-CN'});
+        google.setOnLoadCallback(function() {
+        var customSearchControl = new google.search.CustomSearchControl(
+          '011674547521218553784:g_kuiyayhwy');
+        customSearchControl.setResultSetSize(google.search.Search.SMALL_RESULTSET);
+        customSearchControl.draw('cse');}, true);
+      </script>
+      <link rel="stylesheet" href="http://www.google.com/cse/style/look/default.css" type="text/css" />
+    </section>
+    <hr>
+    <blockquote>
+      <small>页面没有找到，你可以返回<a href="/">首页</a>或者搜索其他</small>
+    </blockquote>
+
+{% end %}
