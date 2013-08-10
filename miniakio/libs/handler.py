@@ -83,7 +83,4 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         self._filters.time = format_time
 
     def abort(self, code):
-        if code == 404:
-            raise tornado.web.HTTPError(404)
-        if code == 403:
-            raise tornado.web.HTTPError(403)
+        raise tornado.web.HTTPError(code)
