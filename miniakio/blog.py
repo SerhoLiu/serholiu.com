@@ -184,7 +184,6 @@ class PickyDownHandler(BaseHandler):
         try:
             md = open(mdfile)
         except IOError:
-            print "Not"
             self.abort(404)
         markdown = md.read()
         md.close()
