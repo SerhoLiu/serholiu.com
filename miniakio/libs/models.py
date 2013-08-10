@@ -87,9 +87,6 @@ class PostMixin(object):
                      post['comment'], id)
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
-            #old_tags = [tag.strip() for tag in p.tags.split(",")]
-            #for tag in old_tags:
-            #    self.db.execute("DELETE FROM tags WHERE name=? AND post_id=?;", tag, id)
             self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
             for tag in new_tags:
                 self.db.execute("INSERT INTO tags (name,post_id) VALUES (?,?);", tag, id)
