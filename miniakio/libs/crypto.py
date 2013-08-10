@@ -139,9 +139,3 @@ class PasswordCrypto(object):
         encrypted_new = cls.get_encrypted(password, salt, int(iterations))
         print encrypted_new
         return constant_time_compare(encrypted, encrypted_new)
-
-if __name__ == '__main__':
-    e = PasswordCrypto.get_encrypted("1990416")
-    print e
-    if PasswordCrypto.authenticate("1990416", e):
-        print "OK"
