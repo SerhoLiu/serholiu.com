@@ -4,16 +4,9 @@
 import os.path
 
 import tornado.web
-import tornado.ioloop
-import tornado.options
-import tornado.httpserver
-from tornado.options import define, options
-
-from libs import sqlite3lib
-from config import COOKIE_SECRET, DATABASE, DEBUG
-from blog import handlers as handler
-
-define("port", default=8888, help="run on the given port", type=int)
+from .libs import sqlite3lib
+from blogconfig import COOKIE_SECRET, DATABASE, DEBUG
+from .blog import handlers as handler
 
 
 class Application(tornado.web.Application):
@@ -30,14 +23,3 @@ class Application(tornado.web.Application):
         )
         tornado.web.Application.__init__(self, handlers, **settings)
         self.db = sqlite3lib.Connection(DATABASE)
-
-
-def main():
-    tornado.options.parse_command_line()
-    http_server = tornado.httpserver.HTTPServer(Application())
-    http_server.listen(options.port)
-    tornado.ioloop.IOLoop.instance().start()
-
-
-if __name__ == "__main__":
-    main()

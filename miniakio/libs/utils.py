@@ -7,7 +7,7 @@ import datetime
 import functools
 
 from hashlib import sha1
-from config import COOKIE_SECRET
+from blogconfig import COOKIE_SECRET
 
 
 class ObjectDict(dict):

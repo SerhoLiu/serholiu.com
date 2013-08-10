@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os.path
+import os
 
 # 用于 cookie 加密，请换一个随机的，足够长，足够复杂的字符串
 # !!! 不要使用现在这个
@@ -22,3 +22,5 @@ PICKY_DIR = os.path.join(os.path.dirname(__file__), "picky")
 # 不过修改模板或代码后，需要重新启动博客，这样才有效果
 DEBUG = True
 #DEBUG = False
+
+del os

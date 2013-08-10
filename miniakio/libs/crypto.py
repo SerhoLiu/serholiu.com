@@ -111,7 +111,6 @@ def pbkdf2(password, salt, iterations, dklen=0, digest=None):
     T = [F(x) for x in range(1, l + 1)]
     return ''.join(T[:-1]) + T[-1][:r]
 
-
 ALGORITHM = "pbkdf2_sha256"
 ITERATIONS = 5000
 DIGEST = hashlib.sha256

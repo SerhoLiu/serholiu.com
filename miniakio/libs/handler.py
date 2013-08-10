@@ -9,9 +9,9 @@
 import traceback
 import tornado.web
 
-from libs.utils import ObjectDict, get_home_time, format_time
-from libs.models import UserMixin
-from config import SITE_NAME
+from .utils import ObjectDict, get_home_time, format_time
+from .models import UserMixin
+from blogconfig import SITE_NAME
 
 
 class BaseHandler(tornado.web.RequestHandler, UserMixin):
