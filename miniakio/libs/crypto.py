@@ -111,25 +111,37 @@ def pbkdf2(password, salt, iterations, dklen=0, digest=None):
     T = [F(x) for x in range(1, l + 1)]
     return ''.join(T[:-1]) + T[-1][:r]
 
-ALGORITHM = "pbkdf2_sha256"
-ITERATIONS = 5000
-DIGEST = hashlib.sha256
 
+class PasswordCrypto(object):
 
-def hex_password(password, salt=None, iterations=None):
-    assert password
-    if not salt:
-        salt = get_random_string()
-    if not iterations:
-        iterations = ITERATIONS
-    password = str(password)
-    hash = pbkdf2(password, salt, iterations, digest=DIGEST)
-    hash = hash.encode('base64').strip()
-    return "%s$%d$%s$%s" % (ALGORITHM, ITERATIONS, salt, hash)
+    ALGORITHM = "pbkdf2_sha256"
+    ITERATIONS = 5000
+    DIGEST = hashlib.sha256
 
+    @classmethod
+    def get_encrypted(cls, password, salt=None, iterations=None):
+        if not password:
+            return None
+        if (not salt) or ('$' in salt):
+            salt = get_random_string()
+        if not iterations:
+            iterations = cls.ITERATIONS
+        password = str(password)
+        encrypted = pbkdf2(password, salt, iterations, digest=cls.DIGEST)
+        encrypted = encrypted.encode('base64').strip()
+        return "%s$%d$%s$%s" % (cls.ALGORITHM, cls.ITERATIONS, salt, encrypted)
+    
+    @classmethod
+    def authenticate(cls, password, encrypted):
+        algorithm, iterations, salt, encrypt = encrypted.split('$', 3)
+        if algorithm != cls.ALGORITHM:
+            return False
+        encrypted_new = cls.get_encrypted(password, salt, int(iterations))
+        print encrypted_new
+        return constant_time_compare(encrypted, encrypted_new)
 
-def is_password(password, encoded):
-    algorithm, iterations, salt, hash = encoded.split('$', 3)
-    assert algorithm == ALGORITHM
-    encoded_2 = hex_password(password, salt, int(iterations))
-    return constant_time_compare(encoded, encoded_2)
+if __name__ == '__main__':
+    e = PasswordCrypto.get_encrypted("1990416")
+    print e
+    if PasswordCrypto.authenticate("1990416", e):
+        print "OK"
