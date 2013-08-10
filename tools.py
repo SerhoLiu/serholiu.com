@@ -92,5 +92,6 @@ Usage: python tools -o <opt>
     elif opt == "getsecret":
         print get_secret() 
 
+
 if __name__ == '__main__':
     main(sys.argv[1:])
