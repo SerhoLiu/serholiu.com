@@ -4,7 +4,14 @@
 
 {% for post in posts %}
 <div class="home-post">
+  {% if context.is_mobile %}
+  <div class="post-meta">
+    <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
+    <span>{{post.published}}</span>    
+  </div>
+  {% else %}
   <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
+  {% end %}
   <article>{{post.content.split('<!--more-->')[0]}}</article>
 </div>  
 {% end %} 

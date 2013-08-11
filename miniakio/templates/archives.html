@@ -16,7 +16,7 @@
         {% end %}
         </ul>
         {% else %}
-        <ul class="hidearch postsList">
+        <ul class="hidearch posts-list">
         {% for post in year_posts[1] %}
         <li class="archiveli">
           <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>

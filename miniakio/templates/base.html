@@ -14,6 +14,7 @@
     <!-- Le styles -->
     <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
     {% if context.is_mobile %}
+    <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0" name="viewport" />
     <link href="{{static_url('style/mobile.css')}}" rel="stylesheet" type="text/css" media="all">
     {% end %}
     <link href="{{static_url('style/solarized.css')}}" rel="stylesheet" type="text/css">
@@ -22,7 +23,8 @@
   <body>
 
     <div id="container">
-      <header id="header" class="bottom-box">
+      <header id="header" class="bottom-box clearfix">
+        <h1><a href="/">I'm SErHo</a></h1>
         <ul>
           <li><a href="/picky/about-me">About</a></li>
           <li><a href="/picky/all">Picky</a></li>
@@ -31,7 +33,6 @@
           <li><a href="/blog/tags">Tags</a></li>
           <li><a href="/search/all">Search</a></li>
         </ul>
-        <h1><a href="/">I'm SErHo</a></h1>
       </header>
        
       <div id="main" class="clearfix">
@@ -46,9 +47,7 @@
 
       <footer id="footer" class="top-box clearfix">
         &copy; 2009-2012  | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
-        <a href="https://github.com/SerhoLiu/serholiu.com" target="_blank">Tornado</a>.
-           &#160;&#160;<span class="label">{% set request_time = 1000.0 * handler.request.request_time() %}
-                       {{"%.2f ms" % request_time}}</span>
+        <a href="https://github.com/SerhoLiu/serholiu.com" target="_blank">Miniakio</a>.
         <a href="javascript:scroll(0,0)" class="to-top">TOP</a>
       </footer>
       {% block bottom %}

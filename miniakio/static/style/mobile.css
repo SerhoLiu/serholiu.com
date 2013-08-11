@@ -1,3 +1,59 @@
 #container {
     width: auto;
 }
+
+#header {
+    text-align: center;
+    padding: 10px 0px;
+}
+
+#header h1 {
+    text-align: center;   
+}
+
+#header h1 a {
+    float: none;   
+}
+
+#header ul {
+    display:inline-table;
+    float: none;
+    margin-top: 5px;
+    font-size: 12px;
+    list-style: none;
+}
+
+#header ul li {
+    display: inline;
+    margin: 5px;
+    line-height: 15px;
+}
+
+#header ul li a {
+    padding: 2px;
+    display: inline;
+}
+
+.content img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post-meta {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.post-meta h2 {
+    line-height: 40px;
+}
+
+.post-meta span {
+    float: none;
+    color: #CED1D1;
+    font-size: 16px;
+}
+
+.navigation .next {
+    float: none;
+}

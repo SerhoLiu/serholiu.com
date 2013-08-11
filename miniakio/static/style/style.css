@@ -310,25 +310,26 @@ body {
 }
 #header {
   background: #ffffff;
-  padding: 10px 20px;
+  padding: 10px 20px 0;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 #header h1 a {
+  float: left;
   font-family: 'Quantico', sans-serif;
   font-weight: 700;
   color: #333;
 }
 #header ul {
-  margin-top: 5px;
   float: right;
+  margin-top: 5px;
   font-size: 12px;
   list-style: none;
 }
 #header ul li {
   float: left;
-  margin: 5px 0 10px 10px;
+  margin: 5px 0 5px 10px;
   line-height: 15px;
 }
 #header ul li a {
@@ -364,9 +365,8 @@ body {
 }
 .content img {
   max-width: 640px;
-  margin-left: 20px;
   height: auto;
-  display: inline-block;
+  display: block;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -396,9 +396,6 @@ body {
 .navigation {
   padding-top: 6px;
   margin-top: 7px;
-  border-radius: 5px;
-  -moz-border-radius: 5px;
-  -webkit-border-radius: 5px;
   border-top: 1px dashed #ddd;
 }
 .navigation .next {

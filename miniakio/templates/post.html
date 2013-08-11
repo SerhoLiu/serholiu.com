@@ -3,7 +3,14 @@
 {% block head %}{{escape(post.content[0:168])}}{% end %}
 {% block content %}
 <article>
+  {% if context.is_mobile %}
+  <div class="post-meta">
+    <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
+    <span>{{post.published}}</span>    
+  </div>
+  {% else %}
   <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
+  {% end %}
   {{post.content}}
 </article>
   <div class="tag-list">Tags:
@@ -40,6 +47,9 @@
     </a>
     {% else %}
     没有了
+    {% end %}
+    {% if context.is_mobile %}
+    <br /><br />
     {% end %}
     <span class="next"> 
     {% if next_prev["prev"] %}
