@@ -6,7 +6,7 @@
   <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
   {{post.content}}
 </article>
-  <div class="tag_list">Tags:
+  <div class="tag-list">Tags:
     {% for tag in tags%}
       <a href="/tag/{{tag}}">#{{tag}}</a>
     {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>

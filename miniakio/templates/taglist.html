@@ -3,7 +3,7 @@
 {% block content %}
   <h3>所有标签</h3>
     <section class="group-tags">
-      <ul class="tag_box">
+      <ul class="tag-box">
       {% for tag in tags %}
         <li><a href="/tag/{{tag.name}}">{{tag.name}} <span>{{tag.num}}</span></a></li>
       {% end %}

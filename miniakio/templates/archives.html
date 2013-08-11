@@ -8,7 +8,7 @@
       <h4 class="downarch">{{year_posts[0]}} +</h4>
       {% set i=i+1 %}  
       {% if i <2 %}
-        <ul class="postsList">
+        <ul class="posts-list">
         {% for post in year_posts[1] %}
         <li class="archiveli">
           <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>

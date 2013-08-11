@@ -12,7 +12,7 @@
       <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- Le styles -->
-    <link href="{{static_url('style/effector.css')}}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
     <link href="{{static_url('style/solarized.css')}}" rel="stylesheet" type="text/css">
   </head>
 
@@ -42,9 +42,9 @@
       <footer id="footer" class="top-box clearfix">
         &copy; 2009-2012  | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
         <a href="https://github.com/SerhoLiu/serholiu.com" target="_blank">Tornado</a>.
-           &#160;&#160;<span class="label label-success">{% set request_time = 1000.0 * handler.request.request_time() %}
+           &#160;&#160;<span class="label">{% set request_time = 1000.0 * handler.request.request_time() %}
                        {{"%.2f ms" % request_time}}</span>
-        <a href="javascript:scroll(0,0)" class="to_top">TOP</a>
+        <a href="javascript:scroll(0,0)" class="to-top">TOP</a>
       </footer>
       {% block bottom %}
       {% end %}
