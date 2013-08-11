@@ -48,7 +48,8 @@ def archives_list(posts):
     years = list(set([get_time_year(post.published) for post in posts]))
     years.sort(reverse=True)
     for year in years:
-        year_posts = [post for post in posts if get_time_year(post.published) == year]
+        year_posts = [post for post in posts
+                      if get_time_year(post.published) == year]
         yield (year, year_posts)
 
 
@@ -92,3 +93,10 @@ def unsigner_code(signer):
         return id
     else:
         return None
+
+
+#Mobile Detect
+def is_mobile(user_agent):
+    detects = "iPod|iPhone|Android|Opera Mini|BlackBerry| \
+               webOS|UCWEB|Blazer|PSP|IEMobile"
+    return re.search(detects, user_agent)

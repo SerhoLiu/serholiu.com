@@ -9,7 +9,7 @@
 import traceback
 import tornado.web
 
-from .utils import ObjectDict, get_home_time, format_time
+from .utils import ObjectDict, get_home_time, format_time, is_mobile
 from .models import UserMixin
 from blogconfig import SITE_NAME
 
@@ -73,6 +73,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
+        self._context.is_mobile = is_mobile(self.request.headers['User-Agent'])
 
     def _prepare_filters(self):
         """

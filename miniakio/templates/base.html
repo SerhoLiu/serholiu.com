@@ -13,6 +13,9 @@
     <![endif]-->
     <!-- Le styles -->
     <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
+    {% if context.is_mobile %}
+    <link href="{{static_url('style/mobile.css')}}" rel="stylesheet" type="text/css" media="all">
+    {% end %}
     <link href="{{static_url('style/solarized.css')}}" rel="stylesheet" type="text/css">
   </head>
 
@@ -32,7 +35,9 @@
       </header>
        
       <div id="main" class="clearfix">
+        {% if not context.is_mobile %}
         <img src="{{static_url('home.jpg')}}" class="top-box bottom-box" alt="Home Picky" />
+        {% end %}
         <div class="content clearfix">
         {% block content %}{% end %}
         </div>
