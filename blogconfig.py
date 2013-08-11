@@ -20,7 +20,7 @@ PICKY_DIR = os.path.join(os.path.dirname(__file__), "picky")
 
 # 如果在生成环境下，可以关闭 Debug 选项，这样将缓存编译好的模板，加快模板渲染速度
 # 不过修改模板或代码后，需要重新启动博客，这样才有效果
-DEBUG = True
-#DEBUG = False
+#DEBUG = True
+DEBUG = False
 
 del os
