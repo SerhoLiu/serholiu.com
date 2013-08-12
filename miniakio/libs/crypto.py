@@ -12,8 +12,9 @@ trans_5c = "".join([chr(x ^ 0x5C) for x in xrange(256)])
 trans_36 = "".join([chr(x ^ 0x36) for x in xrange(256)])
 
 
-def get_random_string(length=12, allowed_chars='abcdefghijklmnopqrstuvwxyz \
-                                    ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
+def get_random_string(length=12,
+                      allowed_chars='abcdefghijklmnopqrstuvwxyz'
+                                    'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
     """
     Returns a random string of length characters from the set of a-z, A-Z, 0-9
     for use as a salt.
