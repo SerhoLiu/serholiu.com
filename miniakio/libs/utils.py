@@ -5,6 +5,7 @@ import hmac
 import base64
 import datetime
 import functools
+from HTMLParser import HTMLParser
 
 from hashlib import sha1
 from blogconfig import COOKIE_SECRET
@@ -100,3 +101,19 @@ def is_mobile(user_agent):
     detects = "iPod|iPhone|Android|Opera Mini|BlackBerry| \
                webOS|UCWEB|Blazer|PSP|IEMobile"
     return re.search(detects, user_agent)
+
+
+#去除文章description中的html标签
+class MLStripper(HTMLParser):
+    def __init__(self):
+        self.reset()
+        self.fed = []
+    def handle_data(self, d):
+        self.fed.append(d)
+    def get_data(self):
+        return ''.join(self.fed)
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()

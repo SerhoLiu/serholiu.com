@@ -9,7 +9,8 @@
 import traceback
 import tornado.web
 
-from .utils import ObjectDict, get_home_time, format_time, is_mobile
+from .utils import ObjectDict, get_home_time, format_time
+from .utils import is_mobile, strip_tags
 from .models import UserMixin
 from blogconfig import SITE_NAME
 
@@ -82,6 +83,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         self._filters = ObjectDict()
         self._filters.get_home_time = get_home_time
         self._filters.time = format_time
+        self._filters.strip_tags = strip_tags
 
     def abort(self, code):
         raise tornado.web.HTTPError(code)
