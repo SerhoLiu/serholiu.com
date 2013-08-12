@@ -3,15 +3,15 @@
   <head>
     <meta charset="utf-8">
     <title>Update Post--{{ context.sitename }}</title>
-    <link rel="stylesheet" href="{{ static_url("admin/admin.min.css") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ static_url("admin/style.css") }}" type="text/css"/>
   </head>
   <body>
     <div class="container">
       <div class="header box clearfix">
         <div class="hright">
-          <a href="/post/picky"><button class="btn success">New Picky</button></a>
+          <a href="/post/picky"><button class="btn">New Picky</button></a>
         </div>
-        <div class="hleft box">
+        <div class="hleft">
           <h1><a href="/">{{ context.sitename }}</a></h1>
         </div>
       </div>
@@ -20,13 +20,11 @@
           <div class="clearfix">
             <div class="input">
               <textarea name="markdown" class="span13" id="textarea" rows="30" required></textarea>
-              </span>
             </div>
           </div><!-- /clearfix -->
            <div class="clearfix">
             <div class="input">
               关闭留言:<input type="checkbox" name="comment" id="" value="0" />
-              </span>
             </div>
           </div><!-- /clearfix -->
           <div class="actions">
@@ -36,10 +34,9 @@
           {{ xsrf_form_html() }}
         </form>
       </div>
-    </div>
-
-    <div id="footer">
-      <p>&copy; {{ context.sitename }} 2009-2012</p>
-    </div>
+      <div id="footer">
+        <p>&copy; <a href="https://github.com/SerhoLiu/serholiu.com" target="_blank"> Miniakio</a> 2009-2013</p>
+      </div>
+    </div> 
   </body>  
 </html>
