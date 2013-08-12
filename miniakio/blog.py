@@ -165,15 +165,11 @@ class PickyHandler(BaseHandler):
         try:
             md = open(mdfile)
         except IOError:
-            print "Not"
             self.abort(404)
         markdown = md.read()
         md.close()
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
-        title = post["title"]
-        published = post["published"]
-        content = post["content"]
         self.render("picky.html", post=post, slug=slug)
 
 

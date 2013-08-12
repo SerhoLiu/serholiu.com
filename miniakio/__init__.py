@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 import os.path
-
 import tornado.web
 from .libs import sqlite3lib
-from blogconfig import COOKIE_SECRET, DATABASE, DEBUG
 from .blog import handlers as handler
+from blogconfig import COOKIE_SECRET, DATABASE, DEBUG
 
 
 class Application(tornado.web.Application):
