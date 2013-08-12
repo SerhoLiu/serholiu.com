@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>New Picky--{{ context.sitename }}</title>
-    <link rel="stylesheet" href="{{ static_url("admin/admin.min.css") }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ static_url("admin/style.css") }}" type="text/css"/>
   </head>
   <body>
     <div class="container">
@@ -11,7 +11,7 @@
         <div class="hright">
           <a href="/post/new"><button class="btn success">New Post</button></a>
         </div>
-        <div class="hleft box">
+        <div class="hleft">
           <h1><a href="/">{{ context.sitename }}</a></h1>
         </div>
       </div>
@@ -29,10 +29,9 @@
           {{ xsrf_form_html() }}
         </form>
       </div>
-    </div>
-
-    <div id="footer">
-      <p>&copy; {{ context.sitename }} 2009-2012</p>
-    </div>
+      <div id="footer">
+        <p>&copy; By <a href="https://github.com/SerhoLiu/serholiu.com">MiniAkio</a> 2009-2013</p>
+      </div>
+    </div>  
   </body>  
 </html>

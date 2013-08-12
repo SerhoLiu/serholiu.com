@@ -37,8 +37,8 @@ Picky 和 Post 相比，没有 tags 和 category (请参考 blog/picky)。
 2. [misaka][2]
 3. [pygments][3]
 
-* `cd blog`, `pip install -r requirements.txt`
-* 创建数据库: 使用 Sqlite3，请进入 tools 目录编辑 `create_db.py` 再执行 `python create_db.py`
+* 安装依赖环境: `pip install -r requirements.txt`
+* 创建数据库: 使用 Sqlite3，先编辑 `tools.py` 再执行 `python tools.py -o createdb`
 * Disqus 支持: 请修改 `blog/templates/post.html` 中的 `disqus_shortname` 为你的用户名
 * 部署建议: [在服务器上部署 Tornado 开发的网站][4]
 

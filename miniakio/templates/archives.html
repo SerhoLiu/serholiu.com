@@ -34,14 +34,15 @@
 {% end %}
 {% block bottom %}
 <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.6.2/jquery.min.js"></script>
- <script type="text/javascript">
-  jQuery(document).ready(function($){
-  $(document).ready(function(){
-  $(".archives ul.hidearch").hide();
-  $(".archives h4.downarch").click(function(){
-    $(this).next().slideToggle('fast');return false;
-  });
-  });
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $(document).ready(function() {
+        $(".archives ul.hidearch").hide();
+        $(".archives h4.downarch").click(function() {
+            $(this).next().slideToggle('fast');
+            return false;
+        });
+    });
 })
 </script>
 {% end %}
