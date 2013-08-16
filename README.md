@@ -1,5 +1,6 @@
 ## 一点介绍
 
+博客上关于 MiniAkio 的说明：http://serholiu.com/about-miniakio
 
 这个是我的博客源代码，基于 [Tornado][1]，并不是一款静态博客引擎，非常简单，只拥有博客最基本的功能。
 
@@ -39,7 +40,7 @@ Picky 和 Post 相比，没有 tags 和 category (请参考 blog/picky)。
 
 * 安装依赖环境: `pip install -r requirements.txt`
 * 创建数据库: 使用 Sqlite3，先编辑 `tools.py` 再执行 `python tools.py -o createdb`
-* Disqus 支持: 请修改 `blog/templates/post.html` 中的 `disqus_shortname` 为你的用户名
+* Disqus 支持: 请修改 `miniakio/templates/post.html` 中的 `disqus_shortname` 为你的用户名
 * 部署建议: [在服务器上部署 Tornado 开发的网站][4]
 
 ## License
