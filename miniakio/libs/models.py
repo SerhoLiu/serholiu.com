@@ -98,29 +98,14 @@ class PostMixin(object):
         return True
 
 
-    def get_next_prev_post(self, id):
-        next = id + 1
-        prev = id - 1
-        count = 0
-        while 1:
-            next_post = self.db.get("SELECT slug,title FROM posts WHERE id=?;", next)
-            if next_post: break
-            # 100 是一估计量，当你发布文章又删除，造成 id 不连续，
-            # 如果之间差值大过100,就无法得到正确结果
-            if count > 100:
-                next_post = None
-                break
-            next += 1
-            count += 1
+    def get_next_prev_post(self, published):
+        next_post = self.db.get(
+          "SELECT slug,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
+          published)
 
-        while 1:
-            if prev == 0:
-                prev_post = None
-                break
-            prev_post = self.db.get("SELECT slug,title FROM posts WHERE id=?;", prev)
-            if prev_post:
-                break
-            prev -= 1
+        prev_post = self.db.get(
+          "SELECT slug,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
+          published)
 
         return {"next": next_post, "prev": prev_post}
 
