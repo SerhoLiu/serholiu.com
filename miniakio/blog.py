@@ -25,7 +25,7 @@ class EntryHandler(BaseHandler, PostMixin):
         if not post:
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
-        next_prev = self.get_next_prev_post(post.id)
+        next_prev = self.get_next_prev_post(post.published)
         signer = signer_code(str(post.id))
         self.render("post.html", post=post, tags=tags, next_prev=next_prev,
                                     signer=signer)
