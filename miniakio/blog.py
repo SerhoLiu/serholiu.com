@@ -21,7 +21,7 @@ class EntryHandler(BaseHandler, PostMixin):
 
     @removeslash
     def get(self, slug):
-        post = self.get_post_by_slug(slug)
+        post = self.get_post_by_slug(slug.lower())
         if not post:
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
