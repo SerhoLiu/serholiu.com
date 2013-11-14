@@ -1,15 +1,15 @@
-## 一点介绍
+## A Little About
 
-博客上关于 MiniAkio 的说明：http://serholiu.com/about-miniakio
+The Miniakio 2 instructions on my blog(Chinese): http://serholiu.com/about-miniakio
 
-这个是我的博客源代码，基于 [Tornado][1]，并不是一款静态博客引擎，非常简单，只拥有博客最基本的功能。
+This is my blog source code, powered by [Tornado][1] web framework.It's not yet a static blog generator, but it's really simple and lightweight,it has a blog engine must features, such as Category, Tag, Post, Page, Feed,now it's use sqlite3 database.
 
-采用 Markdown 写作，只需要在本地任何编辑器编辑好文章后，进入后台，粘贴发布即可。其中 Picky 这种类
-型的文章，只会在访问时渲染 Markdown 文档。
+You need use Markdown markup language written post with your favorite editor, sign in blog and go to
+`/post/new` post it.Picky type post, just go to `/post/picky` upload your markdown file.
 
-## 写作格式
+## Post Example
 
-Post (请参考 post_example.md):
+Post (see `example/post_example.md`):
 
     # Title
 
@@ -28,20 +28,20 @@ Post (请参考 post_example.md):
     print math.sqrt(9)
     ```
 
-Picky 和 Post 相比，没有 tags 和 category (请参考 blog/picky)。
+Picky compare with Post,no tags, category and slug(see `picky` folder).
 
-## 使用方法
+## Installation and Basic Usage 
 
-依赖环境:
+Requirements:
 >
 1. [Tornado][1]
 2. [misaka][2]
 3. [pygments][3]
 
-* 安装依赖环境: `pip install -r requirements.txt`
-* 创建数据库: 使用 Sqlite3，先编辑 `tools.py` 再执行 `python tools.py -o createdb`
-* Disqus 支持: 请修改 `miniakio/templates/post.html` 中的 `disqus_shortname` 为你的用户名
-* 部署建议: [在服务器上部署 Tornado 开发的网站][4]
+* Install required package: `pip install -r requirements.txt`
+* Create Sqlite3 database: edit `tools.py` and `python tools.py -o createdb`
+* Disqus support: change `miniakio/templates/post.html`  `disqus_shortname` into your username.
+* Production suggest: See [My blog][4](Chinese)
 
 ## License
 
