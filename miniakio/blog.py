@@ -3,11 +3,7 @@
 
 import re
 from tornado.web import removeslash
-try:
-    from tornado.log import access_log
-except ImportError:
-    from .libs.log import access_log
-
+from tornado.log import access_log
 from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
@@ -81,9 +77,8 @@ class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
     def get(self):
         posts = self.get_count_posts()
         count = len(posts)
-        tags = self.get_all_tag_count(30)
         self.render('archives.html', posts=posts, count=count,
-            archives_list=archives_list, tags=tags)
+            archives_list=archives_list)
 
 
 class TagListHandler(BaseHandler, TagMixin):
