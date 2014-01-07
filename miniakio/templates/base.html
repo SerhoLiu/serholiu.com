@@ -21,9 +21,26 @@
   </head>
 
   <body>
+    <img class='bg-image' src="{{static_url('bg.jpg')}}" />
+    {% if not context.is_mobile %}
+    <header id="header" class="clearfix header-fixed-top">
+      <div class="nav">
+        <h1><a href="/">{{escape(context.sitename)}}</a></h1>
+        <ul>
+          <li><a href="/picky/about-me">About</a></li>
+          <li><a href="/picky/all">Picky</a></li>
+          <li><a href="/picky/links">Link</a></li>
+          <li><a href="/blog/all">Archive</a></li>
+          <li><a href="/blog/tags">Tags</a></li>
+          <li><a href="/search/all">Search</a></li>
+        </ul>
+      </div>
+    </header>
+    {% end %}
 
     <div id="container">
-      <header id="header" class="bottom-box clearfix">
+      {% if context.is_mobile %}
+      <header id="mobile-header" class="clearfix">
         <h1><a href="/">{{escape(context.sitename)}}</a></h1>
         <ul>
           <li><a href="/picky/about-me">About</a></li>
@@ -34,11 +51,8 @@
           <li><a href="/search/all">Search</a></li>
         </ul>
       </header>
-       
+      {% end %}
       <div id="main" class="clearfix">
-        {% if not context.is_mobile %}
-        <img src="{{static_url('home.jpg')}}" class="top-box bottom-box" alt="Home Picky" />
-        {% end %}
         <div class="content clearfix">
         {% block content %}{% end %}
         </div>
@@ -51,6 +65,7 @@
         <a href="javascript:scroll(0,0)" class="to-top">TOP</a>
       </footer>
       {% block bottom %}
+      
       {% end %}
     </div>
   </body>

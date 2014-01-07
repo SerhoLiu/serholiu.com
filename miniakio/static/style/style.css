@@ -274,11 +274,18 @@ body {
   font-family: "Quantico", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "微软雅黑", sans-serif !important;
   color: #555;
 }
+.bg-image {
+  min-width: 100%;
+  min-height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -2;
+}
 .highlight-pre {
   overflow: auto;
 }
 .highlighttable {
-  padding: 0;
   width: 100%;
 }
 .highlighttable tr td {
@@ -305,36 +312,44 @@ body {
   -moz-border-radius: 0 4px 4px 0;
   -webkit-border-radius: 0 4px 4px 0;
 }
-#container {
-  margin: 0 auto;
-  width: 680px;
-}
-#container h1 {
-  font-size: 30px;
+.header-fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1030;
+  margin-bottom: 0;
 }
 #header {
-  background: #ffffff;
-  padding: 10px 20px 0;
+  width: 100%;
+  background: #fff;
   -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
-#header h1 a {
+#header .nav {
+  margin: 0 auto;
+  width: 720px;
+}
+#header h1 {
+  font-size: 26px;
   float: left;
+  padding-top: 10px;
+}
+#header h1 a {
   font-family: 'Quantico', sans-serif;
   font-weight: 700;
   color: #333;
 }
 #header ul {
   float: right;
-  margin-top: 5px;
-  margin-bottom: 0;
+  padding-top: 5px;
   font-size: 12px;
   list-style: none;
 }
 #header ul li {
   float: left;
-  margin: 5px 0 5px 10px;
+  margin: 5px 0 0 10px;
   line-height: 15px;
 }
 #header ul li a {
@@ -349,8 +364,10 @@ body {
   background: #b94a48;
   color: #fff;
 }
-#header ul li:last-child a {
-  margin-right: -10px;
+#container {
+  margin: 0 auto;
+  margin-top: 60px;
+  width: 680px;
 }
 #main {
   padding: 20px 0;
@@ -359,7 +376,6 @@ body {
 }
 .content {
   background-color: #fff;
-  margin: 15px 0px;
   padding: 0 20px 10px;
   border-radius: 5px;
   -moz-border-radius: 5px;

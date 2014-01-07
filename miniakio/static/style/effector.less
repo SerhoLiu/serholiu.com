@@ -220,6 +220,16 @@ body{
     color: #555;
 }
 
+.bg-image {
+    min-width: 100%;
+    min-height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -2;
+    
+}
+
 .highlight-pre {
     overflow: auto;
 }
@@ -252,37 +262,46 @@ body{
     }
 }
 
-#container {
-    margin: 0 auto;
-    width: 680px;
-
-    h1 {
-        font-size: 30px;
-    }
+.header-fixed-top {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 1030;
+    margin-bottom: 0;
 }
 
 #header {
-    background: #ffffff;
-    padding: 10px 20px 0;
+    width:100%;
+    background: #fff;
     .box-shadow;
+    
+    .nav {
+        margin: 0 auto;
+        width: 720px;  
+    }
 
-    h1 a {
+    h1  {
+        font-size: 26px;
         float: left;
-        font-family: 'Quantico',sans-serif;
-        font-weight: 700;
-        color: #333;
+        padding-top: 10px;
+        
+        a {
+            font-family: 'Quantico',sans-serif;
+            font-weight: 700;
+            color: #333;
+        }
     }
 
     ul {
         float: right;
-        margin-top: 5px;
-        margin-bottom: 0;
+        padding-top: 5px;
         font-size: 12px;
         list-style: none;
 
         li {
             float: left;
-            margin: 5px 0 5px 10px;
+            margin: 5px 0 0 10px;
             line-height: 15px;
 
             a {
@@ -295,14 +314,15 @@ body{
                     color: #fff;
                 }
             }
-
-            &:last-child a{
-                margin-right: -10px;
-            }
         }
     }
 }
 
+#container {
+    margin: 0 auto;
+    margin-top: 60px;
+    width: 680px;
+}
 
 #main {
     padding: 20px 0;
@@ -312,7 +332,6 @@ body{
 
 .content {
     background-color:  #fff;
-    margin:  15px 0px;
     padding:0 20px 10px;
     .border-radius;
     .box-shadow;
@@ -426,7 +445,6 @@ body{
 }
 
 //untils Style
-
 .top-box {
     .top-border-radius;
 }
