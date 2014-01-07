@@ -14,19 +14,21 @@ from tornado.escape import xhtml_escape
 
 
 class AkioRender(m.HtmlRenderer, m.SmartyPants):
-    
+
     def block_code(self, text, lang):
         if lang:
             lexer = get_lexer_by_name(lang, stripall=True)
         else:
-            return '\n<pre><code>%s</code></pre>\n' % xhtml_escape(text.strip())
+            return '<pre><code>%s</code></pre>' % xhtml_escape(text.strip())
 
         formatter = HtmlFormatter(
             noclasses=False,
             linenos=True,
         )
-        return highlight(text, lexer, formatter)
-        
+
+        return '<div class="highlight-pre">%s</div>' % \
+                        highlight(text, lexer, formatter)
+
     def autolink(self, link, is_email):
         if is_email:
             mailto = "".join(['&#%d;' % ord(letter) for letter in "mailto:"])
@@ -45,10 +47,11 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
             match = re.match(pattern, link)
         if match:
             value = (
-                r'<div><embed src="http://player.youku.com/player.php/sid/%(id)s/v.swf" '
+                r'<div><embed src='
+                r'"http://player.youku.com/player.php/sid/%(id)s/v.swf" '
                 r'quality="high" width="480" height="400" '
                 r'type="application/x-shockwave-flash" /></div>'
-                    ) % {'id': match.group(1)}
+            ) % {'id': match.group(1)}
             return value
 
         return '<a href="%s">%s</a>' % (link, title)
@@ -66,7 +69,7 @@ def markdown(text):
 
 class RenderMarkdownPost(object):
 
-    def __init__(self, markdown = None):
+    def __init__(self, markdown=None):
         self.markdown = markdown
 
     def get_render_post(self):
@@ -88,7 +91,6 @@ class RenderMarkdownPost(object):
         meta.update({"content": content})
         return meta
 
-
     def __get_post_meta(self, header):
         header = markdown(header)
         title = re.findall(r'<h1>(.*)</h1>', header)[0]
@@ -102,4 +104,3 @@ class RenderMarkdownPost(object):
             meta[key] = value
 
         return meta
-
