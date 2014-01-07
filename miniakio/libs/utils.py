@@ -5,7 +5,7 @@ import hmac
 import base64
 import datetime
 import functools
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 
 from hashlib import sha1
 from blogconfig import COOKIE_SECRET
@@ -74,14 +74,14 @@ def base64_encode(string):
     base64 encodes a single string. The resulting string is safe for
     putting into URLs.
     """
-    return base64.urlsafe_b64encode(string).strip('=')
+    return base64.urlsafe_b64encode(string).strip(b'=')
 
 
 def signer_code(id):
-    mac = hmac.new(COOKIE_SECRET, digestmod=sha1)
-    mac.update(id)
+    mac = hmac.new(COOKIE_SECRET.encode("UTF-8"), digestmod=sha1)
+    mac.update(id.encode("UTF-8"))
     s = mac.digest()
-    signer = id + '.' + base64_encode(s)
+    signer = id + '.' + base64_encode(s).decode("UTF-8")
     return signer
 
 
@@ -105,13 +105,18 @@ def is_mobile(user_agent):
 
 #去除文章description中的html标签
 class MLStripper(HTMLParser):
+    
     def __init__(self):
+        super().__init__()
         self.reset()
         self.fed = []
+    
     def handle_data(self, d):
         self.fed.append(d)
+    
     def get_data(self):
         return ''.join(self.fed)
+
 
 def strip_tags(html):
     s = MLStripper()
