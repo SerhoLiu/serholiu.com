@@ -25,7 +25,7 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
             noclasses=False,
             linenos=True,
         )
-        return highlight(text, lexer, formatter)
+        return '<div class="highlight-pre">%s</div>' % highlight(text, lexer, formatter)
         
     def autolink(self, link, is_email):
         if is_email:

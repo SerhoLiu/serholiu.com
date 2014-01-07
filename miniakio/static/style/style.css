@@ -240,9 +240,7 @@ pre {
   border-radius: 4px;
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
-  white-space: pre;
-  white-space: pre-wrap;
-  word-break: break-all;
+  overflow: auto;
 }
 address {
   display: block;
@@ -276,11 +274,16 @@ body {
   font-family: "Quantico", "Luxi Sans", "DejaVu Sans", Tahoma, "Hiragino Sans GB", STHeiti, "微软雅黑", sans-serif !important;
   color: #555;
 }
+.highlight-pre {
+  overflow: auto;
+}
 .highlighttable {
+  padding: 0;
   width: 100%;
 }
 .highlighttable tr td {
   padding: 0;
+  overflow: auto;
 }
 .highlighttable .linenos {
   width: 40px;

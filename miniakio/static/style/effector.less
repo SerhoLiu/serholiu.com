@@ -177,9 +177,8 @@ pre {
     background-color: #f7f7f9;
     border: 1px solid #e1e1e8;
     .border-radius(4px);
-    white-space: pre;
-    white-space: pre-wrap;
-    word-break: break-all;
+    
+    overflow: auto;
 }
 
 address {
@@ -221,30 +220,35 @@ body{
     color: #555;
 }
 
+.highlight-pre {
+    overflow: auto;
+}
+
 .highlighttable {
     width: 100%;
     tr td {
         padding: 0;
+        overflow: auto;
     }
 
     .linenos {
-      width: 40px;
-      margin: 0;
-      padding: 0;
+        width: 40px;
+        margin: 0;
+        padding: 0;
       
-      border-right: 0;
+        border-right: 0;
 
-      pre {
-          .border-radius(4px 0 0 4px);
-          border-right: none;
-          color: #bebec5;
-          text-shadow: 0 1px 0 #fff;
-          text-align: right;
+        pre {
+            .border-radius(4px 0 0 4px);
+            border-right: none;
+            color: #bebec5;
+            text-shadow: 0 1px 0 #fff;
+            text-align: right;
         }
     }
 
     .highlight pre {
-      .border-radius(0 4px 4px 0);
+        .border-radius(0 4px 4px 0);
     }
 }
 
