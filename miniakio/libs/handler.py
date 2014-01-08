@@ -38,7 +38,6 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         token = self.get_secure_cookie("token")
         if not token:
             return None
-        print(token)
         salt, user_id = token.split(b"/")
         if not user_id:
             return None

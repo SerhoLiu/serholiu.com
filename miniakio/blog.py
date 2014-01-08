@@ -189,12 +189,15 @@ class NewPickyHandler(BaseHandler):
     @authenticated
     def post(self):
         files = self.request.files['picky'][0]
-        if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
-            f = open(PICKY_DIR + '/' + files['filename'], 'w')
+        if files['body'] and \
+            (files['filename'].split(".").pop().lower() == 'md'):
+            
+            f = open(PICKY_DIR + '/' + files['filename'], 'wb')
             f.write(files['body'])
             f.close()
             slug = files['filename'].split('.')[0]
             self.redirect("/picky/%s" % slug)
+            return
         self.redirect('/post/picky')
 
 
@@ -228,7 +231,6 @@ class SigninHandler(BaseHandler):
         encryped_pass = user.password
         if PasswordCrypto.authenticate(password, encryped_pass):
             token = user.salt + "/" + str(user.id)
-            print(token)
             self.set_secure_cookie("token", token)
             self.redirect(self.get_argument("next", "/post/new"))
             return
@@ -244,6 +246,7 @@ class SignoutHandler(BaseHandler):
         user = self.current_user
         if not user:
             self.redirect("/")
+            return
         salt = get_random_string()
         self.update_user_salt(user.id, salt)
         self.clear_cookie("token")

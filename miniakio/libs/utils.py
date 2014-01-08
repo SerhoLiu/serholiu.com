@@ -78,19 +78,19 @@ def base64_encode(string):
 
 
 def signer_code(id):
-    mac = hmac.new(COOKIE_SECRET.encode("UTF-8"), digestmod=sha1)
-    mac.update(id.encode("UTF-8"))
+    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=sha1)
+    mac.update(id.encode())
     s = mac.digest()
-    signer = id + '.' + base64_encode(s).decode("UTF-8")
+    signer = id + '.' + base64_encode(s).decode()
     return signer
 
 
 def unsigner_code(signer):
     id, base64_s = signer.split('.')
-    mac = hmac.new(COOKIE_SECRET, digestmod=sha1)
-    mac.update(id)
+    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=sha1)
+    mac.update(id.encode())
     s = mac.digest()
-    if base64_s == base64_encode(s):
+    if base64_s == base64_encode(s).decode():
         return id
     else:
         return None
