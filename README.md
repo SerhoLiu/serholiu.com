@@ -38,6 +38,8 @@ Requirements:
 2. [misaka][2]
 3. [pygments][3]
 
+* Get this: `git clone https://github.com/SerhoLiu/serholiu.com.git`
+* If you use Python3, you should `git checkout python3`
 * Install required package: `pip install -r requirements.txt`
 * Create Sqlite3 database: edit `tools.py` and `python tools.py -o createdb`
 * Disqus support: change `miniakio/templates/post.html`  `disqus_shortname` into your username.
