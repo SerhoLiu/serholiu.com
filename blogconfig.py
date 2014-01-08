@@ -12,7 +12,7 @@ COOKIE_SECRET = "11oETzKXQAGaYdkL5gEmGeJJ-(g7EQnp2XdTP1o/Vo="
 DATABASE = os.path.join(os.path.dirname(__file__), "newblog.db")
 
 # 你的博客名
-SITE_NAME = u"I'm SErHo"
+SITE_NAME = "I'm SErHo"
 
 # Picky 目录路径，默认和配置文件同目录
 PICKY_DIR = os.path.join(os.path.dirname(__file__), "picky")
