@@ -364,6 +364,57 @@ body {
   background: #b94a48;
   color: #fff;
 }
+#home-container {
+  margin: 0 auto;
+  width: 920px;
+}
+@media (max-width: 1024px) {
+  #home-container {
+    width: 720px;
+  }
+}
+.curtain {
+  float: right;
+  width: 300px;
+  padding: 60px 20px 10px;
+  background: #333444;
+  background: rgba(51, 52, 68, 0.4);
+  text-align: center;
+  color: #fff;
+}
+.curtain .avater {
+  width: 120px;
+  height: 120px;
+  margin: 20px auto;
+  border: 5px solid #fff;
+  border-radius: 100px;
+  -moz-border-radius: 100px;
+  -webkit-border-radius: 100px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.curtain h2 {
+  line-height: 30px;
+}
+.curtain ul {
+  list-style: none;
+  margin-left: 5px;
+}
+.curtain ul a {
+  color: #fff;
+}
+.curtain ul span {
+  color: #ccc;
+}
+.curtain .footer {
+  margin-top: 20px;
+  padding-top: 10px;
+  border-top: 1px solid #ccc;
+}
 #container {
   margin: 0 auto;
   margin-top: 60px;
