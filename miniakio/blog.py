@@ -68,8 +68,12 @@ class SearchHandler(BaseHandler):
 class HomeHandler(BaseHandler, PostMixin):
 
     def get(self):
-        posts = self.get_count_posts(5)
-        self.render("index.html", posts=posts)
+        if self._context.is_mobile:
+            posts = self.get_count_posts(5)
+            self.render("index.html", posts=posts)
+        else:
+            posts = self.get_count_posts(8)
+            self.render("home.html", posts=posts)
             
 
 class ArchiveHandler(BaseHandler, PostMixin, TagMixin):

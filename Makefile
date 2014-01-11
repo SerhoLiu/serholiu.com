@@ -12,5 +12,6 @@ run:
 	python3 run.py
 
 clean:
-	rm -f $(LESSPATH)style.min.css
-	rm -f $(LESSPATH)style.css
+	-rm -f $(LESSPATH)style.min.css
+	-rm -f $(LESSPATH)style.css
+	-find . -name '*.py[co]' -exec rm -f {} ';'

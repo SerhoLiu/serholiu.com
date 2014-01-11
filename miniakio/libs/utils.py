@@ -42,6 +42,13 @@ def format_time(time):
     return d
 
 
+def get_show_time(time):
+    t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
+    t.append(0)
+    d = datetime.datetime(*t)
+    return d.strftime("%d %b")
+
+
 def archives_list(posts):
     """
     生成文章存档，按年分类
