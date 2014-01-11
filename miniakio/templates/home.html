@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{escape(context.sitename)}}</title>
+    <meta name="author" content="Serho Liu">
+    <meta name="description" content="SErHo's Blog,Please Call me Serho Liu." />
+    <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
+    <link href="/blog/feed" rel="alternate" type="application/atom+xml">
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- Le styles -->
+    <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{static_url('style/solarized.css')}}" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    <img class='bg-image' src="{{static_url('bg.jpg')}}" />
+    <header id="header" class="clearfix header-fixed-top">
+      <div class="nav">
+        <h1><a href="/">{{escape(context.sitename)}}</a></h1>
+        <ul>
+          <li><a href="/picky/about-me">About</a></li>
+          <li><a href="/picky/all">Picky</a></li>
+          <li><a href="/picky/links">Link</a></li>
+          <li><a href="/blog/all">Archive</a></li>
+          <li><a href="/blog/tags">Tags</a></li>
+          <li><a href="/search/all">Search</a></li>
+        </ul>
+      </div>
+    </header>
+
+    <div id="home-container">
+      <div class="curtain">
+        <div class="avater">
+          <a href="/picky/about-me">
+            <img src="{{static_url('avater.jpg')}}"/>
+          </a>
+        </div>
+        <h2>Recent Post</h2>
+        <ul class="home-list">
+          {% for post in posts %}
+          <li>
+            <span>{{get_show_time(post.published)}}</span> &raquo; 
+            <a href="/{{post.slug}}">{{post.title}}</a>
+          </li>
+          {% end %}
+        </ul>
+        <div class="footer">
+          &copy; 2009-2014  | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
+        <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

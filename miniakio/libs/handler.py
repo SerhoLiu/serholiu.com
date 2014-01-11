@@ -9,7 +9,8 @@
 import traceback
 import tornado.web
 
-from .utils import ObjectDict, get_home_time, format_time
+from .utils import ObjectDict
+from .utils import get_home_time, format_time, get_show_time
 from .utils import is_mobile, strip_tags
 from .models import UserMixin
 from blogconfig import SITE_NAME
@@ -20,7 +21,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
     @property
     def db(self):
         return self.application.db
-            
+
     def prepare(self):
         self._prepare_context()
         self._prepare_filters()
@@ -58,7 +59,8 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             return self.render_string("e404.html")
         else:
             try:
-                exception = "%s\n\n%s" % (kwargs["exception"], traceback.format_exc())
+                exception = "%s\n\n%s" % (kwargs["exception"],
+                    traceback.format_exc())
                 if self.settings.get("debug"):
                     self.set_header('Content-Type', 'text/plain')
                     for line in exception:
@@ -66,8 +68,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
                 else:
                     self.write("oOps...! I made ​​a mistake... ")
             except Exception:
-                return super(BaseHandler, self).get_error_html(status_code, **kwargs)
-        
+                return super(BaseHandler, self).get_error_html(status_code,
+                    **kwargs)
+
     def _prepare_context(self):
         """
         将自定义变量传入模板，作为全局变量，引用时使用 `context.var` 的形式
@@ -82,6 +85,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._filters = ObjectDict()
         self._filters.get_home_time = get_home_time
+        self._filters.get_show_time = get_show_time
         self._filters.time = format_time
         self._filters.strip_tags = strip_tags
 
