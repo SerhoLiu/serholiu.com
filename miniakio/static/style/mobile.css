@@ -25,7 +25,7 @@
 }
 
 #mobile-header ul {
-    margin-top: 5px;
+    margin-top: 10px;
     margin-bottom: 5px;
     font-size: 12px;
     list-style: none;
@@ -43,14 +43,6 @@
     padding: 2px;
     display: inline;
     font-size: 14px;
-    border-radius: 4px;
-    -moz-border-radius: 4px;
-    -webkit-border-radius: 4px;
-}
-
-#mobile-header ul li a:hover {
-    background: #b94a48;
-    color: #fff;
 }
 
 .content img {
