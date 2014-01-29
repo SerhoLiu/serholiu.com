@@ -175,7 +175,7 @@ class PickyDownHandler(BaseHandler):
     def get(self, slug):
         mdfile = PICKY_DIR + "/" + str(slug)
         try:
-            md = open(mdfile)
+            md = open(mdfile, "r", encoding="utf-8")
         except IOError:
             self.abort(404)
         markdown = md.read()
