@@ -343,26 +343,23 @@ body {
 }
 #header ul {
   float: right;
-  padding-top: 5px;
+  margin-bottom: 0px;
   font-size: 12px;
   list-style: none;
 }
 #header ul li {
   float: left;
-  margin: 5px 0 0 10px;
-  line-height: 15px;
 }
 #header ul li a {
+  margin: 5px 0 0 10px;
+  line-height: 15px;
   display: block;
-  padding: 5px 10px;
+  padding: 10px 10px;
   font-size: 14px;
-  border-radius: 4px;
-  -moz-border-radius: 4px;
-  -webkit-border-radius: 4px;
+  border-bottom: 3px solid #fff;
 }
 #header ul li a:hover {
-  background: #b94a48;
-  color: #fff;
+  border-bottom: 3px solid #b94a48;
 }
 #home-container {
   margin: 0 auto;
