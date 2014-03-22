@@ -192,11 +192,14 @@ class NewPickyHandler(BaseHandler):
 
     @authenticated
     def post(self):
-        files = self.request.files['picky'][0]
-        if files['body'] and \
-            (files['filename'].split(".").pop().lower() == 'md'):
-            
-            f = open(PICKY_DIR + '/' + files['filename'], 'wb')
+        try:
+            files = self.request.files['picky'][0]
+        except KeyError:
+            self.redirect('/post/picky')
+            return
+        
+        if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
+            f = open(PICKY_DIR + '/' + files['filename'], 'w')
             f.write(files['body'])
             f.close()
             slug = files['filename'].split('.')[0]

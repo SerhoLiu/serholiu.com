@@ -20,23 +20,26 @@
         <form action="/auth/signin" method="post" class="compose">
           <div class="clearfix">
             <div class="input">
-              <input name="email" type="text" class="span4" />
+              <input name="email" type="text" class="span4" placeholder="Email"/>
             </div>
           </div><!-- /clearfix -->
           <div class="clearfix">
             <div class="input">
-              <input name="password" type="password" class="span4"  />
+              <input name="password" type="password" class="span4" placeholder="Password" />
               
             </div>
-          </div><!-- /clearfix --></div>
-       <div class="actions">
-            <div class="signin"><input type="submit" class="btn primary" value="登录"></div>
-          </div>
-      {{ xsrf_form_html() }}
+          </div><!-- /clearfix -->
+          <div class="clearfix">
+            <div class="input">
+              <button type="submit" class="btn primary span5">LOG IN</button> 
+            </div>
+          </div><!-- /clearfix -->
+        </div>
+        {{ xsrf_form_html() }}
         </form>
       </div>
       <div id="footer">
-        <p>&copy; By <a href="https://github.com/SerhoLiu/serholiu.com">MiniAkio</a> 2009-2013</p>
+        <p>&copy; By <a href="https://github.com/SerhoLiu/serholiu.com">MiniAkio</a> 2009-2014</p>
       </div>
     </div>
   </body>  

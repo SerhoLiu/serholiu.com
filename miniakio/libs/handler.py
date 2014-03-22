@@ -21,7 +21,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
     @property
     def db(self):
         return self.application.db
-            
+
     def prepare(self):
         self._prepare_context()
         self._prepare_filters()
@@ -58,7 +58,8 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             return self.render_string("e404.html")
         else:
             try:
-                exception = "%s\n\n%s" % (kwargs["exception"], traceback.format_exc())
+                exception = "%s\n\n%s" % (kwargs["exception"],
+                    traceback.format_exc())
                 if self.settings.get("debug"):
                     self.set_header('Content-Type', 'text/plain')
                     for line in exception:
@@ -66,8 +67,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
                 else:
                     self.write("oOps...! I made ​​a mistake... ")
             except Exception:
-                return super(BaseHandler, self).get_error_html(status_code, **kwargs)
-        
+                return super(BaseHandler, self).get_error_html(status_code,
+                    **kwargs)
+
     def _prepare_context(self):
         """
         将自定义变量传入模板，作为全局变量，引用时使用 `context.var` 的形式
