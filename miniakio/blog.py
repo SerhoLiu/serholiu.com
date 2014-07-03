@@ -199,7 +199,7 @@ class NewPickyHandler(BaseHandler):
             return
         
         if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
-            f = open(PICKY_DIR + '/' + files['filename'], 'w')
+            f = open(PICKY_DIR + '/' + files['filename'], 'wb')
             f.write(files['body'])
             f.close()
             slug = files['filename'].split('.')[0]

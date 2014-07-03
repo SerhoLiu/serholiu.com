@@ -9,7 +9,7 @@ mincss:
 	lessc --yui-compress $(LESSPATH)effector.less > $(LESSPATH)style.min.css
 
 run:
-	python3 run.py
+	python3.4 run.py
 
 clean:
 	-rm -f $(LESSPATH)style.min.css
