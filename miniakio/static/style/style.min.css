@@ -440,6 +440,13 @@ body {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
+.content article hr {
+  display: block;
+  width: 18%;
+  margin: 31px auto;
+  border: 0 none;
+  border-top: 3px dotted #dededc;
+}
 .date-right {
   float: right;
 }
