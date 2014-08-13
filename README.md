@@ -4,7 +4,7 @@ The Miniakio 2 instructions on my blog(Chinese): http://serholiu.com/about-minia
 
 This is my blog source code, powered by [Tornado][1] web framework.It's not yet a static blog generator, but it's really simple and lightweight,it has a blog engine must features, such as Category, Tag, Post, Page, Feed,now it's use sqlite3 database.
 
-You need use Markdown markup language written post with your favorite editor, sign in blog 'hostname:port/auth/signin' (username and password in tools.py) and go to
+You need use Markdown markup language written post with your favorite editor, sign in blog `hostname:port/auth/signin` (username and password in tools.py) and go to
 `/post/new` post it.Picky type post, just go to `/post/picky` upload your markdown file.
 
 ## Post Example
