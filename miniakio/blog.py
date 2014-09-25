@@ -35,11 +35,11 @@ class TagsHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="tag", name=name,
+        self.render("category.html", posts=posts, type="tag", name=name,
             count=count)
 
-
 class CategoryHandler(BaseHandler, PostMixin):
+
 
     @removeslash
     def get(self, category):
@@ -47,9 +47,25 @@ class CategoryHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="category",
+        self.render("category.html", posts=posts, type="category",
                                     name=category, count=count)
 
+class CategoriesHandler(BaseHandler, PostMixin):
+
+    @removeslash
+    def get(self):
+        dictCatePosts = {}
+        postsCount = 0
+        categoryList = self.get_category_list()
+        if not categoryList:
+            self.abort(404)
+
+        for categoryRow in categoryList:
+            postsCurrCategory = self.get_posts_by_category(categoryRow.category)
+            dictCatePosts[categoryRow.category] = postsCurrCategory
+            postsCount += len(postsCurrCategory)
+
+        self.render("categories.html", dictCatePosts=dictCatePosts, count=postsCount)
 
 class FeedHandler(BaseHandler, PostMixin):
 
@@ -76,7 +92,7 @@ class HomeHandler(BaseHandler, PostMixin):
             self.render("home.html", posts=posts)
             
 
-class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
+class ArchivesHandler(BaseHandler, PostMixin, TagMixin):
 
     def get(self):
         posts = self.get_count_posts()
@@ -270,7 +286,7 @@ handlers = [('/', HomeHandler),
             ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
             ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
             ('/tag/([^/]+)/*', TagsHandler),
-            ('/category/([^/]+)/*', CategoryHandler),
+            ('/blog/category/([^/]+)/*', CategoryHandler),
             ('/post/new', NewPostHandler),
             ('/post/delete/([0-9]+)', DeletePostHandler),
             ('/post/update/([0-9]+)', UpdatePostHandler),
@@ -279,7 +295,8 @@ handlers = [('/', HomeHandler),
             ('/auth/signout', SignoutHandler),
             ('/blog/feed', FeedHandler),
             ('/search/all', SearchHandler),
-            ('/blog/all', ArchiveHandler),
+            ('/blog/archives', ArchivesHandler),
             ('/blog/tags', TagListHandler),
+            ('/blog/categories', CategoriesHandler),
             (r'.*', PageNotFound),
 ]

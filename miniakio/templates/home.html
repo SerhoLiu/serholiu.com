@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <title>{{escape(context.sitename)}}</title>
     <meta name="author" content="Serho Liu">
-    <meta name="description" content="SErHo's Blog,Please Call me Serho Liu." />
+    <meta name="description" content="cheyo's Blog." />
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
     <link href="/blog/feed" rel="alternate" type="application/atom+xml">
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
@@ -22,12 +22,12 @@
       <div class="nav">
         <h1><a href="/">{{escape(context.sitename)}}</a></h1>
         <ul>
-          <li><a href="/picky/about-me">About</a></li>
+          <li><a href="/blog/categories">Categories</a></li>
+          <li><a href="/blog/tags">Tags</a></li>
+          <li><a href="/blog/archives">Archives</a></li>
           <li><a href="/picky/all">Picky</a></li>
           <li><a href="/picky/links">Link</a></li>
-          <li><a href="/blog/all">Archive</a></li>
-          <li><a href="/blog/tags">Tags</a></li>
-          <li><a href="/search/all">Search</a></li>
+          <li><a href="/picky/about-me">About</a></li>
         </ul>
       </div>
     </header>
@@ -48,11 +48,13 @@
           </li>
           {% end %}
         </ul>
-        <div class="footer">
-          &copy; 2009-2014  | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
-        <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
+        &copy; 2009-2014 | cheyo's Blog | Powered by 
+        <a href="https://github.com/cheyo/LemonBlog">LemonBlog</a> forked from 
+        <a href="https://github.com/SerhoLiu/serholiu.com">MiniAkio</a>.
+        <a href="javascript:scroll(0,0)" class="to-top">TOP</a>
         </div>
       </div>
     </div>
+    <script language="text/javascript" type="hidden">var cnzz_protocol = (("https:" == document.location.protocol) ? " https://" : " http://");document.write(unescape("%3Cspan id='cnzz_stat_icon_1253318237'%3E%3C/span%3E%3Cscript src='" + cnzz_protocol + "s4.cnzz.com/stat.php%3Fid%3D1253318237%26show%3Dpic1' type='text/javascript'%3E%3C/script%3E"));</script>
   </body>
 </html>

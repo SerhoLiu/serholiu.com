@@ -11,8 +11,8 @@ from miniakio.libs import crypto
 
 # 编辑下面的信息
 
-USERNAME = "SErHo"                  # 用户名
-EMAIL = "serholiu@gmail.com"        # 邮箱，登陆的时候使用
+USERNAME = "cheyo"                  # 用户名
+EMAIL = "icheyo@gmail.com"        # 邮箱，登陆的时候使用
 PASSWORD = "123456"                 # 登陆密码
 DBFILE = "example/newblog.db"               # 数据库名称，请保持和 blog/config.py 中设置的名称相同
 

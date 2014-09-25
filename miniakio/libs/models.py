@@ -40,6 +40,13 @@ class PostMixin(object):
         posts = self.db.query(sql, tag)
         return posts
 
+    def get_category_list(self):
+        sql = """SELECT DISTINCT category FROM posts 
+                 ORDER BY published desc;
+              """
+        categoryList = self.db.query(sql)
+        return categoryList
+
     def get_posts_by_category(self, category):
         sql = """SELECT slug, title, published FROM posts
                  WHERE category = ?
