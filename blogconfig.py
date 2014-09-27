@@ -5,7 +5,7 @@ import os
 
 # 用于 cookie 加密，请换一个随机的，足够长，足够复杂的字符串
 # !!! 不要使用现在这个
-COOKIE_SECRET = "5c5262321fd61a435d5f5077bc341ec1"
+COOKIE_SECRET = "abcabbbbbbbbbfdfadsafdsfasafdasfs"
 
 # 数据库文件路径，默认是和配置文件同目录
 # eg. DATABASE = "/home/myblog/mydb.db"
