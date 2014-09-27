@@ -293,23 +293,23 @@ body {
   overflow: auto;
 }
 .highlighttable .linenos {
-  width: 40px;
+  width: 35px;
   margin: 0;
   padding: 0;
   border-right: 0;
 }
 .highlighttable .linenos pre {
-  border-radius: 4px 0 0 4px;
-  -moz-border-radius: 4px 0 0 4px;
-  -webkit-border-radius: 4px 0 0 4px;
+  border-radius: 0.71em 0 0 0.71em
+  -moz-border-radius: 0.71em 0 0 0.71em;
+  -webkit-border-radius: 0.71em 0 0 0.71em;
   border-right: none;
   color: #bebec5;
   text-align: right;
 }
 .highlighttable .highlight pre {
-  border-radius: 0 4px 4px 0;
-  -moz-border-radius: 0 4px 4px 0;
-  -webkit-border-radius: 0 4px 4px 0;
+  border-radius: 0 0.71em 0.71em 0;
+  -moz-border-radius: 0 0.71em 0.71em 0;
+  -webkit-border-radius: 0 0.71em 0.71em 0;
 }
 .header-fixed-top {
   position: fixed;
