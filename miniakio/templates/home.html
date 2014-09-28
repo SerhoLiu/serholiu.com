@@ -44,7 +44,7 @@
           {% for post in posts %}
           <li>
             <span>{{get_show_time(post.published)}}</span> &raquo; 
-            <a href="/{{post.slug}}">{{post.title}}</a>
+            <a href="/{{post.id}}.html">{{post.title}}</a>
           </li>
           {% end %}
         </ul>

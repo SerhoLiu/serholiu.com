@@ -31,7 +31,7 @@ class PostMixin(object):
         return post
 
     def get_posts_by_tag(self, tag):
-        sql = """SELECT p.slug, p.title, p.published FROM posts AS p 
+        sql = """SELECT p.id, p.title, p.published FROM posts AS p 
                    INNER JOIN tags AS t 
                    ON p.id = t.post_id 
                    WHERE t.name = ? 
@@ -48,7 +48,7 @@ class PostMixin(object):
         return categoryList
 
     def get_posts_by_category(self, category):
-        sql = """SELECT slug, title, published FROM posts
+        sql = """SELECT id, published, title FROM posts
                  WHERE category = ?
                  ORDER BY published desc;
               """
@@ -60,7 +60,7 @@ class PostMixin(object):
             posts = self.db.query("SELECT * FROM posts ORDER BY published "
                                 "DESC LIMIT ?;",count)
         else:
-            posts = self.db.query("SELECT slug,title,published FROM posts ORDER BY published DESC;")
+            posts = self.db.query("SELECT id,title,published FROM posts ORDER BY published DESC;")
         return posts
 
     def create_new_post(self, **post):
@@ -107,11 +107,11 @@ class PostMixin(object):
 
     def get_next_prev_post(self, published):
         next_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
+          "SELECT id,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
           published)
 
         prev_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
+          "SELECT id,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
           published)
 
         return {"next": next_post, "prev": prev_post}

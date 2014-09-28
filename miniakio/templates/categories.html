@@ -8,7 +8,7 @@
         <ul class="hidearch posts-list">
         {% for post in dictCatePosts[category] %}
         <li class="archiveli">
-          <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+          <span>{{get_home_time(post.published)}}</span><a href="/{{post.id}}.html">{{post.title}}</a>
         </li>
         {% end %}
         </ul>       

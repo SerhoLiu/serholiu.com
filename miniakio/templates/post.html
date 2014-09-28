@@ -5,11 +5,11 @@
 <article>
   {% if context.is_mobile %}
   <div class="post-meta">
-    <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
+    <h2><a href="/{{post.id}}.html">{{post.title}}</a></h2>
     <span>{{post.published}}</span>    
   </div>
   {% else %}
-  <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
+  <h2><a href="/{{post.id}}.html">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
   {% end %}
   {{post.content}}
 </article>
@@ -22,29 +22,31 @@
      <a href="/post/delete/{{post.id}}?check={{signer}}" OnClick="return(window.confirm('Are you sure to delete me?'));">Delete</a>
   {% end %}
   </div>
+
   {% if post.comment %}
-        <!-- 多说评论框 start -->
-        <div class="ds-thread" data-thread-key="{{post.id}}" data-title="{{post.title}}" data-url="http://blog.cheyo.net/{{post.slug}}">
-        </div>
-        <!-- 多说评论框 end -->
-        <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
-        <script type="text/javascript">
-            var duoshuoQuery = {
-                short_name: "cheyo"
-            }; (function() {
-                var ds = document.createElement('script');
-                ds.type = 'text/javascript';
-                ds.async = true;
-                ds.src = (document.location.protocol == 'https:' ? 'https:': 'http:') + '//static.duoshuo.com/embed.js';
-                ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
-            })();
-</script>
-<!-- 多说公共JS代码 end -->
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="{{post.id}}" data-title="{{post.title}}" data-url="http://blog.cheyo.net/{{post.id}}">
+    </div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+        var duoshuoQuery = {
+            short_name: "cheyo"
+        }; (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:': 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
+    </script>
+    <!-- 多说公共JS代码 end -->
   {% end %}
-<div class="navigation clearfix">
+
+  <div class="navigation clearfix">
    上一篇:
-   {% if next_prev["next"] %} 
-    <a href="/{{next_prev["next"].slug}}" title="{{next_prev["next"].title}}" class="previous">
+    {% if next_prev["next"] %} 
+    <a href="/{{next_prev["next"].id}}.html" title="{{next_prev["next"].title}}" class="previous">
     {{next_prev["next"].title}}
     </a>
     {% else %}
@@ -56,14 +58,15 @@
     <span class="next"> 
     {% if next_prev["prev"] %}
     下一篇:
-    <a href="/{{next_prev["prev"].slug}}" title="{{next_prev["prev"].title}}">
+    <a href="/{{next_prev["prev"].id}}.html" title="{{next_prev["prev"].title}}">
     {{next_prev["prev"].title}}
     </a>
     {% else %}
     没有了
     {%end %}
     </span>
-  </div>  
+  </div>
+
 {% end%}  
   
 {% block nav %}

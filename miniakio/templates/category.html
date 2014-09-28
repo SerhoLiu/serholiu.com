@@ -6,13 +6,13 @@
       <ul class="posts-list">
        {%for post in posts %}
         <li>
-          <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+          <span>{{get_home_time(post.published)}}</span><a href="/{{post.id}}.html">{{post.title}}</a>
         </li>
        {% end %}
       </ul>
     </section>
     <hr>
     <blockquote>
-      <small><a href="/blog/{{type}}/{{name}}" title="Posts">{{count}}+</a></small>
+      <small><a href="/{{type}}/{{name}}" title="Posts">{{count}}+</a></small>
     </blockquote>
 {% end %}

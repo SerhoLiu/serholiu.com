@@ -16,8 +16,8 @@ from blogconfig import PICKY_DIR
 class EntryHandler(BaseHandler, PostMixin):
 
     @removeslash
-    def get(self, slug):
-        post = self.get_post_by_slug(slug.lower())
+    def get(self, post_id):
+        post = self.get_post_by_id(post_id)
         if not post:
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
@@ -127,8 +127,8 @@ class NewPostHandler(BaseHandler, PostMixin):
         if comment == '0':
             comment = 0
         post.update({"comment": comment})
-        self.create_new_post(**post)
-        self.redirect("/%s" % post["slug"])
+        new_post_id = self.create_new_post(**post)
+        self.redirect("/%s" % new_post_id)
         return
 
 
@@ -157,7 +157,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
 
         post.update({"comment": comment})
         self.update_post_by_id(int(id), **post)
-        self.redirect("/%s" % post["slug"])
+        self.redirect("/%s" % id)
         return
 
 
@@ -282,7 +282,7 @@ class PageNotFound(BaseHandler):
 
 
 handlers = [('/', HomeHandler),
-            ('/([a-zA-Z0-9-]+)/*', EntryHandler),
+            ('/([0-9]+).html/*', EntryHandler),
             ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
             ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
             ('/tag/([^/]+)/*', TagsHandler),
