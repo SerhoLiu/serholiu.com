@@ -57,8 +57,9 @@ class CategoriesHandler(BaseHandler, PostMixin):
         dictCatePosts = {}
         postsCount = 0
         categoryList = self.get_category_list()
-        if not categoryList:
-            self.abort(404)
+
+        # if not categoryList:
+        #    self.abort(404)
 
         for categoryRow in categoryList:
             postsCurrCategory = self.get_posts_by_category(categoryRow.category)
