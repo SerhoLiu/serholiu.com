@@ -12,9 +12,9 @@ from miniakio.libs import crypto
 # 编辑下面的信息
 
 USERNAME = "cheyo"                  # 用户名
-EMAIL = "icheyo@gmail.com"        # 邮箱，登陆的时候使用
-PASSWORD = "123456"                 # 登陆密码
-DBFILE = "example/newblog.db"               # 数据库名称，请保持和 blog/config.py 中设置的名称相同
+EMAIL = "icheyo@gmail.com"          # 邮箱，登陆的时候使用
+PASSWORD = "123123"                 # 登陆密码
+DBFILE = "db/blog.db"               # 数据库名称，请保持和 blog/config.py 中设置的名称相同
 
 # 请不要改动下面的内容
 
@@ -28,7 +28,7 @@ def create_db(conn):
         """)
     c.execute("""
         CREATE TABLE posts (id INTEGER NOT NULL PRIMARY KEY,
-        title VARCHAR(100) NOT NULL, slug VARCHAR(100) NOT NULL,
+        title VARCHAR(100) NOT NULL, 
         content TEXT NOT NULL, tags VARCHAR(255) NOT NULL,
         category VARCHAR(30) NOT NULL, published VARCHAR(30) NOT NULL,
         comment INTEGER NOT NULL);
@@ -40,7 +40,6 @@ def create_db(conn):
 
     c.execute("CREATE UNIQUE INDEX users_id ON users(id);")
     c.execute("CREATE UNIQUE INDEX posts_id ON posts(id);")
-    c.execute("CREATE INDEX posts_slug ON posts(slug);")
     c.execute("CREATE INDEX tags_name ON tags(name);")
     c.execute("CREATE UNIQUE INDEX tags_id ON tags(id);")
     conn.commit()
@@ -83,12 +82,12 @@ Usage: python tools -o <opt>
     
     if opt == "createdb":
         conn = sqlite3.connect(DBFILE)
-        print "开始创建数据库..."
+        print "start to create database..."
         create_db(conn)
-        print "数据库创建完毕，开始创建用户账户..."
+        print "create database finish, start to create user..."
         create_user(conn)
         conn.close()
-        print "用户创建成功，请务必将生成的数据库文件拷贝到 blogconfig 中设置的目录里！！！"
+        print "create user succeed."
     elif opt == "getsecret":
         print get_secret() 
 

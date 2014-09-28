@@ -26,10 +26,6 @@ class PostMixin(object):
         post = self.db.get("SELECT * FROM posts WHERE id = ?", id)
         return post
 
-    def get_post_by_slug(self, slug):
-        post = self.db.get("SELECT * FROM posts WHERE slug = ?", slug)
-        return post
-
     def get_posts_by_tag(self, tag):
         sql = """SELECT p.id, p.title, p.published FROM posts AS p 
                    INNER JOIN tags AS t 
@@ -64,15 +60,10 @@ class PostMixin(object):
         return posts
 
     def create_new_post(self, **post):
-        while 1:
-            p = self.get_post_by_slug(post["slug"])
-            if not p: break
-            post["slug"] += "-2"
-
-        sql = """INSERT INTO posts (title,slug,content,tags,category,published,comment)
-                 VALUES (?,?,?,?,?,?,?);
+        sql = """INSERT INTO posts (title,content,tags,category,published,comment)
+                 VALUES (?,?,?,?,?,?);
               """
-        post_id = self.db.execute(sql, post["title"], post["slug"], post["content"],
+        post_id = self.db.execute(sql, post["title"], post["content"],
                               post["tags"], post["category"], post["published"], post['comment'])
         if post_id:
             tags = [tag.strip() for tag in post["tags"].split(",")]
@@ -81,7 +72,7 @@ class PostMixin(object):
         return post_id
 
     def update_post_by_id(self, id, **post):
-        sql = """UPDATE posts SET title=?,slug=?,content=?,tags=?,category=?,
+        sql = """UPDATE posts SET title=?,content=?,tags=?,category=?,
                  published=?,comment=? WHERE id=?;
               """
         p = self.get_post_by_id(id)
@@ -89,7 +80,7 @@ class PostMixin(object):
             has_new_tag = True
         else:
             has_new_tag = False
-        self.db.execute(sql, post["title"], post["slug"], post["content"],
+        self.db.execute(sql, post["title"], post["content"],
                      post["tags"], post["category"], post["published"],
                      post['comment'], id)
         if has_new_tag:

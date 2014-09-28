@@ -128,7 +128,7 @@ class NewPostHandler(BaseHandler, PostMixin):
             comment = 0
         post.update({"comment": comment})
         new_post_id = self.create_new_post(**post)
-        self.redirect("/%s" % new_post_id)
+        self.redirect("/%s.html" % new_post_id)
         return
 
 
