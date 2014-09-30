@@ -9,7 +9,7 @@ from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
 from .libs.utils import authenticated, signer_code
-from .libs.utils import unsigner_code, archives_list
+from .libs.utils import unsigner_code, archive_list
 from blogconfig import PICKY_DIR
 
 
@@ -93,13 +93,13 @@ class HomeHandler(BaseHandler, PostMixin):
             self.render("home.html", posts=posts)
             
 
-class ArchivesHandler(BaseHandler, PostMixin, TagMixin):
+class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
 
     def get(self):
         posts = self.get_count_posts()
         count = len(posts)
-        self.render('archives.html', posts=posts, count=count,
-            archives_list=archives_list)
+        self.render('archive.html', posts=posts, count=count,
+            archive_list=archive_list)
 
 
 class TagListHandler(BaseHandler, TagMixin):
@@ -298,7 +298,7 @@ handlers = [('/', HomeHandler),
             ('/auth/signout', SignoutHandler),
             ('/blog/feed', FeedHandler),
             ('/search/all', SearchHandler),
-            ('/blog/archives', ArchivesHandler),
+            ('/blog/archive', ArchiveHandler),
             ('/blog/tags', TagListHandler),
             ('/blog/categories', CategoriesHandler),
             (r'.*', PageNotFound),

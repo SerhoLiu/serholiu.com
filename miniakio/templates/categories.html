@@ -2,7 +2,7 @@
 {% block title %}博客分类文章 - {{escape(context.sitename)}}{% end %}
 {% block content %}
     
-    <section class="archives">
+    <section class="categories">
       {% for category in dictCatePosts %}
       <h4 class="downarch">{{category}} +</h4>
         <ul class="hidearch posts-list">
@@ -24,8 +24,8 @@
 <script type="text/javascript">
 jQuery(document).ready(function($) {
     $(document).ready(function() {
-        $(".archives ul.hidearch").hide();
-        $(".archives h4.downarch").click(function() {
+        $(".categories ul.hidearch").hide();
+        $(".categories h4.downarch").click(function() {
             $(this).next().slideToggle('fast');
             return false;
         });
