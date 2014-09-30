@@ -18,8 +18,10 @@
       <a href="/tag/{{tag}}">#{{tag}}</a>
     {% end %}&#160;&#160; Post on <a href="/blog/category/{{post.category}}">{{post.category}}</a>
     {% if current_user %}
-    |<a href="/post/update/{{post.id}}">Update</a>
-     <a href="/post/delete/{{post.id}}?check={{signer}}" OnClick="return(window.confirm('Are you sure to delete me?'));">Delete</a>
+    <span class="next">
+    <a href="/post/update/{{post.id}}">Update</a> | 
+    <a href="/post/delete/{{post.id}}?check={{signer}}" OnClick="return(window.confirm('Are you sure to delete me?'));">Delete</a>
+    </span>
   {% end %}
   </div>
 

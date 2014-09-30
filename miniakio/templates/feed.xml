@@ -17,7 +17,7 @@
       <title type="text">{{ escape(post.title) }}</title>
       <link href="http://{{ request.host }}/{{ post.id }}.html" rel="alternate" type="text/html"/>
       <published>{{ time(post.published).strftime(date_format) }}</published>
-      <id>http://blog.cheyo.net/{{ post.id }}.html</id>
+      <id>{{ escape(context.site_url) }}/{{ post.id }}.html</id>
       <content type="html">
        <![CDATA[{{post.content}}]]>
       </content>

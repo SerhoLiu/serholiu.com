@@ -60,11 +60,11 @@ class PostMixin(object):
         return posts
 
     def create_new_post(self, **post):
-        sql = """INSERT INTO posts (title,content,tags,category,published,comment)
-                 VALUES (?,?,?,?,?,?);
+        sql = """INSERT INTO posts (title,content,tags,category,published,comment,markdown)
+                 VALUES (?,?,?,?,?,?,?);
               """
         post_id = self.db.execute(sql, post["title"], post["content"],
-                              post["tags"], post["category"], post["published"], post['comment'])
+                              post["tags"], post["category"], post["published"], post['comment'], post['markdown'])
         if post_id:
             tags = [tag.strip() for tag in post["tags"].split(",")]
             for tag in tags:
@@ -73,7 +73,7 @@ class PostMixin(object):
 
     def update_post_by_id(self, id, **post):
         sql = """UPDATE posts SET title=?,content=?,tags=?,category=?,
-                 published=?,comment=? WHERE id=?;
+                 published=?,comment=?,markdown=? WHERE id=?;
               """
         p = self.get_post_by_id(id)
         if p.tags != post["tags"]:
@@ -82,7 +82,7 @@ class PostMixin(object):
             has_new_tag = False
         self.db.execute(sql, post["title"], post["content"],
                      post["tags"], post["category"], post["published"],
-                     post['comment'], id)
+                     post['comment'], post['markdown'], id)
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
             self.db.execute("DELETE FROM tags WHERE post_id=?;", id)

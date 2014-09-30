@@ -128,6 +128,7 @@ class NewPostHandler(BaseHandler, PostMixin):
         if comment == '0':
             comment = 0
         post.update({"comment": comment})
+        post.update({"markdown": markdown})
         new_post_id = self.create_new_post(**post)
         self.redirect("/%s.html" % new_post_id)
         return
@@ -140,7 +141,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         post = self.get_post_by_id(int(id))
         if not post:
             self.redirect('/')
-        self.render("admin/update.html", id=id)
+        self.render("admin/update.html", id=id, markdown=post['markdown'])
 
     @authenticated
     def post(self, id):
@@ -157,8 +158,9 @@ class UpdatePostHandler(BaseHandler, PostMixin):
             comment = 0
 
         post.update({"comment": comment})
+        post.update({"markdown": markdown})
         self.update_post_by_id(int(id), **post)
-        self.redirect("/%s" % id)
+        self.redirect("/%s.html" % id)
         return
 
 

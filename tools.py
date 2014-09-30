@@ -31,7 +31,7 @@ def create_db(conn):
         title VARCHAR(100) NOT NULL, 
         content TEXT NOT NULL, tags VARCHAR(255) NOT NULL,
         category VARCHAR(30) NOT NULL, published VARCHAR(30) NOT NULL,
-        comment INTEGER NOT NULL);
+        comment INTEGER NOT NULL, markdown TEXT NOT NULL);
         """)
     c.execute("""
         CREATE TABLE tags (id INTEGER NOT NULL PRIMARY KEY,

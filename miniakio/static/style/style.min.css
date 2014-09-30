@@ -223,9 +223,7 @@ pre {
 }
 code {
   padding: 3px 4px;
-  color: #d14;
-  background-color: #f7f7f9;
-  border: 1px solid #e1e1e8;
+  color: #EEEEEE;
   border-radius: 3px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
@@ -241,6 +239,7 @@ pre {
   -moz-border-radius: 4px;
   -webkit-border-radius: 4px;
   overflow: auto;
+  color: greenyellow;
 }
 address {
   display: block;
@@ -467,6 +466,9 @@ body {
 .tag-list a {
   color: #f95b1f;
   margin-left: 3px;
+}
+.tag-list .next {
+  float: right;
 }
 .navigation {
   padding-top: 6px;
