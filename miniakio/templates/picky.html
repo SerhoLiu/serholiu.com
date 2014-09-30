@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{post["title"]}} - I'm cheyo{% end %}
+{% block title %}{{post["title"]}} | {{escape(context.sitename)}}{% end %}
 {% block head %}{{strip_tags(post["content"][0:168])}}{% end %}
 {% block content %}
 <article>
