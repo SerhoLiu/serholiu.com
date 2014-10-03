@@ -6,7 +6,6 @@ import os
 # 用于 cookie 加密，请换一个随机的，足够长，足够复杂的字符串
 # !!! 不要使用现在这个
 COOKIE_SECRET = "2417540af18f6aab0afe5d606e1b10f4"
-SITE_URL = u"http://blog.cheyo.net"
 
 # 数据库文件路径，默认是和配置文件同目录
 # eg. DATABASE = "/home/myblog/mydb.db"
