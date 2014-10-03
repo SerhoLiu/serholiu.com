@@ -3,9 +3,15 @@
 {% block content %}
     
     <section class="categories">
+      {% set i=0 %}
       {% for category in dictCatePosts %}
+      {% set i=i+1 %}
       <h4 class="downarch">{{category}} +</h4>
-        <ul class="hidearch posts-list">
+        {% if i <2 %}
+          <ul class="posts-list">
+        {% else %}
+          <ul class="hidearch posts-list">
+        {% end %}
         {% for post in dictCatePosts[category] %}
         <li class="archiveli">
           <span>{{get_home_time(post.published)}}</span><a href="/{{post.id}}.html">{{post.title}}</a>
