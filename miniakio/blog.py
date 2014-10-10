@@ -151,6 +151,8 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
 
+        self.send_post_change_nofity(id)
+
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
 
