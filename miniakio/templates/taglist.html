@@ -5,12 +5,12 @@
     <section class="group-tags">
       <ul class="tag-box">
       {% for tag in tags %}
-        <li><a href="/tag/{{tag.name}}">{{tag.name}} <span>{{tag.num}}</span></a></li>
+        <li><a href="/tag/{{tag.name}}.html">{{tag.name}} <span>{{tag.num}}</span></a></li>
       {% end %}
       </ul>
     </section>
     <hr>
     <blockquote>
-      <small><a href="/blog/tags" title="Tags">{{count}}+</a></small>
+      <small><a href="/blog/tags.html" title="Tags">{{count}}+</a></small>
     </blockquote>
 {% end %}

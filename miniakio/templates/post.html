@@ -15,8 +15,8 @@
 </article>
   <div class="tag-list">Tags:
     {% for tag in tags%}
-      <a href="/tag/{{tag}}">#{{tag}}</a>
-    {% end %}&#160;&#160; Post on <a href="/blog/category/{{post.category}}">{{post.category}}</a>
+      <a href="/tag/{{tag}}.html">#{{tag}}</a>
+    {% end %}&#160;&#160; Post on <a href="/blog/category/{{post.category}}.html">{{post.category}}</a>
     {% if current_user %}
     <span class="next">
     <a href="/post/update/{{post.id}}">Update</a> | 

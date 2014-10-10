@@ -7,6 +7,6 @@ Disallow: /post/picky
 Disallow: /blog/feed
 
 # BEGIN XML-SITEMAP-PLUGIN
-Sitemap: http://blog.cheyo.net/blog/archive
+Sitemap: http://blog.cheyo.net/blog/archive.html
 # END XML-SITEMAP-PLUGIN
 
