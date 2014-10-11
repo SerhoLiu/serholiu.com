@@ -3,32 +3,32 @@ import pika
 import os
 import shutil
 
-QUEUE_NAME = 'ArticalChange'
+QUEUE_NAME = 'PostChange'
 CACHE_DIR = '/opt/data/product/blog/cache'
 CACHE_BLOG_DIR = '/opt/data/product/blog/cache/blog'
 CACHE_TAG_DIR = '/opt/data/product/blog/cache/tag'
 
 def msg_recv_callback(ch, method, properties, body):
-    print " [x] Received %r" % (body,)
+    print "[Info] Received %r" % (body,)
     cache_file = CACHE_DIR + "/" + body + ".html"
-    print cache_file
 
     if (os.path.exists(cache_file)):
         try:
             os.remove(cache_file)
-            print 'remove %s success' % cache_file
-        except OSError, e:
+        except OSError:
             #Same exception handling
-            print '[Error]Remove file error.'
+            print '[Error] remove file error.'
+        else:
+            print '[Info] remove %s success' % cache_file
 
     try:
-        print 'begin to remove dir[blog] and dir[tag]'
         shutil.rmtree(CACHE_BLOG_DIR, True)
         shutil.rmtree(CACHE_TAG_DIR, True)
-    except shutil.Error, e:
+    except shutil.Error:
         print '[Error] remove %s fail.' % CACHE_BLOG_DIR
         print '[Error] remove %s fail.' % CACHE_TAG_DIR
-
+    else:
+        print '[Info] begin to remove dir[blog] and dir[tag]'
 
 def receive_msg_loop():
     connection = pika.BlockingConnection(pika.ConnectionParameters(

@@ -109,7 +109,7 @@ class PostMixin(object):
         return {"next": next_post, "prev": prev_post}
 
     def send_post_change_nofity(self, post_id):
-      QUEUE_NAME = 'ArticalChange'
+      QUEUE_NAME = 'PostChange'
       msg_content = post_id
       connection = pika.BlockingConnection(pika.ConnectionParameters(
               host='localhost'))
