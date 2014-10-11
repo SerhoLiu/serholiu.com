@@ -39,7 +39,7 @@ class PostMixin(object):
 
     def get_category_list(self):
         sql = """SELECT DISTINCT category FROM posts 
-                 ORDER BY published desc;
+                 ORDER BY category ASC;
               """
         categoryList = self.db.query(sql)
         return categoryList

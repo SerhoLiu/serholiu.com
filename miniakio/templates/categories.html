@@ -3,11 +3,9 @@
 {% block content %}
     
     <section class="categories">
-      {% set i=0 %}
-      {% for category in dictCatePosts %}
-      {% set i=i+1 %}
+      {% for index, category in enumerate(dictCatePosts) %}
       <h4 class="downarch">{{category}} +</h4>
-        {% if i <2 %}
+        {% if index == 0 %}
           <ul class="posts-list">
         {% else %}
           <ul class="hidearch posts-list">
