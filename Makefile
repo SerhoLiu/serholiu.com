@@ -15,3 +15,4 @@ clean:
 	-rm -f $(LESSPATH)style.min.css
 	-rm -f $(LESSPATH)style.css
 	-find . -name '*.py[co]' -exec rm -f {} ';'
+	-find . -name '__pycache__' | xargs rm -rf {}
