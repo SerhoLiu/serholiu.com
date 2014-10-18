@@ -13,7 +13,6 @@ Post (see `example/post_example.md`):
 
     # Title
 
-    - slug: title
     - published: 2012-06-26 19:00
     - tags: Test, Tornado, Python
     - category: Work
@@ -37,13 +36,14 @@ Requirements:
 1. [Tornado][1]
 2. [misaka][2]
 3. [pygments][3]
+4. [backports.ssl_match_hostname][4]
 
 * Get this: `git clone https://github.com/SerhoLiu/serholiu.com.git`
 * If you use Python3, you should `git checkout python3`
 * Install required package: `pip install -r requirements.txt`
 * Create Sqlite3 database: edit `tools.py` and `python tools.py -o createdb`
 * Disqus support: change `miniakio/templates/post.html`  `disqus_shortname` into your username.
-* Production suggest: See [My blog][4](Chinese)
+* Production suggest: See [My blog][5](Chinese)
 
 ## License
 
@@ -52,4 +52,5 @@ MIT LICENSE, see MIT-LICENSE.txt
 [1]: http://www.tornadoweb.org/
 [2]: http://misaka.61924.nl/
 [3]: http://pygments.org/
-[4]: http://serholiu.com/tornado-nginx-supervisord
+[4]: https://pypi.python.org/pypi/backports.ssl_match_hostname
+[5]: http://serholiu.com/tornado-nginx-supervisord

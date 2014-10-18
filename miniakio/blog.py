@@ -9,15 +9,15 @@ from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
 from .libs.utils import authenticated, signer_code
-from .libs.utils import unsigner_code, archives_list
+from .libs.utils import unsigner_code, archive_list
 from blogconfig import PICKY_DIR
 
 
 class EntryHandler(BaseHandler, PostMixin):
 
     @removeslash
-    def get(self, slug):
-        post = self.get_post_by_slug(slug.lower())
+    def get(self, post_id):
+        post = self.get_post_by_id(post_id)
         if not post:
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
@@ -35,11 +35,11 @@ class TagsHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="tag", name=name,
+        self.render("category.html", posts=posts, type="tag", name=name,
             count=count)
 
-
 class CategoryHandler(BaseHandler, PostMixin):
+
 
     @removeslash
     def get(self, category):
@@ -47,9 +47,26 @@ class CategoryHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="category",
+        self.render("category.html", posts=posts, type="category",
                                     name=category, count=count)
 
+class CategoriesHandler(BaseHandler, PostMixin):
+
+    @removeslash
+    def get(self):
+        dictCatePosts = {}
+        postsCount = 0
+        categoryList = self.get_category_list()
+
+        # if not categoryList:
+        #    self.abort(404)
+
+        for categoryRow in categoryList:
+            postsCurrCategory = self.get_posts_by_category(categoryRow.category)
+            dictCatePosts[categoryRow.category] = postsCurrCategory
+            postsCount += len(postsCurrCategory)
+
+        self.render("categories.html", dictCatePosts=dictCatePosts, count=postsCount)
 
 class FeedHandler(BaseHandler, PostMixin):
 
@@ -81,8 +98,8 @@ class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
     def get(self):
         posts = self.get_count_posts()
         count = len(posts)
-        self.render('archives.html', posts=posts, count=count,
-            archives_list=archives_list)
+        self.render('archive.html', posts=posts, count=count,
+            archive_list=archive_list)
 
 
 class TagListHandler(BaseHandler, TagMixin):
@@ -111,8 +128,9 @@ class NewPostHandler(BaseHandler, PostMixin):
         if comment == '0':
             comment = 0
         post.update({"comment": comment})
-        self.create_new_post(**post)
-        self.redirect("/%s" % post["slug"])
+        post.update({"markdown": markdown})
+        new_post_id = self.create_new_post(**post)
+        self.redirect("/%s.html" % new_post_id)
         return
 
 
@@ -123,7 +141,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         post = self.get_post_by_id(int(id))
         if not post:
             self.redirect('/')
-        self.render("admin/update.html", id=id)
+        self.render("admin/update.html", id=id, markdown=post['markdown'])
 
     @authenticated
     def post(self, id):
@@ -133,6 +151,8 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
 
+        self.send_post_change_nofity(id)
+
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
 
@@ -140,8 +160,9 @@ class UpdatePostHandler(BaseHandler, PostMixin):
             comment = 0
 
         post.update({"comment": comment})
+        post.update({"markdown": markdown})
         self.update_post_by_id(int(id), **post)
-        self.redirect("/%s" % post["slug"])
+        self.redirect("/%s.html" % id)
         return
 
 
@@ -266,11 +287,11 @@ class PageNotFound(BaseHandler):
 
 
 handlers = [('/', HomeHandler),
-            ('/([a-zA-Z0-9-]+)/*', EntryHandler),
+            ('/([0-9]+).html/*', EntryHandler),
             ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
             ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
-            ('/tag/([^/]+)/*', TagsHandler),
-            ('/category/([^/]+)/*', CategoryHandler),
+            ('/tag/([^/]+).html*', TagsHandler),
+            ('/blog/category/([^/]+).html*', CategoryHandler),
             ('/post/new', NewPostHandler),
             ('/post/delete/([0-9]+)', DeletePostHandler),
             ('/post/update/([0-9]+)', UpdatePostHandler),
@@ -279,7 +300,8 @@ handlers = [('/', HomeHandler),
             ('/auth/signout', SignoutHandler),
             ('/blog/feed', FeedHandler),
             ('/search/all', SearchHandler),
-            ('/blog/all', ArchiveHandler),
-            ('/blog/tags', TagListHandler),
+            ('/blog/archive.html', ArchiveHandler),
+            ('/blog/tags.html', TagListHandler),
+            ('/blog/categories.html', CategoriesHandler),
             (r'.*', PageNotFound),
 ]

@@ -13,7 +13,7 @@ from .utils import ObjectDict
 from .utils import get_home_time, format_time, get_show_time
 from .utils import is_mobile, strip_tags
 from .models import UserMixin
-from blogconfig import SITE_NAME
+from blogconfig import SITE_NAME,SITE_URL
 
 
 class BaseHandler(tornado.web.RequestHandler, UserMixin):
@@ -77,6 +77,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
+        self._context.site_url= SITE_URL
         self._context.is_mobile = is_mobile(self.request.headers['User-Agent'])
 
     def _prepare_filters(self):

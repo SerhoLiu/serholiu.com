@@ -1,9 +1,8 @@
-#笛卡尔《谈谈方法》读书笔记
+#Test1
 
-- slug: discours-de-la-methode
 - tags: 读书笔记, 方法
 - category: Review
-- published: 2012-11-20 22:00
+- published: 2014-03-20 22:00
 
 -------------------------
 
@@ -15,20 +14,34 @@
 
 >世界上的人大致说来只分为两类，都不宜学这个榜样。一类人自以为高明，其实并不那么高明，既不能防止自己下仓促的判断，又没有足够的耐性对每一件事全都有条有理地思想，因此，一旦可以自由地怀疑自己过去接受的原则，脱离大家所走的道路，就永远不能找到他所要走的捷径，一辈子迷惑到底。另一类人则相当讲理，也就是说相当谦虚，因而认定自己分辨真假的能力不如某些别人，可以向那些人学习，既然如此，那就应该满足于听从那些人的意见，不必自己去找更好的了。
 
-既然上面两类人都不可作为榜样，那么究竟应该怎么做，于是提出了自己对于正确运用理性寻求真理的四个规范。
+```python
+# -*- coding:utf-8 -*-
+from BeautifulSoup import BeautifulSoup
+from jinja2 import Markup
+import pygments
+from pygments.formatters.html import HtmlFormatter
+from pygments.lexers import guess_lexer, get_lexer_by_name
 
->1. 第一条是：凡是我没有明确地认识到的东西，我决不把它当成真的接受。也就是说，要小心避免轻率的判断和先入为见，除了清楚分明地呈现在我心里、使我根本无法怀疑的东西以外，不要多放一点别的东西到我的判断里。
->2. 第二条是：把我所审查的每一个难题按照可能和必要的程度分成若干部分，以便一一妥为解决。
->3. 第三条是：按次序进行我的思考，从最简单、最容易认识的对象开始，一点一点逐步上升，直到认识最复杂的对象；就连那些本来没有先后关系的东西，也给它们设定一个次序。
->4. 最后一条是：在任何情况之下，都要尽量全面地考察，尽量普遍地复查，做到确信毫无遗漏。
 
-作者对这四条规范的评价是：这种方法最令我满意的地方在于我确实感到，我按照这种方法在各方面运用我的理性，虽不敢说做到尽善尽美，至少可以说把我的能力发挥到了最大限度。这四个规范已经足够的明确和细致，不过操作起来似乎并不太容易，比如第二条，“按照可能和必要的程度”，这两个词都是很含糊的，如果真有能力去做到“可能”和“必要”，那么离解决就不远了。
+def highlight(html):
+    soup = BeautifulSoup(html)
+    code_blocks = soup.findAll('pre')
+    for block in code_blocks:
+        lexer = get_lexer_by_name(block.code['class']) 
+    if block.code.has_key('class') else guess_lexer(block.text)
+        try:
+            code = ''.join([unicode(item.text) for item in block.contents])
+            formatter = HtmlFormatter(linenos='inline', linenostart=0, full=True)
+            code_hl = pygments.highlight(code, lexer, formatter)
+            block.contents = [BeautifulSoup(code_hl)]
+            block.name = 'div'
+        except:
+            raise
+    return Markup(soup)
+```
 
-不过要一下就如上面一样运用理性，可能会在某些事上犹豫不绝，“当我受到理性的驱使、在判断上持犹豫态度时候，为了不至于在行动上犹豫不决，我给自己定下了一套临时行为规范”。
 
->1. 第一条：服从我国的法律和风俗，笃守我靠神保佑从小就领悟的宗教，在其他一切事情上以周围最聪明的人为榜样，遵守他们在实践上一致接受的那些最合乎中道、最不走极端的意见，来约束自己。
->2. 第二条：在行动上尽可能坚定果断，一旦选定某种看法，哪怕它十分可疑，也毫不动摇地坚决遵循，就像它十分可靠一样。
->3. 第三条：永远只求克服自己，不求克服命运，只求改变自己的愿望，不求改变世间的秩序。总之，要始终相信：除了我们自己的思想以为，没有一样事情可以完全由我们作主。
+了我们自己的思想以为，没有一样事情可以完全由我们作主。
 
 上面只是应对之策，笛卡尔也确实如第一条所说的那样，在准备发表自己对行星运动的看法时，布罗诺遭到教廷的迫害，于是他打消了念头。就如他所说，不宜学上面两类人，所以对于别人的观点，还是应该使用自己理性的目光来考察一下，当然，针对他的观点，也应该这样。
 

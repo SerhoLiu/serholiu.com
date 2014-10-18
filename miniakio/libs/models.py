@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import pika
 
 class UserMixin(object):
 
@@ -26,12 +27,8 @@ class PostMixin(object):
         post = self.db.get("SELECT * FROM posts WHERE id = ?", id)
         return post
 
-    def get_post_by_slug(self, slug):
-        post = self.db.get("SELECT * FROM posts WHERE slug = ?", slug)
-        return post
-
     def get_posts_by_tag(self, tag):
-        sql = """SELECT p.slug, p.title, p.published FROM posts AS p 
+        sql = """SELECT p.id, p.title, p.published FROM posts AS p 
                    INNER JOIN tags AS t 
                    ON p.id = t.post_id 
                    WHERE t.name = ? 
@@ -40,8 +37,15 @@ class PostMixin(object):
         posts = self.db.query(sql, tag)
         return posts
 
+    def get_category_list(self):
+        sql = """SELECT DISTINCT category FROM posts 
+                 ORDER BY category ASC;
+              """
+        categoryList = self.db.query(sql)
+        return categoryList
+
     def get_posts_by_category(self, category):
-        sql = """SELECT slug, title, published FROM posts
+        sql = """SELECT id, published, title FROM posts
                  WHERE category = ?
                  ORDER BY published desc;
               """
@@ -53,20 +57,15 @@ class PostMixin(object):
             posts = self.db.query("SELECT * FROM posts ORDER BY published "
                                 "DESC LIMIT ?;",count)
         else:
-            posts = self.db.query("SELECT slug,title,published FROM posts ORDER BY published DESC;")
+            posts = self.db.query("SELECT id,title,published FROM posts ORDER BY published DESC;")
         return posts
 
     def create_new_post(self, **post):
-        while 1:
-            p = self.get_post_by_slug(post["slug"])
-            if not p: break
-            post["slug"] += "-2"
-
-        sql = """INSERT INTO posts (title,slug,content,tags,category,published,comment)
+        sql = """INSERT INTO posts (title,content,tags,category,published,comment,markdown)
                  VALUES (?,?,?,?,?,?,?);
               """
-        post_id = self.db.execute(sql, post["title"], post["slug"], post["content"],
-                              post["tags"], post["category"], post["published"], post['comment'])
+        post_id = self.db.execute(sql, post["title"], post["content"],
+                              post["tags"], post["category"], post["published"], post['comment'], post['markdown'])
         if post_id:
             tags = [tag.strip() for tag in post["tags"].split(",")]
             for tag in tags:
@@ -74,17 +73,17 @@ class PostMixin(object):
         return post_id
 
     def update_post_by_id(self, id, **post):
-        sql = """UPDATE posts SET title=?,slug=?,content=?,tags=?,category=?,
-                 published=?,comment=? WHERE id=?;
+        sql = """UPDATE posts SET title=?,content=?,tags=?,category=?,
+                 published=?,comment=?,markdown=? WHERE id=?;
               """
         p = self.get_post_by_id(id)
         if p.tags != post["tags"]:
             has_new_tag = True
         else:
             has_new_tag = False
-        self.db.execute(sql, post["title"], post["slug"], post["content"],
+        self.db.execute(sql, post["title"], post["content"],
                      post["tags"], post["category"], post["published"],
-                     post['comment'], id)
+                     post['comment'], post['markdown'], id)
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
             self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
@@ -100,15 +99,29 @@ class PostMixin(object):
 
     def get_next_prev_post(self, published):
         next_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
+          "SELECT id,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
           published)
 
         prev_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
+          "SELECT id,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
           published)
 
         return {"next": next_post, "prev": prev_post}
 
+    def send_post_change_nofity(self, post_id):
+      QUEUE_NAME = 'PostChange'
+      msg_content = post_id
+      connection = pika.BlockingConnection(pika.ConnectionParameters(
+              host='localhost'))
+      channel = connection.channel()
+
+      channel.queue_declare(queue=QUEUE_NAME)
+
+      channel.basic_publish(exchange='',
+                            routing_key=QUEUE_NAME,
+                            body=msg_content)
+      print '[x] Sent nofity for post id[%s]' % post_id
+      connection.close()
 
 class TagMixin(object):
 

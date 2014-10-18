@@ -49,7 +49,7 @@ def get_show_time(time):
     return d.strftime("%d %b")
 
 
-def archives_list(posts):
+def archive_list(posts):
     """
     生成文章存档，按年分类
     """

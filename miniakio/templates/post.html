@@ -1,48 +1,54 @@
 {% extends "base.html" %}
-{% block title %}{{post.title}} - {{escape(context.sitename)}}{% end %}
+{% block title %}{{post.title}} | {{escape(context.sitename)}}{% end %}
 {% block head %}{{strip_tags(post.content[0:168])}}{% end %}
 {% block content %}
 <article>
   {% if context.is_mobile %}
   <div class="post-meta">
-    <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
+    <h2><a href="/{{post.id}}.html">{{post.title}}</a></h2>
     <span>{{post.published}}</span>    
   </div>
   {% else %}
-  <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
+  <h2><a href="/{{post.id}}.html">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
   {% end %}
   {{post.content}}
 </article>
   <div class="tag-list">Tags:
     {% for tag in tags%}
-      <a href="/tag/{{tag}}">#{{tag}}</a>
-    {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>
+      <a href="/tag/{{tag}}.html">#{{tag}}</a>
+    {% end %}&#160;&#160; Post on <a href="/blog/category/{{post.category}}.html">{{post.category}}</a>
     {% if current_user %}
-    |<a href="/post/update/{{post.id}}">Update</a>
-     <a href="/post/delete/{{post.id}}?check={{signer}}">Del</a>
+    <span class="next">
+    <a href="/post/update/{{post.id}}">Update</a> | 
+    <a href="/post/delete/{{post.id}}?check={{signer}}" OnClick="return(window.confirm('Are you sure to delete me?'));">Delete</a>
+    </span>
   {% end %}
   </div>
-  {% if post.comment %}
-   <![if !IE]>
-  <div id="disqus_thread"></div>
-    <script type="text/javascript">
-      /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-      var disqus_shortname = 'serho'; // required: replace example with your forum shortname
 
-      /* * * DON'T EDIT BELOW THIS LINE * * */
-      (function() {
-          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);})();
+  {% if post.comment %}
+    <!-- 多说评论框 start -->
+    <div class="ds-thread" data-thread-key="{{post.id}}" data-title="{{post.title}}" data-url="http://blog.cheyo.net/{{post.id}}">
+    </div>
+    <!-- 多说评论框 end -->
+    <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+    <script type="text/javascript">
+        var duoshuoQuery = {
+            short_name: "cheyo"
+        }; (function() {
+            var ds = document.createElement('script');
+            ds.type = 'text/javascript';
+            ds.async = true;
+            ds.src = (document.location.protocol == 'https:' ? 'https:': 'http:') + '//static.duoshuo.com/embed.js';
+            ds.charset = 'UTF-8'; (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+        })();
     </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-    <![endif]>
+    <!-- 多说公共JS代码 end -->
   {% end %}
-<div class="navigation clearfix">
+
+  <div class="navigation clearfix">
    上一篇:
-   {% if next_prev["next"] %} 
-    <a href="/{{next_prev["next"].slug}}" title="{{next_prev["next"].title}}" class="previous">
+    {% if next_prev["next"] %} 
+    <a href="/{{next_prev["next"].id}}.html" title="{{next_prev["next"].title}}" class="previous">
     {{next_prev["next"].title}}
     </a>
     {% else %}
@@ -51,17 +57,18 @@
     {% if context.is_mobile %}
     <br /><br />
     {% end %}
-    <span class="next"> 
+    <span class="next">
+  下一篇:
     {% if next_prev["prev"] %}
-    下一篇:
-    <a href="/{{next_prev["prev"].slug}}" title="{{next_prev["prev"].title}}">
+    <a href="/{{next_prev["prev"].id}}.html" title="{{next_prev["prev"].title}}">
     {{next_prev["prev"].title}}
     </a>
     {% else %}
     没有了
     {%end %}
     </span>
-  </div>  
+  </div>
+
 {% end%}  
   
 {% block nav %}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}分类文章 | {{escape(context.sitename)}}{% end %}
+{% block content %}
+    
+    <section class="categories">
+      {% for index, category in enumerate(dictCatePosts) %}
+      <h4 class="downarch">{{category}} +</h4>
+        {% if index == 0 %}
+          <ul class="posts-list">
+        {% else %}
+          <ul class="hidearch posts-list">
+        {% end %}
+        {% for post in dictCatePosts[category] %}
+        <li class="archiveli">
+          <span>{{get_home_time(post.published)}}</span><a href="/{{post.id}}.html">{{post.title}}</a>
+        </li>
+        {% end %}
+        </ul>       
+       {% end %}
+    </section>
+    <hr>
+    <blockquote>
+      <small><a href="/blog/categories.html" title="Posts">{{count}}+</a></small>
+    </blockquote>
+{% end %}
+{% block bottom %}
+<script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/1.6.2/jquery.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $(document).ready(function() {
+        $(".categories ul.hidearch").hide();
+        $(".categories h4.downarch").click(function() {
+            $(this).next().slideToggle('fast');
+            return false;
+        });
+    });
+})
+</script>
+{% end %}

@@ -5,14 +5,17 @@ import os
 
 # 用于 cookie 加密，请换一个随机的，足够长，足够复杂的字符串
 # !!! 不要使用现在这个
-COOKIE_SECRET = "11oETzKXQAGaYdkL5gEmGeJJ-(g7EQnp2XdTP1o/Vo="
+COOKIE_SECRET = "2417540af18f6aab0afe5d606e1b10f4"
 
 # 数据库文件路径，默认是和配置文件同目录
 # eg. DATABASE = "/home/myblog/mydb.db"
-DATABASE = os.path.join(os.path.dirname(__file__), "newblog.db")
+DATABASE = os.path.join(os.path.dirname(__file__), "db/blog.db")
 
 # 你的博客名
-SITE_NAME = u"I'm SErHo"
+SITE_NAME = u"我爱这世界!"
+
+# 博客域名
+SITE_URL = u"http://blog.cheyo.net"
 
 # Picky 目录路径，默认和配置文件同目录
 PICKY_DIR = os.path.join(os.path.dirname(__file__), "picky")

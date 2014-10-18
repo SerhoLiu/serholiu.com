@@ -13,11 +13,11 @@
   <author><name>{{ escape(context.sitename) }}</name></author>
   {% for post in posts %}
     <entry>
-      <id>http://{{ request.host }}/{{ post.slug }}</id>
+      <id>http://{{ request.host }}/{{ post.id }}.html</id>
       <title type="text">{{ escape(post.title) }}</title>
-      <link href="http://{{ request.host }}/{{ post.slug }}" rel="alternate" type="text/html"/>
+      <link href="http://{{ request.host }}/{{ post.id }}.html" rel="alternate" type="text/html"/>
       <published>{{ time(post.published).strftime(date_format) }}</published>
-      <id>http://serholiu.com/{{ post.slug }}</id>
+      <id>{{ escape(context.site_url) }}/{{ post.id }}.html</id>
       <content type="html">
        <![CDATA[{{post.content}}]]>
       </content>
