@@ -2,9 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import re
-from StringIO import StringIO
 import misaka as m
 
+from StringIO import StringIO
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -19,7 +19,7 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
         if lang:
             lexer = get_lexer_by_name(lang, stripall=True)
         else:
-            return '<pre><code>%s</code></pre>' % xhtml_escape(text.strip())
+            return "<pre><code>%s</code></pre>" % xhtml_escape(text.strip())
 
         formatter = HtmlFormatter(
             noclasses=False,
@@ -27,23 +27,25 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
         )
 
         return '<div class="highlight-pre">%s</div>' % \
-                        highlight(text, lexer, formatter)
+            highlight(text, lexer, formatter)
 
     def autolink(self, link, is_email):
         if is_email:
-            mailto = "".join(['&#%d;' % ord(letter) for letter in "mailto:"])
-            email = "".join(['&#%d;' % ord(letter) for letter in link])
+            mailto = "".join(["&#%d;" % ord(letter) for letter in "mailto:"])
+            email = "".join(["&#%d;" % ord(letter) for letter in link])
             url = mailto + email
-            return '<a href="%(url)s">%(link)s</a>' % {'url': url, 'link': email}
+            return '<a href="%(url)s">%(link)s</a>' % {
+                "url": url, "link": email
+            }
 
-        title = link.replace('http://', '').replace('https://', '')
+        title = link.replace("http://", "").replace("https://", "")
         if len(title) > 30:
             title = title[:24] + "..."
 
-        pattern = r'http://v.youku.com/v_show/id_([a-zA-Z0-9\=]+).html'
+        pattern = r"http://v.youku.com/v_show/id_([a-zA-Z0-9\=]+).html"
         match = re.match(pattern, link)
         if not match:
-            pattern = r'http://v.youku.com/v_show/id_([a-zA-Z0-9\=]+).html'
+            pattern = r"http://v.youku.com/v_show/id_([a-zA-Z0-9\=]+).html"
             match = re.match(pattern, link)
         if match:
             value = (
@@ -76,29 +78,29 @@ class RenderMarkdownPost(object):
         if not self.markdown:
             return None
         f = StringIO(self.markdown)
-        header = ''
+        header = ""
         body = None
         for line in f:
-            if line.startswith('---'):
-                body = ''
+            if line.startswith("---"):
+                body = ""
             elif body is not None:
                 body += line
             else:
                 header += line
 
-        meta = self.__get_post_meta(header)
+        meta = self._get_post_meta(header)
         content = markdown(body)
         meta.update({"content": content})
         return meta
 
-    def __get_post_meta(self, header):
+    def _get_post_meta(self, header):
         header = markdown(header)
-        title = re.findall(r'<h1>(.*)</h1>', header)[0]
+        title = re.findall(r"<h1>(.*)</h1>", header)[0]
 
-        meta = {'title': title}
-        items = re.findall(r'<li>(.*?)</li>', header, re.S)
+        meta = {"title": title}
+        items = re.findall(r"<li>(.*?)</li>", header, re.S)
         for item in items:
-            index = item.find(':')
+            index = item.find(":")
             key = item[:index].rstrip()
             value = item[index + 1:].lstrip()
             meta[key] = value
