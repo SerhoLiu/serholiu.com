@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
 import re
 import hmac
 import base64
 import datetime
 import functools
+from hashlib import sha1
 from HTMLParser import HTMLParser
 
-from hashlib import sha1
 from blogconfig import COOKIE_SECRET
 
 
@@ -103,14 +104,14 @@ def unsigner_code(signer):
         return None
 
 
-#Mobile Detect
+# Mobile Detect
 def is_mobile(user_agent):
     detects = "iPod|iPhone|Android|Opera Mini|BlackBerry| \
                webOS|UCWEB|Blazer|PSP|IEMobile"
     return re.search(detects, user_agent)
 
 
-#去除文章description中的html标签
+# 去除文章description中的html标签
 class MLStripper(HTMLParser):
     def __init__(self):
         self.reset()

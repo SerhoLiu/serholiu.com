@@ -31,11 +31,11 @@ class PostMixin(object):
         return post
 
     def get_posts_by_tag(self, tag):
-        sql = """SELECT p.slug, p.title, p.published FROM posts AS p 
-                   INNER JOIN tags AS t 
-                   ON p.id = t.post_id 
-                   WHERE t.name = ? 
-                   ORDER BY p.published desc;
+        sql = """SELECT p.slug, p.title, p.published FROM posts AS p
+                 INNER JOIN tags AS t
+                 ON p.id = t.post_id
+                 WHERE t.name = ?
+                 ORDER BY p.published DESC;
               """
         posts = self.db.query(sql, tag)
         return posts
@@ -43,53 +43,82 @@ class PostMixin(object):
     def get_posts_by_category(self, category):
         sql = """SELECT slug, title, published FROM posts
                  WHERE category = ?
-                 ORDER BY published desc;
+                 ORDER BY published DESC;
               """
         posts = self.db.query(sql, category)
         return posts
 
     def get_count_posts(self, count=None):
         if count:
-            posts = self.db.query("SELECT * FROM posts ORDER BY published "
-                                "DESC LIMIT ?;",count)
+            sql = "SELECT * FROM posts ORDER BY published DESC LIMIT ?;"
+            posts = self.db.query(sql, count)
         else:
-            posts = self.db.query("SELECT slug,title,published FROM posts ORDER BY published DESC;")
+            sql = """SELECT slug, title, published
+                     FROM posts ORDER BY published DESC;
+                  """
+            posts = self.db.query(sql)
+
         return posts
 
     def create_new_post(self, **post):
-        while 1:
+        while True:
             p = self.get_post_by_slug(post["slug"])
-            if not p: break
+            if not p:
+                break
             post["slug"] += "-2"
 
-        sql = """INSERT INTO posts (title,slug,content,tags,category,published,comment)
-                 VALUES (?,?,?,?,?,?,?);
+        sql = """INSERT INTO posts (title, slug, content, tags,
+                 category, published, comment)
+                 VALUES (?, ?, ?, ?, ?, ?, ?);
               """
-        post_id = self.db.execute(sql, post["title"], post["slug"], post["content"],
-                              post["tags"], post["category"], post["published"], post['comment'])
+
+        post_id = self.db.execute(
+            sql,
+            post["title"], post["slug"], post["content"],
+            post["tags"], post["category"], post["published"],
+            post['comment']
+        )
+
         if post_id:
             tags = [tag.strip() for tag in post["tags"].split(",")]
             for tag in tags:
-                self.db.execute("INSERT INTO tags (name,post_id) VALUES (?,?);", tag, post_id)
+                self.db.execute(
+                    "INSERT INTO tags (name, post_id) VALUES (?, ?);",
+                    tag,
+                    post_id
+                )
+
         return post_id
 
     def update_post_by_id(self, id, **post):
-        sql = """UPDATE posts SET title=?,slug=?,content=?,tags=?,category=?,
-                 published=?,comment=? WHERE id=?;
+        sql = """UPDATE posts SET title=?, slug=?, content=?, tags=?,
+                 category=?, published=?, comment=? WHERE id=?;
               """
+
         p = self.get_post_by_id(id)
         if p.tags != post["tags"]:
             has_new_tag = True
         else:
             has_new_tag = False
-        self.db.execute(sql, post["title"], post["slug"], post["content"],
-                     post["tags"], post["category"], post["published"],
-                     post['comment'], id)
+
+        self.db.execute(
+            sql,
+            post["title"], post["slug"], post["content"],
+            post["tags"], post["category"], post["published"],
+            post['comment'],
+            id
+        )
+
         if has_new_tag:
             new_tags = [tag.strip() for tag in post["tags"].split(",")]
             self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
             for tag in new_tags:
-                self.db.execute("INSERT INTO tags (name,post_id) VALUES (?,?);", tag, id)
+                self.db.execute(
+                    "INSERT INTO tags (name, post_id) VALUES (?, ?);",
+                    tag,
+                    id
+                )
+
         return True
 
     def delete_post_by_id(self, id):
@@ -97,15 +126,16 @@ class PostMixin(object):
         self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
         return True
 
-
     def get_next_prev_post(self, published):
-        next_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published > ? ORDER BY published ASC LIMIT 1;",
-          published)
+        sql = """SELECT slug, title FROM posts
+                 WHERE published > ? ORDER BY published ASC LIMIT 1;
+              """
+        next_post = self.db.get(sql, published)
 
-        prev_post = self.db.get(
-          "SELECT slug,title FROM posts WHERE published < ? ORDER BY published DESC LIMIT 1;",
-          published)
+        sql = """SELECT slug, title FROM posts
+                 WHERE published < ? ORDER BY published DESC LIMIT 1;
+              """
+        prev_post = self.db.get(sql, published)
 
         return {"next": next_post, "prev": prev_post}
 
@@ -123,5 +153,5 @@ class TagMixin(object):
                      GROUP BY name ORDER BY num DESC;
                   """
             tags = self.db.query(sql)
-        
+
         return tags
