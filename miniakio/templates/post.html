@@ -19,7 +19,7 @@
     {% end %}&#160;&#160; Post on <a href="/category/{{post.category}}">{{post.category}}</a>
     {% if current_user %}
     |<a href="/post/update/{{post.id}}">Update</a>
-     <a href="/post/delete/{{post.id}}?check={{signer}}">Del</a>
+     <a href="/post/delete/{{post.id}}?check={{signer}}" OnClick="return(window.confirm('Are you sure to delete me?'));">Delete</a>
   {% end %}
   </div>
   {% if post.comment %}
