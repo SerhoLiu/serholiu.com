@@ -30,6 +30,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         重写 `render_string` 方法，以便加入自定义 filter 和自定义模板全局变量
         """
+
         kwargs.update(self._filters)
         assert "context" not in kwargs, "context is a reserved keyword."
         kwargs["context"] = self._context
@@ -47,28 +48,30 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             return None
         return user
 
-    def get_error_html(self, status_code, **kwargs):
+    def write_error(self, status_code, **kwargs):
         """
         请求错误处理：
             1. 404 错误：将使用 `templates/e404.html` 作为 404 页面
             2. 其它错误，如果在 `app.py` 中设置 `debug = True` 将会显示错误信息，否则
                输出简单的提示。
         """
+
         if status_code == 404:
-            return self.render_string("e404.html")
-        else:
-            try:
-                exception = "%s\n\n%s" % (kwargs["exception"],
-                    traceback.format_exc())
-                if self.settings.get("debug"):
-                    self.set_header('Content-Type', 'text/plain')
-                    for line in exception:
-                        self.write(line)
-                else:
-                    self.write("oOps...! I made ​​a mistake... ")
-            except Exception:
-                return super(BaseHandler, self).get_error_html(status_code,
-                    **kwargs)
+            return self.render("e404.html")
+
+        try:
+            if self.settings.get("serve_traceback") and "exc_info" in kwargs:
+                # in debug mode, try to send a traceback
+                self.set_header('Content-Type', 'text/plain')
+                for line in traceback.format_exception(*kwargs["exc_info"]):
+                    self.write(line)
+                self.finish()
+            else:
+                self.finish("oOps...! I made ​​a mistake... ")
+        except Exception:
+            return super(BaseHandler, self).write_error(
+                status_code, **kwargs
+            )
 
     def _prepare_context(self):
         """
@@ -76,7 +79,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
-        self._context.is_mobile = is_mobile(self.request.headers['User-Agent'])
+        self._context.is_mobile = is_mobile(
+            self.request.headers.get("User-Agent", "")
+        )
 
     def _prepare_filters(self):
         """

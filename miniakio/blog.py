@@ -4,13 +4,15 @@
 import re
 from tornado.web import removeslash
 from tornado.log import access_log
+
+from blogconfig import PICKY_DIR
+
 from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
 from .libs.utils import authenticated, signer_code
 from .libs.utils import unsigner_code, archives_list
-from blogconfig import PICKY_DIR
 
 
 class EntryHandler(BaseHandler, PostMixin):
@@ -23,8 +25,13 @@ class EntryHandler(BaseHandler, PostMixin):
         tags = [tag.strip() for tag in post.tags.split(",")]
         next_prev = self.get_next_prev_post(post.published)
         signer = signer_code(str(post.id))
-        self.render("post.html", post=post, tags=tags, next_prev=next_prev,
-                                    signer=signer)
+        self.render(
+            "post.html",
+            post=post,
+            tags=tags,
+            next_prev=next_prev,
+            signer=signer
+        )
 
 
 class TagsHandler(BaseHandler, PostMixin):
@@ -35,8 +42,13 @@ class TagsHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="tag", name=name,
-            count=count)
+        self.render(
+            "archive.html",
+            posts=posts,
+            type="tag",
+            name=name,
+            count=count
+        )
 
 
 class CategoryHandler(BaseHandler, PostMixin):
@@ -47,8 +59,13 @@ class CategoryHandler(BaseHandler, PostMixin):
         if not posts:
             self.abort(404)
         count = len(posts)
-        self.render("archive.html", posts=posts, type="category",
-                                    name=category, count=count)
+        self.render(
+            "archive.html",
+            posts=posts,
+            type="category",
+            name=category,
+            count=count
+        )
 
 
 class FeedHandler(BaseHandler, PostMixin):
@@ -74,15 +91,19 @@ class HomeHandler(BaseHandler, PostMixin):
         else:
             posts = self.get_count_posts(8)
             self.render("home.html", posts=posts)
-            
+
 
 class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
 
     def get(self):
         posts = self.get_count_posts()
         count = len(posts)
-        self.render('archives.html', posts=posts, count=count,
-            archives_list=archives_list)
+        self.render(
+            "archives.html",
+            posts=posts,
+            count=count,
+            archives_list=archives_list
+        )
 
 
 class TagListHandler(BaseHandler, TagMixin):
@@ -90,8 +111,8 @@ class TagListHandler(BaseHandler, TagMixin):
     def get(self):
         tags = self.get_all_tag_count()
         count = len(tags)
-        self.render('taglist.html', tags=tags, count=count)
-      
+        self.render("taglist.html", tags=tags, count=count)
+
 
 class NewPostHandler(BaseHandler, PostMixin):
 
@@ -108,7 +129,7 @@ class NewPostHandler(BaseHandler, PostMixin):
 
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
-        if comment == '0':
+        if comment == "0":
             comment = 0
         post.update({"comment": comment})
         self.create_new_post(**post)
@@ -122,7 +143,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
     def get(self, id):
         post = self.get_post_by_id(int(id))
         if not post:
-            self.redirect('/')
+            self.redirect("/")
         self.render("admin/update.html", id=id)
 
     @authenticated
@@ -135,7 +156,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
 
-        if comment == '0':
+        if comment == "0":
             comment = 0
 
         post.update({"comment": comment})
@@ -193,19 +214,22 @@ class NewPickyHandler(BaseHandler):
     @authenticated
     def post(self):
         try:
-            files = self.request.files['picky'][0]
+            files = self.request.files["picky"][0]
         except KeyError:
-            self.redirect('/post/picky')
+            self.redirect("/post/picky")
             return
-        
-        if files['body'] and (files['filename'].split(".").pop().lower()=='md'):
+
+        ext = files["filename"].split(".").pop().lower()
+        if files["body"] and (ext == "md"):
             f = open(PICKY_DIR + '/' + files['filename'], 'wb')
             f.write(files['body'])
+
             f.close()
-            slug = files['filename'].split('.')[0]
+            slug = files["filename"].split(".")[0]
             self.redirect("/picky/%s" % slug)
             return
-        self.redirect('/post/picky')
+
+        self.redirect("/post/picky")
 
 
 class SigninHandler(BaseHandler):
@@ -222,7 +246,8 @@ class SigninHandler(BaseHandler):
         if (not email) or (not password):
             self.redirect("/auth/signin")
             return
-        pattern = r'^.+@[^.].*\.[a-z]{2,10}$'
+
+        pattern = r"^.+@[^.].*\.[a-z]{2,10}$"
         if isinstance(pattern, str):
             pattern = re.compile(pattern, flags=0)
 
@@ -265,21 +290,22 @@ class PageNotFound(BaseHandler):
         self.abort(404)
 
 
-handlers = [('/', HomeHandler),
-            ('/([a-zA-Z0-9-]+)/*', EntryHandler),
-            ('/picky/([a-zA-Z0-9-]+)/*', PickyHandler),
-            ('/picky/([a-zA-Z0-9-]+.md)', PickyDownHandler),
-            ('/tag/([^/]+)/*', TagsHandler),
-            ('/category/([^/]+)/*', CategoryHandler),
-            ('/post/new', NewPostHandler),
-            ('/post/delete/([0-9]+)', DeletePostHandler),
-            ('/post/update/([0-9]+)', UpdatePostHandler),
-            ('/post/picky', NewPickyHandler),
-            ('/auth/signin', SigninHandler),
-            ('/auth/signout', SignoutHandler),
-            ('/blog/feed', FeedHandler),
-            ('/search/all', SearchHandler),
-            ('/blog/all', ArchiveHandler),
-            ('/blog/tags', TagListHandler),
-            (r'.*', PageNotFound),
+handlers = [
+    (r"/", HomeHandler),
+    (r"/([a-zA-Z0-9-]+)/*", EntryHandler),
+    (r"/picky/([a-zA-Z0-9-]+)/*", PickyHandler),
+    (r"/picky/([a-zA-Z0-9-]+.md)", PickyDownHandler),
+    (r"/tag/([^/]+)/*", TagsHandler),
+    (r"/category/([^/]+)/*", CategoryHandler),
+    (r"/post/new", NewPostHandler),
+    (r"/post/delete/([0-9]+)", DeletePostHandler),
+    (r"/post/update/([0-9]+)", UpdatePostHandler),
+    (r"/post/picky", NewPickyHandler),
+    (r"/auth/signin", SigninHandler),
+    (r"/auth/signout", SignoutHandler),
+    (r"/blog/feed", FeedHandler),
+    (r"/search/all", SearchHandler),
+    (r"/blog/all", ArchiveHandler),
+    (r"/blog/tags", TagListHandler),
+    (r".*", PageNotFound),
 ]

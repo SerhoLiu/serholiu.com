@@ -10,13 +10,10 @@ import operator
 from functools import reduce
 
 
-#trans_5c = b"".join([chr(x ^ 0x5C) for x in range(256)])
-#trans_36 = b"".join([chr(x ^ 0x36) for x in range(256)])
+rand_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 
-def get_random_string(length=12,
-                      allowed_chars='abcdefghijklmnopqrstuvwxyz'
-                                    'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'):
+def get_random_string(length=12):
     """
     Returns a random string of length characters from the set of a-z, A-Z, 0-9
     for use as a salt.
@@ -25,11 +22,12 @@ def get_random_string(length=12,
     a 71-bit salt. log_2((26+26+10)^12) =~ 71 bits
     """
     import random
+
     try:
         random = random.SystemRandom()
     except NotImplementedError:
         pass
-    return ''.join([random.choice(allowed_chars) for i in range(length)])
+    return "".join([random.choice(rand_chars) for i in range(length)])
 
 
 def constant_time_compare(val1, val2):
@@ -61,7 +59,7 @@ def long_to_bin(x):
     """
     hex = "%x" % (x)
     if len(hex) % 2 == 1:
-        hex = '0' + hex
+        hex = "0" + hex
     return binascii.unhexlify(hex)
 
 
@@ -129,22 +127,25 @@ class PasswordCrypto(object):
     def get_encrypted(cls, password, salt=None, iterations=None):
         if not password:
             return None
-        if (not salt) or ('$' in salt):
+        if (not salt) or ("$" in salt):
             salt = get_random_string()
         if not iterations:
             iterations = cls.ITERATIONS
 
         encrypted = pbkdf2(password, salt, iterations, digest=cls.DIGEST)
-        
+
         # Python3 bytes 表示总是加了个 b''，这里为了兼容 Python2 版的，用了个
         # 办法去掉了那东西，不知道有其它好办法没有
         encrypted = "%s" % base64.b64encode(encrypted).strip()
         encrypted = encrypted.split("'")[1]
-        return "{0}${1}${2}${3}".format(cls.ALGORITHM, cls.ITERATIONS, salt, encrypted)
-    
+        return "{0}${1}${2}${3}".format(
+            cls.ALGORITHM, cls.ITERATIONS,
+            salt, encrypted
+        )
+
     @classmethod
     def authenticate(cls, password, encrypted):
-        algorithm, iterations, salt, encrypt = encrypted.split('$', 3)
+        algorithm, iterations, salt, encrypt = encrypted.split("$", 3)
         if algorithm != cls.ALGORITHM:
             return False
         encrypted_new = cls.get_encrypted(password, salt, int(iterations))
