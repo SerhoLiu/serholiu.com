@@ -77,7 +77,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._context = ObjectDict()
         self._context.sitename = SITE_NAME
-        self._context.is_mobile = is_mobile(self.request.headers['User-Agent'])
+        self._context.is_mobile = is_mobile(
+            self.request.headers.get("User-Agent", "")
+        )
 
     def _prepare_filters(self):
         """
