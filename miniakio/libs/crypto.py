@@ -137,10 +137,7 @@ class PasswordCrypto(object):
 
         encrypted = pbkdf2(password, salt, iterations, digest=cls.DIGEST)
 
-        # Python3 bytes 表示总是加了个 b''，这里为了兼容 Python2 版的，用了个
-        # 办法去掉了那东西，不知道有其它好办法没有
-        encrypted = "%s" % base64.b64encode(encrypted).strip()
-        encrypted = encrypted.split("'")[1]
+        encrypted = base64.b64encode(encrypted).decode("utf-8")
         return "{0}${1}${2}${3}".format(
             cls.ALGORITHM, cls.ITERATIONS,
             salt, encrypted

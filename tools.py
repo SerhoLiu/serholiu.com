@@ -3,22 +3,24 @@
 
 # 用于创建数据库，请按照下面的要求填写相关的信息，再运行`python create_db.py`，
 # 并将生成的数据库拷贝到 blog 目录下
+
 import os
 import sys
 import base64
 import getopt
 import sqlite3
+
 from miniakio.libs import crypto
 
 # 编辑下面的信息
 
-USERNAME = "SErHo"                  # 用户名
-EMAIL = "serholiu@gmail.com"        # 邮箱，登陆的时候使用
-PASSWORD = "123456"                 # 登陆密码
-DBFILE = "example/newblog.db"               # 数据库名称，请保持和 blog/config.py 中设置的名称相同
+USERNAME = "SErHo"             # 用户名
+EMAIL = "serholiu@gmail.com"   # 邮箱，登陆的时候使用
+PASSWORD = "123456"            # 登陆密码
+DBFILE = "example/newblog.db"  # 数据库名称，请保持和 blog/config.py 中设置的名称相同
+
 
 # 请不要改动下面的内容
-
 
 def create_db(conn):
     c = conn.cursor()
@@ -58,13 +60,13 @@ def create_user(conn):
 
 
 def get_secret():
-    return base64.b64encode(os.urandom(32))
+    return base64.b64encode(os.urandom(32)).decode("utf-8")
 
 
 def main(argv):
     help = """
 Usage: python tools -o <opt>
-    
+
     opt list:
     createdb      创建数据库并添加用户信息(请先填写相关信息)
     getsecret     随机生成一个 Cookie Secret
@@ -84,7 +86,7 @@ Usage: python tools -o <opt>
         else:
             print(help)
             sys.exit()
-    
+
     if opt == "createdb":
         conn = sqlite3.connect(DBFILE)
         print("开始创建数据库...")
