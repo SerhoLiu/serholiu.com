@@ -3,8 +3,10 @@
 
 import os.path
 import tornado.web
+
 from .libs import sqlite3lib
 from .blog import handlers as handler
+
 from blogconfig import COOKIE_SECRET, DATABASE, DEBUG
 
 
