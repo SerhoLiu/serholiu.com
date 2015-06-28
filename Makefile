@@ -6,7 +6,7 @@ css:
 	lessc $(LESSPATH)effector.less > $(LESSPATH)style.css
 
 mincss:
-	lessc --yui-compress $(LESSPATH)effector.less > $(LESSPATH)style.min.css
+	lessc $(LESSPATH)effector.less --clean-css="--s1 --advanced" > $(LESSPATH)style.min.css
 
 run:
 	python run.py
