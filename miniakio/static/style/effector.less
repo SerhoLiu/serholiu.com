@@ -1,9 +1,9 @@
 @import "reset.less";
 
 //基本样式
-@link-color: #F95B1F;
-@link-hover-color: #A33B14;
-@bg-color: #E6EBEA;
+@link-color: #f95b1f;
+@link-hover-color: #a33b14;
+@bg-color: #e6ebea;
 
 .border-radius (@radius: 5px) {
     border-radius: @radius;
@@ -49,7 +49,7 @@ h1, h2, h3, h4 {
     text-rendering: optimizelegibility;
 
     small {
-        color: #CED1D1;
+        color: #ced1d1;
     }
 }
 
@@ -64,7 +64,7 @@ h2 {
 
 h3, h4 {
     color:  #777;
-    background-color: #F2F8F7;
+    background-color: #f7f7f7;
     margin:  20px -20px;
     font-size:  20px;
     padding:  0px 20px;
@@ -77,7 +77,8 @@ h3, h4 {
 
 
 ul, ol {
-    font-size: 14px;
+    font-size: 15px;
+    line-height: 30px;
     padding: 0;
     margin: 0 0 10px 25px;
 
@@ -97,10 +98,6 @@ ul {
 
 ol {
     list-style: decimal;
-}
-
-li {
-    line-height: 30px;
 }
 
 hr { 
@@ -128,14 +125,13 @@ abbr {
 }
 
 blockquote {
+    color:  #777;
     padding: 0 0 0 14px;
     margin: 0 0 15px;
     border-left: 5px solid #eee;
 
     p {
         margin-bottom: 0;
-        font-size: 14px;
-        line-height: 34px;
         font-weight: 300;
         color:  #777;
     }
@@ -158,14 +154,13 @@ blockquote {
 
 code, pre {
     font-family: Monaco, Menlo, "Courier New", monospace;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 code {
     padding: 3px 4px;
-    color: #d14;
+    color: #93a1a1;
     background-color: #f7f7f9;
-    border: 1px solid #e1e1e8;
     .border-radius(3px);
 }
 
@@ -203,11 +198,11 @@ p {
     color: #555;
 
     a {
-        border-bottom: 1px dashed #CED1D1;
+        border-bottom: 1px dashed #ced1d1;
     }
 
     small {
-        font-size: 13px;
+        font-size: 14px;
         color: #999;
     }
 }
@@ -216,8 +211,8 @@ body{
     background: @bg-color fixed center top no-repeat;
     font-size: 13px;
     word-wrap: break-word;
-    font-family: "Quantico","Luxi Sans","DejaVu Sans",Tahoma,"Hiragino Sans GB",STHeiti,"微软雅黑",sans-serif!important;
-    color: #555;
+    font-family: "Quantico","Helvetica Neue",Helvetica,"Hiragino Sans GB","STHeitiSC-Light","WenQuanYi Micro Hei","Microsoft YaHei","微软雅黑",Arial,sans-serif!important;
+    color: #424242;
 }
 
 .bg-image {
@@ -296,12 +291,10 @@ body{
     ul {
         float: right;
         margin-bottom: 0px;
-        font-size: 12px;
         list-style: none;
 
         li {
             float: left;
-            
 
             a {
                 margin: 5px 0 0 10px;
@@ -355,6 +348,7 @@ body{
     }
 
     ul {
+        font-size: 14px;
         list-style: none;
         margin-left: 5px;
 
@@ -398,6 +392,7 @@ body{
 
     img {
         max-width: 640px;
+        margin: 10px auto;
         height: auto;
         display: block;
         .border-radius;
@@ -537,11 +532,11 @@ body{
 .clearfix{zoom:1}
 
 ::selection {
-    background: #FF5E99;
+    background: #ff5e99;
     color: #fff;
 }
 ::-moz-selection {
-    background: #FF5E99;
+    background: #ff5e99;
     color: #fff;
 }
 
