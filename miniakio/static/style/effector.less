@@ -126,8 +126,8 @@ abbr {
 
 blockquote {
     color:  #777;
+    margin-bottom: 15px;
     padding: 0 0 0 14px;
-    margin: 0 0 15px;
     border-left: 5px solid #eee;
 
     p {
@@ -167,7 +167,6 @@ code {
 pre {
     display: block;
     padding: 8px;
-    margin: 0 0 15px;
     line-height: 20px;
     background-color: #f7f7f9;
     border: 1px solid #e1e1e8;
@@ -192,14 +191,10 @@ cite {
 }
 
 p {
-    margin: 0 0 14px;
+    margin-bottom: 15px;
     font-size: 15px;
     line-height: 30px;
     color: #555;
-
-    a {
-        border-bottom: 1px dashed #ced1d1;
-    }
 
     small {
         font-size: 14px;
@@ -226,6 +221,7 @@ body{
 }
 
 .highlight-pre {
+    margin-bottom: 15px;
     overflow: auto;
 }
 
@@ -312,7 +308,7 @@ body{
     }
 }
 
-// start home style
+// home page style
 #home-container {
     margin: 0 auto;
     width: 920px;
@@ -369,24 +365,16 @@ body{
     
 }
 
-// end home style
-
-
 #container {
     margin: 0 auto;
     margin-top: 60px;
     width: 680px;
 }
 
-#main {
-    padding: 20px 0;
-    min-height: 400px;
-    line-height: 1.4em;
-}
-
 .content {
     background-color: #fff;
-    padding:0 20px 10px;
+    margin: 20px 0;
+    padding: 0 20px;
     .border-radius;
     .box-shadow;
 
@@ -398,12 +386,98 @@ body{
         .border-radius;
     }
 
-    article hr {
-        display: block;
-        width: 18%;
-        margin: 31px auto;
-        border: 0 none;
-        border-top: 3px dotted #dededc
+    article {
+
+        a {
+            border-bottom: 1px dashed #ced1d1;
+        }
+
+        h2 a {
+            border-bottom: none;
+        }
+
+        hr {
+            display: block;
+            width: 18%;
+            margin: 31px auto;
+            border: 0 none;
+            border-top: 3px dotted #dededc;
+        }
+
+        .footnote-ref a {
+            border-bottom: none;
+            vertical-align: super;
+            font-size: 0.8em;
+        }
+
+        .footnotes {
+            ol, p {
+                font-size: 13px;
+                line-height: 26px;
+                font-weight: 300;
+                color: #777;
+                margin-bottom: 5px;
+            }
+        }
+
+        .footnotes a[rev=footnote] {
+            margin-left: 4px;
+            border-bottom: none;
+        }
+
+        .akio-table {
+            margin-bottom: 15px;
+            font-size: 15px;
+            line-height: 26px;
+            color: #555;
+            border-collapse: collapse;
+            border-spacing: 0;
+            empty-cells: show;
+            border: 1px solid #e1e1e8;
+
+            td, th {
+                border-left: 1px solid #e1e1e8;
+                border-width: 0 0 0 1px;
+                font-size: inherit;
+                margin: 0;
+                overflow: visible;
+                padding: 0.5em 1em;
+            }
+
+            td:first-child, th:first-child {
+                border-left-width: 0;
+            }
+
+            thead {
+                color: #9393a1;
+                background-color: #f7f7f9;
+                text-align: left;
+                vertical-align: bottom;
+            }
+        }
+    }
+
+    .tag-list {
+        border-top: 1px solid #ddd;
+        margin: 15px 0 10px;
+        padding-top: 3px;
+        font-size: 12px;
+        color: #93a1a1;
+
+        a {
+            color: #93a1a1;
+            margin-left: 3px
+        }
+    }
+
+    .navigation {
+        margin-top: 7px;
+        padding: 10px 0;
+        border-top: 1px dashed #ddd;
+
+        .next {
+            float: right;
+        }
     }
 }
 
@@ -421,31 +495,6 @@ body{
 .home-more {
     text-align: center;
     padding: 5px;
-    
-}
-
-//tag list style
-.tag-list {
-    border-top: 1px solid #ddd;
-    margin: 15px 0 10px;
-    padding-top: 3px;
-    font-size: 12px;
-    color: #93a1a1;
-
-    a {
-        color: #93a1a1;
-        margin-left: 3px
-    }
-}
-
-.navigation {
-    padding-top:6px;
-    margin-top:7px; 
-    border-top: 1px dashed #ddd;
-
-    .next {
-        float: right;
-    }
 }
 
 #footer {
@@ -482,6 +531,7 @@ body{
 }
 
 .group-tags {
+
     .tag-box {
         list-style:none;
         margin:0;
@@ -502,13 +552,13 @@ body{
             }
         }
     }
+
     span.more {
         padding:3px 6px ;
         margin: 2px;
     }
 }
 
-//untils Style
 .top-box {
     .top-border-radius;
 }
@@ -526,10 +576,27 @@ body{
     .border-radius(3px);
 }
 
-.clear{clear:both;display:block;overflow:hidden;visibility:hidden;width:0;height:0}
-.clearfix:before,.clearfix:after{content:"";display:table}
-.clearfix:after{clear:both}
-.clearfix{zoom:1}
+.clear {
+    clear: both;
+    display: block;
+    overflow: hidden;
+    visibility: hidden;
+    width: 0;
+    height: 0;
+}
+
+.clearfix:before, .clearfix:after {
+    content: "";
+    display: table;
+}
+
+.clearfix:after {
+    clear: both;
+}
+
+.clearfix {
+    zoom: 1;
+}
 
 ::selection {
     background: #ff5e99;
@@ -541,8 +608,8 @@ body{
 }
 
 @font-face {
-  font-family: 'Quantico';
-  font-style: normal;
-  font-weight: 400;
-  src: local('Quantico'), local('Quantico-Regular'), url(Quantico.woff) format('woff');
+    font-family: 'Quantico';
+    font-style: normal;
+    font-weight: 400;
+    src: local('Quantico'), local('Quantico-Regular'), url(Quantico.woff) format('woff');
 }

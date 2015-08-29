@@ -191,8 +191,8 @@ abbr {
 }
 blockquote {
   color: #777;
+  margin-bottom: 15px;
   padding: 0 0 0 14px;
-  margin: 0 0 15px;
   border-left: 5px solid #eee;
 }
 blockquote p {
@@ -229,7 +229,6 @@ code {
 pre {
   display: block;
   padding: 8px;
-  margin: 0 0 15px;
   line-height: 20px;
   background-color: #f7f7f9;
   border: 1px solid #e1e1e8;
@@ -251,13 +250,10 @@ cite {
   font-style: normal;
 }
 p {
-  margin: 0 0 14px;
+  margin-bottom: 15px;
   font-size: 15px;
   line-height: 30px;
   color: #555;
-}
-p a {
-  border-bottom: 1px dashed #ced1d1;
 }
 p small {
   font-size: 14px;
@@ -279,6 +275,7 @@ body {
   z-index: -2;
 }
 .highlight-pre {
+  margin-bottom: 15px;
   overflow: auto;
 }
 .highlighttable {
@@ -413,14 +410,10 @@ body {
   margin-top: 60px;
   width: 680px;
 }
-#main {
-  padding: 20px 0;
-  min-height: 400px;
-  line-height: 1.4em;
-}
 .content {
   background-color: #fff;
-  padding: 0 20px 10px;
+  margin: 20px 0;
+  padding: 0 20px;
   border-radius: 5px;
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
@@ -437,12 +430,83 @@ body {
   -moz-border-radius: 5px;
   -webkit-border-radius: 5px;
 }
+.content article a {
+  border-bottom: 1px dashed #ced1d1;
+}
+.content article h2 a {
+  border-bottom: none;
+}
 .content article hr {
   display: block;
   width: 18%;
   margin: 31px auto;
   border: 0 none;
   border-top: 3px dotted #dededc;
+}
+.content article .footnote-ref a {
+  border-bottom: none;
+  vertical-align: super;
+  font-size: 0.8em;
+}
+.content article .footnotes ol,
+.content article .footnotes p {
+  font-size: 13px;
+  line-height: 26px;
+  font-weight: 300;
+  color: #777;
+  margin-bottom: 5px;
+}
+.content article .footnotes a[rev=footnote] {
+  margin-left: 4px;
+  border-bottom: none;
+}
+.content article .akio-table {
+  margin-bottom: 15px;
+  font-size: 15px;
+  line-height: 26px;
+  color: #555;
+  border-collapse: collapse;
+  border-spacing: 0;
+  empty-cells: show;
+  border: 1px solid #e1e1e8;
+}
+.content article .akio-table td,
+.content article .akio-table th {
+  border-left: 1px solid #e1e1e8;
+  border-width: 0 0 0 1px;
+  font-size: inherit;
+  margin: 0;
+  overflow: visible;
+  padding: 0.5em 1em;
+}
+.content article .akio-table td:first-child,
+.content article .akio-table th:first-child {
+  border-left-width: 0;
+}
+.content article .akio-table thead {
+  color: #9393a1;
+  background-color: #f7f7f9;
+  text-align: left;
+  vertical-align: bottom;
+}
+.content .tag-list {
+  border-top: 1px solid #ddd;
+  margin: 15px 0 10px;
+  padding-top: 3px;
+  font-size: 12px;
+  color: #93a1a1;
+}
+.content .tag-list a {
+  color: #93a1a1;
+  margin-left: 3px;
+}
+.content .navigation {
+  margin-top: 7px;
+  padding: 10px 0;
+  border-top: 1px dashed #ddd;
+}
+.content .navigation .next {
+  float: right;
 }
 .date-right {
   float: right;
@@ -454,25 +518,6 @@ body {
 .home-more {
   text-align: center;
   padding: 5px;
-}
-.tag-list {
-  border-top: 1px solid #ddd;
-  margin: 15px 0 10px;
-  padding-top: 3px;
-  font-size: 12px;
-  color: #93a1a1;
-}
-.tag-list a {
-  color: #93a1a1;
-  margin-left: 3px;
-}
-.navigation {
-  padding-top: 6px;
-  margin-top: 7px;
-  border-top: 1px dashed #ddd;
-}
-.navigation .next {
-  float: right;
 }
 #footer {
   position: relative;
@@ -573,11 +618,11 @@ body {
   zoom: 1;
 }
 ::selection {
-  background: #FF5E99;
+  background: #ff5e99;
   color: #fff;
 }
 ::-moz-selection {
-  background: #FF5E99;
+  background: #ff5e99;
   color: #fff;
 }
 @font-face {

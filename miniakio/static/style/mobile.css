@@ -50,6 +50,10 @@
     height: auto;
 }
 
+.content .home-more {
+    padding: 10px 0;
+}
+
 .post-meta {
     margin-top: 10px;
     margin-bottom: 10px;
