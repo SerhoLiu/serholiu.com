@@ -1,7 +1,6 @@
 ﻿User-agent: *
 Allow: /*html$
 Disallow: /*?
-Disallow: /auth/
 Disallow: /post/new
 Disallow: /post/picky
 Disallow: /blog/feed
@@ -9,4 +8,3 @@ Disallow: /blog/feed
 # BEGIN XML-SITEMAP-PLUGIN
 Sitemap: http://serholiu.com/blog/all
 # END XML-SITEMAP-PLUGIN
-

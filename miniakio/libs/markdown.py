@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
-import misaka as m
+import mistune
 
 from StringIO import StringIO
 from pygments import highlight
@@ -13,21 +13,27 @@ from tornado.escape import to_unicode
 from tornado.escape import xhtml_escape
 
 
-class AkioRender(m.HtmlRenderer, m.SmartyPants):
+class AkioRender(mistune.Renderer):
 
-    def block_code(self, text, lang):
+    def block_code(self, code, lang):
         if lang:
             lexer = get_lexer_by_name(lang, stripall=True)
         else:
-            return "<pre><code>%s</code></pre>" % xhtml_escape(text.strip())
+            return "<pre><code>%s</code></pre>" % xhtml_escape(code.strip())
 
         formatter = HtmlFormatter(
             noclasses=False,
             linenos=True,
         )
 
-        return '<div class="highlight-pre">%s</div>' % \
-            highlight(text, lexer, formatter)
+        code = highlight(code, lexer, formatter)
+        return '<div class="highlight-pre">%s</div>' % code
+
+    def table(self, header, body):
+        return (
+            '<table class="akio-table">\n<thead>%s</thead>\n'
+            '<tbody>\n%s</tbody>\n</table>\n'
+        ) % (header, body)
 
     def autolink(self, link, is_email):
         if is_email:
@@ -39,8 +45,8 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
             }
 
         title = link.replace("http://", "").replace("https://", "")
-        if len(title) > 30:
-            title = title[:24] + "..."
+        if len(title) > 60:
+            title = title[:54] + "..."
 
         pattern = r"http://v.youku.com/v_show/id_([a-zA-Z0-9\=]+).html"
         match = re.match(pattern, link)
@@ -61,11 +67,8 @@ class AkioRender(m.HtmlRenderer, m.SmartyPants):
 
 def markdown(text):
     text = to_unicode(text)
-    render = AkioRender(flags=m.HTML_USE_XHTML)
-    md = m.Markdown(
-        render,
-        extensions=m.EXT_FENCED_CODE | m.EXT_AUTOLINK,
-    )
+    render = AkioRender()
+    md = mistune.Markdown(renderer=render)
     return md.render(text)
 
 
