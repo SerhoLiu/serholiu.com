@@ -13,6 +13,7 @@ from blogconfig import COOKIE_SECRET
 
 
 class ObjectDict(dict):
+
     def __getattr__(self, key):
         if key in self:
             return self[key]
@@ -113,6 +114,7 @@ def is_mobile(user_agent):
 
 # 去除文章description中的html标签
 class MLStripper(HTMLParser):
+
     def __init__(self):
         self.reset()
         self.fed = []
