@@ -73,39 +73,6 @@ option {
   text-align: left;
   vertical-align: baseline;
 }
-body {
-  font-size: 12px;
-  font-family: inherit;
-  line-height: 1;
-}
-blockquote,
-q {
-  quotes: none;
-}
-blockquote:before,
-blockquote:after,
-q:before,
-q:after {
-  content: '';
-}
-:focus {
-  outline: 0;
-}
-del {
-  text-decoration: line-through;
-}
-table {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 100%;
-}
-code {
-  font-family: monospace;
-}
-img,
-video {
-  max-width: 100%;
-}
 a {
   color: #f95b1f;
   text-decoration: none;
@@ -262,7 +229,7 @@ p small {
 body {
   background: #e6ebea fixed center top no-repeat;
   font-size: 13px;
-  word-wrap: break-word;
+  line-height: 1;
   font-family: "Quantico", "Helvetica Neue", Helvetica, "Hiragino Sans GB", "STHeitiSC-Light", "WenQuanYi Micro Hei", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
   color: #424242;
 }
@@ -274,16 +241,12 @@ body {
   left: 0;
   z-index: -2;
 }
-.highlight-pre {
-  margin-bottom: 15px;
-  overflow: auto;
-}
 .highlighttable {
   width: 100%;
-}
-.highlighttable tr td {
-  padding: 0;
-  overflow: auto;
+  margin-bottom: 15px;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 .highlighttable .linenos {
   width: 40px;
@@ -385,6 +348,9 @@ body {
   overflow: hidden;
   position: relative;
   z-index: 1;
+}
+.curtain .avater img {
+  max-width: 100%;
 }
 .curtain h2 {
   line-height: 30px;

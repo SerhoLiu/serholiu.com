@@ -25,24 +25,23 @@
 }
 
 #mobile-header ul {
-    margin-top: 10px;
-    margin-bottom: 5px;
+    margin: 10px auto;
     font-size: 12px;
     list-style: none;
-    display:inline-table;
+    display: inline-table;
     float: none;
 }
 
 #mobile-header ul li {
     display: inline;
-    margin: 5px;
+    margin: 0 5px;
     line-height: 15px;
 }
 
 #mobile-header ul li a {
     padding: 2px;
     display: inline;
-    font-size: 14px;
+    font-size: 15px;
 }
 
 .content img {
@@ -69,6 +68,6 @@
     font-size: 16px;
 }
 
-.navigation .next {
+.content .navigation .next {
     float: none;
 }
