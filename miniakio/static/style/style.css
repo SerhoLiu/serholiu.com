@@ -160,7 +160,7 @@ ol ol {
   margin-bottom: 0;
 }
 ul {
-  list-style: disc;
+  list-style: circle;
 }
 ul .unstyled {
   margin-left: 0;
