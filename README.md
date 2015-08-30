@@ -1,15 +1,16 @@
-## 我的博客源代码
+## 一点说明
 
 > A: 又是一个博客系统？
 > B: 是。但是并不适合大家使用，自己折腾请看 [Jekyll][1]，[Hugo][2], [Hexo][3] 这类通用的。
 > A: 我就看看！
 > B: 嗯，请随意。
 
-这是我现在博客的源代码，这里有一点介绍: http://serholiu.com/about-miniakio. 基于 [Tornado][4] 和 sqlite3 数据库，采用 Markdown 写作。
+这是我现在博客的源代码，这里有一点介绍: http://serholiu.com/about-miniakio. 基于 Python3、 [Tornado][4] 和 SQLite3，采用 Markdown 写作。
 
 
 ## 试一下？ 
 
+* 安装 Python3: 需要 Python3.4 以上版本
 * 获取代码: `git clone https://github.com/SerhoLiu/serholiu.com.git`
 * 切换到 develop 分支: `git checkout develop`
 * 安装依赖: `pip install -r requirements.txt`
