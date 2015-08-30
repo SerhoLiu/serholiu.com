@@ -76,17 +76,11 @@ class FeedHandler(BaseHandler, PostMixin):
         self.render("feed.xml", posts=posts)
 
 
-class SearchHandler(BaseHandler):
-
-    def get(self):
-        self.render("search.html")
-
-
 class HomeHandler(BaseHandler, PostMixin):
 
     def get(self):
         if self._context.is_mobile:
-            posts = self.get_count_posts(5)
+            posts = self.get_count_posts(1)
             self.render("index.html", posts=posts)
         else:
             posts = self.get_count_posts(8)
@@ -304,7 +298,6 @@ handlers = [
     (r"/auth/signin", SigninHandler),
     (r"/auth/signout", SignoutHandler),
     (r"/blog/feed", FeedHandler),
-    (r"/search/all", SearchHandler),
     (r"/blog/all", ArchiveHandler),
     (r"/blog/tags", TagListHandler),
     (r".*", PageNotFound),

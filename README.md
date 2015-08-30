@@ -1,15 +1,26 @@
-## A Little About
+## 我的博客源代码
 
-The Miniakio 2 instructions on my blog(Chinese): http://serholiu.com/about-miniakio
+> A: 又是一个博客系统？
+> B: 是。但是并不适合大家使用，自己折腾请看 [Jekyll][1]，[Hugo][2], [Hexo][3] 这类通用的。
+> A: 我就看看！
+> B: 嗯，请随意。
 
-This is my blog source code, powered by [Tornado][1] web framework.It's not yet a static blog generator, but it's really simple and lightweight,it has a blog engine must features, such as Category, Tag, Post, Page, Feed,now it's use sqlite3 database.
+这是我现在博客的源代码，这里有一点介绍: http://serholiu.com/about-miniakio. 基于 [Tornado][4] 和 sqlite3 数据库，采用 Markdown 写作。
 
-You need use Markdown markup language written post with your favorite editor, sign in blog `hostname:port/auth/signin` (username and password in tools.py) and go to
-`/post/new` post it.Picky type post, just go to `/post/picky` upload your markdown file.
 
-## Post Example
+## 试一下？ 
 
-Post (see `example/post_example.md`):
+* 获取代码: `git clone https://github.com/SerhoLiu/serholiu.com.git`
+* 切换到 develop 分支: `git checkout develop`
+* 安装依赖: `pip install -r requirements.txt`
+* 创建数据库: 填写 `tools.py` 中的相关信息，运行 `python tools.py -o createdb`
+* 发布文章: 从 `http://yourdomain/auth/sigin` 登录，Post 直接复制到发布框，Picky 直接上传
+* 用在生产环境(玩笑开大了):  [看我博客][5]
+
+
+## Post\Picky 文章格式
+
+Post (例子 `example/post_example.md`):
 
     # Title
 
@@ -28,28 +39,15 @@ Post (see `example/post_example.md`):
     print math.sqrt(9)
     ```
 
-Picky compare with Post,no tags, category and slug(see `picky` folder).
+Picky 和 Post 相比，只有 published (例子见 `picky` 文件夹).
 
-## Installation and Basic Usage 
-
-Requirements:
->
-1. [Tornado][1]
-2. [misaka][2]
-3. [pygments][3]
-
-* Get this: `git clone https://github.com/SerhoLiu/serholiu.com.git`
-* If you use Python3, you should `git checkout python3`
-* Install required package: `pip install -r requirements.txt`
-* Create Sqlite3 database: edit `tools.py` and `python tools.py -o createdb`
-* Disqus support: change `miniakio/templates/post.html`  `disqus_shortname` into your username.
-* Production suggest: See [My blog][4](Chinese)
 
 ## License
 
 MIT LICENSE, see MIT-LICENSE.txt
 
-[1]: http://www.tornadoweb.org/
-[2]: http://misaka.61924.nl/
-[3]: http://pygments.org/
-[4]: http://serholiu.com/tornado-nginx-supervisord
+[1]: http://jekyllrb.com/
+[2]: https://gohugo.io/
+[3]: https://hexo.io/zh-cn/
+[4]: http://www.tornadoweb.org/
+[5]: http://serholiu.com/tornado-nginx-supervisord

@@ -13,6 +13,7 @@ from blogconfig import COOKIE_SECRET
 
 
 class ObjectDict(dict):
+
     def __getattr__(self, key):
         if key in self:
             return self[key]

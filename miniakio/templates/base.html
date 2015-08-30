@@ -4,15 +4,10 @@
     <meta charset="UTF-8" />
     <title>{% block title %}{{escape(context.sitename)}}{% end %}</title>
     <meta name="author" content="Serho Liu">
-    <meta name="description" content="{% block head %}SErHo's Blog,Please Call me Serho Liu.{% end %}" />
+    <meta name="description" content="{% block head %}SErHo's Blog, Please Call me Serho Liu.{% end %}" />
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
     <link href="/blog/feed" rel="alternate" type="application/atom+xml">
-    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <!-- Le styles -->
-    <link href="{{static_url('style/style.min.css')}}" rel="stylesheet" type="text/css" media="all">
+    <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
     {% if context.is_mobile %}
     <meta content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0" name="viewport" />
     <link href="{{static_url('style/mobile.css')}}" rel="stylesheet" type="text/css" media="all">
@@ -32,7 +27,7 @@
           <li><a href="/picky/links">Link</a></li>
           <li><a href="/blog/all">Archive</a></li>
           <li><a href="/blog/tags">Tags</a></li>
-          <li><a href="/search/all">Search</a></li>
+          <li><a href="/picky/projects">Projects</a></li>
         </ul>
       </div>
     </header>
@@ -48,15 +43,13 @@
           <li><a href="/picky/links">Link</a></li>
           <li><a href="/blog/all">Archive</a></li>
           <li><a href="/blog/tags">Tags</a></li>
-          <li><a href="/search/all">Search</a></li>
+          <li><a href="/picky/projects">Projects</a></li>
         </ul>
       </header>
       {% end %}
-      <div id="main" class="clearfix">
-        <div class="content clearfix">
-        {% block content %}{% end %}
-        </div>
-        {% block nav %}{% end %}
+      <div class="content clearfix">
+      {% block content %}{% end %}
+      {% block nav %}{% end %}
       </div>
 
       <footer id="footer" class="top-box clearfix">
