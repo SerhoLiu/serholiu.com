@@ -144,7 +144,6 @@ class UpdatePostHandler(BaseHandler, PostMixin):
     def post(self, id):
         markdown = self.get_argument("markdown", None)
         comment = self.get_argument("comment", 1)
-        print comment
         if not markdown:
             self.redirect("/post/update/%s" % str(id))
 
@@ -165,7 +164,6 @@ class DeletePostHandler(BaseHandler, PostMixin):
     @authenticated
     def get(self, id):
         signer = self.get_argument("check", None)
-        print signer
         if unsigner_code(signer) == id:
             self.delete_post_by_id(int(id))
         self.redirect("/")
@@ -177,7 +175,7 @@ class PickyHandler(BaseHandler):
     def get(self, slug):
         mdfile = PICKY_DIR + "/" + str(slug) + ".md"
         try:
-            md = open(mdfile)
+            md = open(mdfile, "r", encoding="utf-8")
         except IOError:
             self.abort(404)
         markdown = md.read()
@@ -192,7 +190,7 @@ class PickyDownHandler(BaseHandler):
     def get(self, slug):
         mdfile = PICKY_DIR + "/" + str(slug)
         try:
-            md = open(mdfile)
+            md = open(mdfile, "r", encoding="utf-8")
         except IOError:
             self.abort(404)
         markdown = md.read()
@@ -215,13 +213,16 @@ class NewPickyHandler(BaseHandler):
             self.redirect("/post/picky")
             return
 
-        ext = files['filename'].split(".").pop().lower()
+        ext = files["filename"].split(".").pop().lower()
         if files["body"] and (ext == "md"):
-            f = open(PICKY_DIR + "/" + files["filename"], "w")
-            f.write(files["body"])
+            f = open(PICKY_DIR + '/' + files['filename'], 'wb')
+            f.write(files['body'])
+
             f.close()
             slug = files["filename"].split(".")[0]
             self.redirect("/picky/%s" % slug)
+            return
+
         self.redirect("/post/picky")
 
 
@@ -239,8 +240,9 @@ class SigninHandler(BaseHandler):
         if (not email) or (not password):
             self.redirect("/auth/signin")
             return
+
         pattern = r"^.+@[^.].*\.[a-z]{2,10}$"
-        if isinstance(pattern, basestring):
+        if isinstance(pattern, str):
             pattern = re.compile(pattern, flags=0)
 
         if not pattern.match(email):
@@ -255,7 +257,7 @@ class SigninHandler(BaseHandler):
         encryped_pass = user.password
         if PasswordCrypto.authenticate(password, encryped_pass):
             token = user.salt + "/" + str(user.id)
-            self.set_secure_cookie("token", str(token))
+            self.set_secure_cookie("token", token)
             self.redirect(self.get_argument("next", "/post/new"))
             return
         else:
@@ -270,6 +272,7 @@ class SignoutHandler(BaseHandler):
         user = self.current_user
         if not user:
             self.redirect("/")
+            return
         salt = get_random_string()
         self.update_user_salt(user.id, salt)
         self.clear_cookie("token")

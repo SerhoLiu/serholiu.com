@@ -6,6 +6,7 @@
 
 import os
 import sys
+import base64
 import getopt
 import sqlite3
 
@@ -59,7 +60,7 @@ def create_user(conn):
 
 
 def get_secret():
-    return os.urandom(32).encode("base64")
+    return base64.b64encode(os.urandom(32)).decode("utf-8")
 
 
 def main(argv):
@@ -74,25 +75,28 @@ Usage: python tools -o <opt>
     try:
         opts, args = getopt.getopt(argv, "ho:", ["opt="])
     except getopt.GetoptError:
-        print help
+        print(help)
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print help
+            print(help)
             sys.exit()
         elif opt in ("-o", "--opt"):
             opt = arg
+        else:
+            print(help)
+            sys.exit()
 
     if opt == "createdb":
         conn = sqlite3.connect(DBFILE)
-        print "开始创建数据库..."
+        print("开始创建数据库...")
         create_db(conn)
-        print "数据库创建完毕，开始创建用户账户..."
+        print("数据库创建完毕，开始创建用户账户...")
         create_user(conn)
         conn.close()
-        print "用户创建成功，请务必将生成的数据库文件拷贝到 blogconfig 中设置的目录里！！！"
+        print("用户创建成功，请务必将生成的数据库文件拷贝到 blogconfig 中设置的目录里！！！")
     elif opt == "getsecret":
-        print get_secret()
+        print(get_secret())
 
 
 if __name__ == '__main__':

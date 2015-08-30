@@ -4,15 +4,15 @@
 """
 Django's standard crypto functions and utilities.
 """
-
+import hmac
+import base64
 import struct
 import hashlib
 import binascii
 import operator
+from functools import reduce
 
 
-trans_5c = "".join([chr(x ^ 0x5C) for x in xrange(256)])
-trans_36 = "".join([chr(x ^ 0x36) for x in xrange(256)])
 rand_chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 
@@ -53,7 +53,7 @@ def bin_to_long(x):
 
     This is a clever optimization for fast xor vector math
     """
-    return long(x.encode("hex"), 16)
+    return int(binascii.hexlify(x), 16)
 
 
 def long_to_bin(x):
@@ -71,12 +71,14 @@ def fast_hmac(key, msg, digest):
     A trimmed down version of Python's HMAC implementation
     """
     dig1, dig2 = digest(), digest()
+    key = key.encode("UTF-8")
     if len(key) > dig1.block_size:
         key = digest(key).digest()
-    key += chr(0) * (dig1.block_size - len(key))
-    dig1.update(key.translate(trans_36))
+    key += b'\x00' * (dig1.block_size - len(key))
+
+    dig1.update(key.translate(hmac.trans_36))
     dig1.update(msg)
-    dig2.update(key.translate(trans_5c))
+    dig2.update(key.translate(hmac.trans_5C))
     dig2.update(dig1.digest())
     return dig2
 
@@ -104,16 +106,18 @@ def pbkdf2(password, salt, iterations, dklen=0, digest=None):
     l = -(-dklen // hlen)
     r = dklen - (l - 1) * hlen
 
+    salt = salt.encode("UTF-8")
+
     def F(i):
         def U():
-            u = salt + struct.pack('>I', i)
-            for j in xrange(int(iterations)):
+            u = salt + struct.pack(b'>I', i)
+            for j in range(int(iterations)):
                 u = fast_hmac(password, u, digest).digest()
                 yield bin_to_long(u)
         return long_to_bin(reduce(operator.xor, U()))
 
     T = [F(x) for x in range(1, l + 1)]
-    return ''.join(T[:-1]) + T[-1][:r]
+    return b''.join(T[:-1]) + T[-1][:r]
 
 
 class PasswordCrypto(object):
@@ -130,10 +134,14 @@ class PasswordCrypto(object):
             salt = get_random_string()
         if not iterations:
             iterations = cls.ITERATIONS
-        password = str(password)
+
         encrypted = pbkdf2(password, salt, iterations, digest=cls.DIGEST)
-        encrypted = encrypted.encode("base64").strip()
-        return "%s$%d$%s$%s" % (cls.ALGORITHM, cls.ITERATIONS, salt, encrypted)
+
+        encrypted = base64.b64encode(encrypted).decode("utf-8")
+        return "{0}${1}${2}${3}".format(
+            cls.ALGORITHM, cls.ITERATIONS,
+            salt, encrypted
+        )
 
     @classmethod
     def authenticate(cls, password, encrypted):
