@@ -44,11 +44,6 @@
     font-size: 15px;
 }
 
-.content img {
-    max-width: 100%;
-    height: auto;
-}
-
 .content .home-more {
     padding: 10px 0;
 }
@@ -64,7 +59,7 @@
 
 .post-meta span {
     float: none;
-    color: #CED1D1;
+    color: #ced1d1;
     font-size: 16px;
 }
 

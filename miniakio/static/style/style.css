@@ -164,7 +164,6 @@ blockquote {
 }
 blockquote p {
   margin-bottom: 0;
-  font-weight: 300;
   color: #777;
 }
 blockquote small {
@@ -388,8 +387,8 @@ body {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
 }
 .content img {
-  max-width: 640px;
-  margin: 10px auto;
+  max-width: 100%;
+  margin: 0 auto;
   height: auto;
   display: block;
   border-radius: 5px;
@@ -473,6 +472,25 @@ body {
 }
 .content .navigation .next {
   float: right;
+}
+.content figure {
+  position: relative;
+  clear: both;
+  outline: 0;
+  margin: 0 0 15px;
+  padding: 0;
+  min-height: 100px;
+}
+.content figure figcaption {
+  position: relative;
+  width: 80%;
+  text-align: center;
+  left: 0;
+  margin: 10px auto;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 26px;
+  color: #999;
 }
 .date-right {
   float: right;
