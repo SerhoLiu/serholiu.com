@@ -148,7 +148,6 @@ blockquote {
 
     p {
         margin-bottom: 0;
-        font-weight: 300;
         color:  #777;
     }
 
@@ -327,7 +326,9 @@ body{
 }
 
 @media (max-width: 1024px)  {
-    #home-container { width: 720px;}
+    #home-container {
+         width: 720px;
+    }
 }
 
 .curtain {
@@ -395,8 +396,8 @@ body{
     .box-shadow;
 
     img {
-        max-width: 640px;
-        margin: 10px auto;
+        max-width: 100%;
+        margin: 0 auto;
         height: auto;
         display: block;
         .border-radius;
@@ -493,6 +494,28 @@ body{
 
         .next {
             float: right;
+        }
+    }
+
+    figure {
+        position: relative;
+        clear: both;
+        outline: 0;
+        margin: 0 0 15px;
+        padding: 0;
+        min-height: 100px;
+
+        figcaption {
+            position: relative;
+            width: 80%;
+            text-align: center;
+            left: 0;
+            margin: 10px auto;
+            //margin-bottom: 0;
+            font-weight: 300;
+            font-size: 13px;
+            line-height: 26px;
+            color: #999;
         }
     }
 }

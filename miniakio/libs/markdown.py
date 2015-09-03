@@ -14,6 +14,10 @@ from tornado.escape import xhtml_escape
 
 
 class AkioRender(mistune.Renderer):
+    """
+    对 Markdown 生成 html 进行一些自定义，参考:
+    https://github.com/lepture/writeup/blob/master/writeup/markdown.py
+    """
 
     def block_code(self, code, lang):
         if lang:
@@ -34,6 +38,37 @@ class AkioRender(mistune.Renderer):
             '<table class="akio-table">\n<thead>%s</thead>\n'
             '<tbody>\n%s</tbody>\n</table>\n'
         ) % (header, body)
+
+    def link(self, link, title, content):
+        html = '<a href="%s"' % link
+        if title:
+            html = '%s title="%s"' % (html, title)
+
+        if "<figure><img" in content:
+            return re.sub(r"(<img.*?>)", r"%s>\1</a>" % html, content)
+
+        html = "%s>%s</a>" % (html, content)
+        return html
+
+    def image(self, link, title, alt_text):
+        html = '<img src="%s" alt="%s" />' % (link, alt_text)
+        if not title:
+            return html
+        return "<figure>%s<figcaption>%s</figcaption></figure>" % (
+            html, title
+        )
+
+    def paragraph(self, content):
+
+        pattern = r"<figure>.*</figure>"
+        if re.match(pattern, content):
+            return content
+        # a single image in this paragraph
+        pattern = r"^<img[^>]+>$"
+        if re.match(pattern, content):
+            return "<figure>%s</figure>\n" % content
+
+        return "<p>%s</p>\n" % content
 
     def autolink(self, link, is_email):
         if is_email:
