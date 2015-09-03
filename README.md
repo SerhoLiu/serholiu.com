@@ -1,9 +1,9 @@
 ## 一点说明
 
-> A: 又是一个博客系统？ 
-> B: 是。但是并不适合大家使用，自己折腾请看 [Jekyll][1]，[Hugo][2], [Hexo][3] 这类通用的。 
-> A: 我就看看！ 
-> B: 嗯，请随意。 
+> A: 又是一个博客系统？  
+> B: 是。但是并不适合大家使用，自己折腾请看 [Jekyll][1]，[Hugo][2], [Hexo][3] 这类通用的。  
+> A: 我就看看！  
+> B: 嗯，请随意。  
 
 这是我现在博客的源代码，这里有一点介绍: http://serholiu.com/about-miniakio. 基于 Python3、 [Tornado][4] 和 SQLite3，采用 Markdown 写作。
 
@@ -52,3 +52,5 @@ MIT LICENSE, see MIT-LICENSE.txt
 [3]: https://hexo.io/zh-cn/
 [4]: http://www.tornadoweb.org/
 [5]: http://serholiu.com/tornado-nginx-supervisord
+
+
