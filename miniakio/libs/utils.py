@@ -4,9 +4,9 @@
 import re
 import hmac
 import base64
+import hashlib
 import datetime
 import functools
-from hashlib import sha1
 from html.parser import HTMLParser
 
 from blogconfig import COOKIE_SECRET
@@ -78,31 +78,28 @@ def authenticated(method):
 
 # 因为删除文章链接使用的是 GET 而非 POST，所以无法使用 Tornado 自带的 xsrf
 # 预防方法，因此这里使用简单的加密方法，构造文章删除链接
-def base64_encode(string):
-    """
-    base64 encodes a single string. The resulting string is safe for
-    putting into URLs.
-    """
-    return base64.urlsafe_b64encode(string).strip(b'=')
+
+def signer_encode(info):
+    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=hashlib.sha256)
+    mac.update(info.encode())
+    signer = base64.urlsafe_b64encode(mac.digest()).decode()
+
+    return "%s.%s" % (info, signer)
 
 
-def signer_code(id):
-    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=sha1)
-    mac.update(id.encode())
-    s = mac.digest()
-    signer = id + '.' + base64_encode(s).decode()
-    return signer
+def signer_check(signer, info):
+    try:
+        old, signer = signer.split('.')
+    except (AttributeError, ValueError):
+        return False
 
+    if old != info:
+        return False
 
-def unsigner_code(signer):
-    id, base64_s = signer.split('.')
-    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=sha1)
-    mac.update(id.encode())
-    s = mac.digest()
-    if base64_s == base64_encode(s).decode():
-        return id
-    else:
-        return None
+    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=hashlib.sha256)
+    mac.update(info.encode())
+    check = mac.digest()
+    return base64.urlsafe_b64decode(signer) == check
 
 
 # Mobile Detect

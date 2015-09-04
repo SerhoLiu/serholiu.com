@@ -3,13 +3,17 @@
 {% block head %}{{strip_tags(post["content"][0:168])}}{% end %}
 {% block content %}
 <article>
-    <h2 class="content-title"><a href="/picky/{{slug}}">{{post["title"]}}</a></h2>
+  <h2 class="content-title"><a href="/picky/{{slug}}">{{post["title"]}}</a></h2>
     {{post["content"]}}
 </article>
-    <hr>
-    <blockquote>
-      <small> {{post["published"]}}
-        <a href="/picky/{{slug}}.md" title="{{post["title"]}}">Down Markdown File</a>
-      </small>
-    </blockquote>
+<hr>
+<blockquote>
+  <small>
+    {{post["published"]}}
+    <a href="/picky/{{slug}}.md" title="{{post["title"]}}">Down Markdown File</a>
+    {% if current_user %}
+    &#160;&#160;<a href="/picky/delete/{{slug}}?check={{signer}}">Del</a>
+    {% end %}
+  </small>
+</blockquote>
 {% end %}
