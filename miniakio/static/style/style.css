@@ -106,7 +106,7 @@ h4 {
   background-color: #f7f7f7;
   margin: 20px -20px;
   font-size: 20px;
-  padding: 0px 20px;
+  padding: 0 20px;
   line-height: 35px;
 }
 h3 small,
@@ -298,7 +298,7 @@ body {
 }
 #header ul {
   float: right;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   list-style: none;
 }
 #header ul li {
@@ -371,8 +371,7 @@ body {
   border-top: 1px solid #ccc;
 }
 #container {
-  margin: 0 auto;
-  margin-top: 60px;
+  margin: 60px auto 0;
   width: 680px;
 }
 .content {
@@ -438,7 +437,6 @@ body {
 .content article .akio-table td,
 .content article .akio-table th {
   border-left: 1px solid #e1e1e8;
-  border-width: 0 0 0 1px;
   font-size: inherit;
   margin: 0;
   overflow: visible;
@@ -520,7 +518,7 @@ body {
   font-weight: bold;
 }
 .posts-list {
-  margin: 0px 0px 10px 0px;
+  margin: 0 0 10px 0;
   font-size: 15px;
 }
 .posts-list li {

@@ -2,17 +2,19 @@
 # -*- coding: utf-8 -*-
 
 import re
+import os
+import os.path
 from tornado.web import removeslash
 from tornado.log import access_log
-
-from blogconfig import PICKY_DIR
 
 from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
-from .libs.utils import authenticated, signer_code
-from .libs.utils import unsigner_code, archives_list
+from .libs.utils import authenticated, archives_list
+from .libs.utils import signer_encode, signer_check
+
+from blogconfig import PICKY_DIR
 
 
 class EntryHandler(BaseHandler, PostMixin):
@@ -24,7 +26,7 @@ class EntryHandler(BaseHandler, PostMixin):
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
         next_prev = self.get_next_prev_post(post.published)
-        signer = signer_code(str(post.id))
+        signer = signer_encode(str(post.id))
         self.render(
             "post.html",
             post=post,
@@ -128,20 +130,19 @@ class NewPostHandler(BaseHandler, PostMixin):
         post.update({"comment": comment})
         self.create_new_post(**post)
         self.redirect("/%s" % post["slug"])
-        return
 
 
 class UpdatePostHandler(BaseHandler, PostMixin):
 
     @authenticated
-    def get(self, id):
-        post = self.get_post_by_id(int(id))
+    def get(self, pid):
+        post = self.get_post_by_id(int(pid))
         if not post:
             self.redirect("/")
-        self.render("admin/update.html", id=id)
+        self.render("admin/update.html", id=pid)
 
     @authenticated
-    def post(self, id):
+    def post(self, pid):
         markdown = self.get_argument("markdown", None)
         comment = self.get_argument("comment", 1)
         if not markdown:
@@ -154,47 +155,51 @@ class UpdatePostHandler(BaseHandler, PostMixin):
             comment = 0
 
         post.update({"comment": comment})
-        self.update_post_by_id(int(id), **post)
+        self.update_post_by_id(int(pid), **post)
         self.redirect("/%s" % post["slug"])
-        return
 
 
 class DeletePostHandler(BaseHandler, PostMixin):
 
     @authenticated
-    def get(self, id):
+    def get(self, pid):
         signer = self.get_argument("check", None)
-        if unsigner_code(signer) == id:
-            self.delete_post_by_id(int(id))
+        if signer_check(signer, pid):
+            self.delete_post_by_id(int(pid))
         self.redirect("/")
-        return
 
 
 class PickyHandler(BaseHandler):
 
+    @removeslash
     def get(self, slug):
-        mdfile = PICKY_DIR + "/" + str(slug) + ".md"
+        mdfile = os.path.join(PICKY_DIR, slug + ".md")
         try:
             md = open(mdfile, "r", encoding="utf-8")
         except IOError:
             self.abort(404)
+
         markdown = md.read()
         md.close()
         render = RenderMarkdownPost(markdown)
+
         post = render.get_render_post()
-        self.render("picky.html", post=post, slug=slug)
+        signer = signer_encode(slug)
+
+        self.render("picky.html", post=post, slug=slug, signer=signer)
 
 
 class PickyDownHandler(BaseHandler):
 
     def get(self, slug):
-        mdfile = PICKY_DIR + "/" + str(slug)
+        mdfile = os.path.join(PICKY_DIR, slug)
         try:
             md = open(mdfile, "r", encoding="utf-8")
         except IOError:
             self.abort(404)
         markdown = md.read()
         md.close()
+
         self.set_header("Content-Type", "text/x-markdown")
         self.write(markdown)
 
@@ -215,15 +220,29 @@ class NewPickyHandler(BaseHandler):
 
         ext = files["filename"].split(".").pop().lower()
         if files["body"] and (ext == "md"):
-            f = open(PICKY_DIR + '/' + files['filename'], 'wb')
+            f = open(os.path.join(PICKY_DIR, files['filename']), 'wb')
             f.write(files['body'])
-
             f.close()
+
             slug = files["filename"].split(".")[0]
             self.redirect("/picky/%s" % slug)
             return
 
         self.redirect("/post/picky")
+
+
+class DeletePickyHandler(BaseHandler):
+
+    @authenticated
+    def get(self, slug):
+        signer = self.get_argument("check", None)
+        if not signer_check(signer, slug):
+            self.redirect("/picky/%s" % slug)
+            return
+
+        mdfile = os.path.join(PICKY_DIR, slug + ".md")
+        os.remove(mdfile)
+        self.redirect("/")
 
 
 class SigninHandler(BaseHandler):
@@ -254,16 +273,15 @@ class SigninHandler(BaseHandler):
             access_log.error("Login Error for email: %s" % email)
             self.redirect("/")
             return
+
         encryped_pass = user.password
         if PasswordCrypto.authenticate(password, encryped_pass):
             token = user.salt + "/" + str(user.id)
             self.set_secure_cookie("token", token)
             self.redirect(self.get_argument("next", "/post/new"))
-            return
         else:
             access_log.error("Login Error for password: %s!" % password)
             self.redirect("/")
-        return
 
 
 class SignoutHandler(BaseHandler):
@@ -280,6 +298,7 @@ class SignoutHandler(BaseHandler):
 
 
 class PageNotFound(BaseHandler):
+
     def get(self):
         self.abort(404)
 
@@ -295,6 +314,7 @@ handlers = [
     (r"/post/delete/([0-9]+)", DeletePostHandler),
     (r"/post/update/([0-9]+)", UpdatePostHandler),
     (r"/post/picky", NewPickyHandler),
+    (r"/picky/delete/([a-zA-Z0-9-]+)", DeletePickyHandler),
     (r"/auth/signin", SigninHandler),
     (r"/auth/signout", SignoutHandler),
     (r"/blog/feed", FeedHandler),
