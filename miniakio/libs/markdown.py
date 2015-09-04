@@ -19,7 +19,7 @@ class AkioRender(mistune.Renderer):
     https://github.com/lepture/writeup/blob/master/writeup/markdown.py
     """
 
-    def block_code(self, code, lang):
+    def block_code(self, code, lang=None):
         if lang:
             lexer = get_lexer_by_name(lang, stripall=True)
         else:
@@ -59,7 +59,6 @@ class AkioRender(mistune.Renderer):
         )
 
     def paragraph(self, content):
-
         pattern = r"<figure>.*</figure>"
         if re.match(pattern, content):
             return content
@@ -70,7 +69,7 @@ class AkioRender(mistune.Renderer):
 
         return "<p>%s</p>\n" % content
 
-    def autolink(self, link, is_email):
+    def autolink(self, link, is_email=False):
         if is_email:
             mailto = "".join(["&#%d;" % ord(letter) for letter in "mailto:"])
             email = "".join(["&#%d;" % ord(letter) for letter in link])
