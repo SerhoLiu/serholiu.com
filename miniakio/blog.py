@@ -11,10 +11,8 @@ from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
-from .libs.utils import authenticated, archives_list
+from .libs.utils import authenticated, get_time_year
 from .libs.utils import signer_encode, signer_check
-
-from blogconfig import PICKY_DIR
 
 
 class EntryHandler(BaseHandler, PostMixin):
@@ -26,7 +24,7 @@ class EntryHandler(BaseHandler, PostMixin):
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
         next_prev = self.get_next_prev_post(post.published)
-        signer = signer_encode(str(post.id))
+        signer = signer_encode(self.config.secret, str(post.id))
         self.render(
             "post.html",
             post=post,
@@ -81,7 +79,7 @@ class FeedHandler(BaseHandler, PostMixin):
 class HomeHandler(BaseHandler, PostMixin):
 
     def get(self):
-        if self._context.is_mobile:
+        if self.context.is_mobile:
             posts = self.get_count_posts(1)
             self.render("index.html", posts=posts)
         else:
@@ -94,11 +92,25 @@ class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
     def get(self):
         posts = self.get_count_posts()
         count = len(posts)
+        archives = {}
+
+        for post in posts:
+            year = get_time_year(post.published)
+            if year in archives:
+                archives[year].append(post)
+            else:
+                archives[year] = [post]
+
+        archives = sorted(
+            archives.items(),
+            key=lambda item: item[0],
+            reverse=True
+        )
+
         self.render(
             "archives.html",
-            posts=posts,
             count=count,
-            archives_list=archives_list
+            archives=archives
         )
 
 
@@ -164,7 +176,7 @@ class DeletePostHandler(BaseHandler, PostMixin):
     @authenticated
     def get(self, pid):
         signer = self.get_argument("check", None)
-        if signer_check(signer, pid):
+        if signer_check(self.config.secret, signer, pid):
             self.delete_post_by_id(int(pid))
         self.redirect("/")
 
@@ -173,7 +185,7 @@ class PickyHandler(BaseHandler):
 
     @removeslash
     def get(self, slug):
-        mdfile = os.path.join(PICKY_DIR, slug + ".md")
+        mdfile = os.path.join(self.config.picky, slug + ".md")
         try:
             md = open(mdfile, "r", encoding="utf-8")
         except IOError:
@@ -184,7 +196,7 @@ class PickyHandler(BaseHandler):
         render = RenderMarkdownPost(markdown)
 
         post = render.get_render_post()
-        signer = signer_encode(slug)
+        signer = signer_encode(self.config.secret, slug)
 
         self.render("picky.html", post=post, slug=slug, signer=signer)
 
@@ -192,7 +204,7 @@ class PickyHandler(BaseHandler):
 class PickyDownHandler(BaseHandler):
 
     def get(self, slug):
-        mdfile = os.path.join(PICKY_DIR, slug)
+        mdfile = os.path.join(self.config.picky, slug)
         try:
             md = open(mdfile, "r", encoding="utf-8")
         except IOError:
@@ -220,7 +232,7 @@ class NewPickyHandler(BaseHandler):
 
         ext = files["filename"].split(".").pop().lower()
         if files["body"] and (ext == "md"):
-            f = open(os.path.join(PICKY_DIR, files['filename']), 'wb')
+            f = open(os.path.join(self.config.picky, files['filename']), 'wb')
             f.write(files['body'])
             f.close()
 
@@ -236,11 +248,11 @@ class DeletePickyHandler(BaseHandler):
     @authenticated
     def get(self, slug):
         signer = self.get_argument("check", None)
-        if not signer_check(signer, slug):
+        if not signer_check(self.config.secret, signer, slug):
             self.redirect("/picky/%s" % slug)
             return
 
-        mdfile = os.path.join(PICKY_DIR, slug + ".md")
+        mdfile = os.path.join(self.config.picky, slug + ".md")
         os.remove(mdfile)
         self.redirect("/")
 

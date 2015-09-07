@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>{{escape(context.sitename)}}</title>
+    <title>{{escape(config.blogname)}}</title>
     <meta name="author" content="Serho Liu">
     <meta name="description" content="SErHo's Blog, Please Call me Serho Liu." />
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
@@ -15,7 +15,7 @@
     <img class='bg-image' src="{{static_url('bg.jpg')}}" />
     <header id="header" class="clearfix header-fixed-top">
       <div class="nav">
-        <h1><a href="/">{{escape(context.sitename)}}</a></h1>
+        <h1><a href="/">{{escape(config.blogname)}}</a></h1>
         <ul>
           <li><a href="/picky/about-me">About</a></li>
           <li><a href="/picky/all">Picky</a></li>
@@ -38,7 +38,7 @@
         <ul class="home-list">
           {% for post in posts %}
           <li>
-            <span>{{get_show_time(post.published)}}</span> &raquo;
+            <span>{{home_time(post.published)}}</span> &raquo;
             <a href="/{{post.slug}}">{{post.title}}</a>
           </li>
           {% end %}

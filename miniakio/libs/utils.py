@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import re
 import hmac
 import base64
@@ -44,18 +45,6 @@ def get_home_time(time):
     return format_time(time).strftime("%d %b")
 
 
-def archives_list(posts):
-    """
-    生成文章存档，按年分类
-    """
-    years = list(set([get_time_year(post.published) for post in posts]))
-    years.sort(reverse=True)
-    for year in years:
-        year_posts = [post for post in posts
-                      if get_time_year(post.published) == year]
-        yield (year, year_posts)
-
-
 def authenticated(method):
     """Decorate methods with this to require that the user be logged in."""
     @functools.wraps(method)
@@ -69,6 +58,10 @@ def authenticated(method):
     return wrapper
 
 
+def random_secret():
+    return os.urandom(32)
+
+
 # 因为删除文章链接使用的是 GET 而非 POST，无法使用 Tornado 自带的 xsrf
 # 这里通过对相关信息生成验证摘要来避免伪造请求
 
@@ -76,7 +69,7 @@ def signer_encode(secret, info):
     """
     对 info 使用 secret 生成验证摘要
     """
-    mac = hmac.new(secret.encode(), digestmod=hashlib.sha256)
+    mac = hmac.new(secret, digestmod=hashlib.sha256)
     mac.update(info.encode())
     signer = base64.urlsafe_b64encode(mac.digest()).decode()
 
@@ -96,7 +89,7 @@ def signer_check(secret, signer, info):
     if old != info:
         return False
 
-    mac = hmac.new(secret.encode(), digestmod=hashlib.sha256)
+    mac = hmac.new(secret, digestmod=hashlib.sha256)
     mac.update(info.encode())
     check = mac.digest()
     return base64.urlsafe_b64decode(signer) == check

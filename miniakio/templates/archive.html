@@ -1,12 +1,12 @@
 {% extends "base.html" %}
-{% block title %}在《{{name}}》下的所有文章 - {{escape(context.sitename)}}{% end %}
+{% block title %}在《{{name}}》下的所有文章 - {{escape(config.blogname)}}{% end %}
 {% block content %}
     <h3>在《{{name}}》下的所有文章</h3>
     <section>
       <ul class="posts-list">
        {%for post in posts %}
         <li>
-          <span>{{get_home_time(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+          <span>{{time_date(post.published)}}</span><a href="/{{post.slug}}">{{post.title}}</a>
         </li>
        {% end %}
       </ul>

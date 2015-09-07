@@ -10,11 +10,9 @@ import traceback
 import tornado.web
 
 from .utils import ObjectDict
-from .utils import get_home_time, format_time
+from .utils import get_time_date, get_home_time
 from .utils import is_mobile, strip_tags
 from .models import UserMixin
-
-from blogconfig import SITE_NAME
 
 
 class BaseHandler(tornado.web.RequestHandler, UserMixin):
@@ -23,19 +21,27 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
     def db(self):
         return self.application.db
 
+    @property
+    def config(self):
+        return self.application.config
+
     def prepare(self):
-        self._prepare_context()
-        self._prepare_filters()
+        self.context = ObjectDict()
+        self.context.is_mobile = is_mobile(
+            self.request.headers.get("User-Agent", "")
+        )
 
-    def render_string(self, template_name, **kwargs):
-        """
-        重写 `render_string` 方法，以便加入自定义 filter 和自定义模板全局变量
-        """
+    def get_template_namespace(self):
+        namespace = super(BaseHandler, self).get_template_namespace()
+        namespace.update(**dict(
+            config=self.application.config,
+            context=self.context,
+            home_time=get_home_time,
+            time_date=get_time_date,
+            strip_tags=strip_tags,
+        ))
 
-        kwargs.update(self._filters)
-        assert "context" not in kwargs, "context is a reserved keyword."
-        kwargs["context"] = self._context
-        return super(BaseHandler, self).render_string(template_name, **kwargs)
+        return namespace
 
     def get_current_user(self):
         token = self.get_secure_cookie("token")
@@ -73,26 +79,6 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             return super(BaseHandler, self).write_error(
                 status_code, **kwargs
             )
-
-    def _prepare_context(self):
-        """
-        将自定义变量传入模板，作为全局变量，引用时使用 `context.var` 的形式
-        """
-        self._context = ObjectDict()
-        self._context.sitename = SITE_NAME
-        self._context.is_mobile = is_mobile(
-            self.request.headers.get("User-Agent", "")
-        )
-
-    def _prepare_filters(self):
-        """
-        将自定义 filter 传入模板
-        """
-        self._filters = ObjectDict()
-        self._filters.get_home_time = get_home_time
-        self._filters.get_show_time = get_home_time
-        self._filters.time = format_time
-        self._filters.strip_tags = strip_tags
 
     def abort(self, code):
         raise tornado.web.HTTPError(code)
