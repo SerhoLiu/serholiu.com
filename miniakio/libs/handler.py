@@ -2,17 +2,18 @@
 # -*- coding: utf-8 -*-
 
 """
-    扩展 `tornado.web.BaseHandler` 以方便添加模板 filter 和 全局变量，
-    并对默认的错误页进行修改。
+扩展 `tornado.web.BaseHandler` 以方便添加模板 filter 和 全局变量，
+并对默认的错误页进行修改
 """
 
 import traceback
 import tornado.web
 
 from .utils import ObjectDict
-from .utils import get_home_time, format_time, get_show_time
+from .utils import get_home_time, format_time
 from .utils import is_mobile, strip_tags
 from .models import UserMixin
+
 from blogconfig import SITE_NAME
 
 
@@ -89,7 +90,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         """
         self._filters = ObjectDict()
         self._filters.get_home_time = get_home_time
-        self._filters.get_show_time = get_show_time
+        self._filters.get_show_time = get_home_time
         self._filters.time = format_time
         self._filters.strip_tags = strip_tags
 

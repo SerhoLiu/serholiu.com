@@ -9,8 +9,6 @@ import datetime
 import functools
 from html.parser import HTMLParser
 
-from blogconfig import COOKIE_SECRET
-
 
 class ObjectDict(dict):
 
@@ -26,29 +24,24 @@ class ObjectDict(dict):
 # 所有日期采用 `YYYY-MM-DD HH:MM` 格式字符串存储，
 # 下面的三个函数用于获取年月日、年和将字符串转换为时间对象
 
-def get_home_time(time):
+def format_time(time):
+    t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
+    t.append(0)
+    return datetime.datetime(*t)
+
+
+def get_time_date(time):
     time = time.split(" ")[0].strip()
     return time
 
 
 def get_time_year(time):
-    t = get_home_time(time)
-    year = t.split("-")[0].strip()
+    year = time.split("-")[0].strip()
     return year
 
 
-def format_time(time):
-    t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
-    t.append(0)
-    d = datetime.datetime(*t)
-    return d
-
-
-def get_show_time(time):
-    t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
-    t.append(0)
-    d = datetime.datetime(*t)
-    return d.strftime("%d %b")
+def get_home_time(time):
+    return format_time(time).strftime("%d %b")
 
 
 def archives_list(posts):
@@ -76,18 +69,25 @@ def authenticated(method):
     return wrapper
 
 
-# 因为删除文章链接使用的是 GET 而非 POST，所以无法使用 Tornado 自带的 xsrf
-# 预防方法，因此这里使用简单的加密方法，构造文章删除链接
+# 因为删除文章链接使用的是 GET 而非 POST，无法使用 Tornado 自带的 xsrf
+# 这里通过对相关信息生成验证摘要来避免伪造请求
 
-def signer_encode(info):
-    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=hashlib.sha256)
+def signer_encode(secret, info):
+    """
+    对 info 使用 secret 生成验证摘要
+    """
+    mac = hmac.new(secret.encode(), digestmod=hashlib.sha256)
     mac.update(info.encode())
     signer = base64.urlsafe_b64encode(mac.digest()).decode()
 
     return "%s.%s" % (info, signer)
 
 
-def signer_check(signer, info):
+def signer_check(secret, signer, info):
+    """
+    验证 signer 是通过 secret 对 info 生成的摘要
+    :param secret: 通过 signer_encode 生成的验证摘要
+    """
     try:
         old, signer = signer.split('.')
     except (AttributeError, ValueError):
@@ -96,7 +96,7 @@ def signer_check(signer, info):
     if old != info:
         return False
 
-    mac = hmac.new(COOKIE_SECRET.encode(), digestmod=hashlib.sha256)
+    mac = hmac.new(secret.encode(), digestmod=hashlib.sha256)
     mac.update(info.encode())
     check = mac.digest()
     return base64.urlsafe_b64decode(signer) == check
