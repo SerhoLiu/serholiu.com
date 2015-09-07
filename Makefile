@@ -1,9 +1,9 @@
-all: mincss run
+all: css run
 
 LESSPATH = miniakio/static/style/
 
-mincss:
-	lessc $(LESSPATH)effector.less --clean-css="--s1 --advanced" > $(LESSPATH)style.min.css
+css:
+	lessc $(LESSPATH)effector.less > $(LESSPATH)style.css
 
 run:
 	python3.4 run.py

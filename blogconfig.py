@@ -11,21 +11,21 @@ COOKIE_SECRET = "May the Force Be with you"
 
 # 数据库文件路径，默认是和配置文件同目录
 # eg. DATABASE = "/home/myblog/mydb.db"
-DATABASE = "/home/serho/website/newblog.db"
+DATABASE = os.path.join(os.path.dirname(__file__), "newblog.db")
 
 
 # 你的博客名
-SITE_NAME = "I'm SErHo"
+SITE_NAME = "I'm Force"
 
 
 # Picky 目录路径，默认和配置文件同目录
-PICKY_DIR = "/home/serho/website/picky"
+PICKY_DIR = os.path.join(os.path.dirname(__file__), "picky")
 
 
 # 如果在生成环境下，可以关闭 Debug 选项，这样将缓存编译好的模板，加快模板渲染速度
 # 不过修改模板或代码后，需要重新启动博客，这样才有效果
-# DEBUG = True
-DEBUG = False
+DEBUG = True
+# DEBUG = False
 
 
 del os
