@@ -79,7 +79,7 @@ body {
 .container:after { clear: both }
 
 a {
-    color: #0064cd;
+    color: #02adea;
     text-decoration: none;
 }
 a:hover {
@@ -203,7 +203,6 @@ textarea.span13 {
     background: #e6e6e6 no-repeat;
 
     padding: 5px 14px 6px;
-    text-shadow: 0 1px 1px rgba(255,255,255,0.75);
     color: #333;
     font-size: 13px;
     line-height: normal;
@@ -214,10 +213,8 @@ textarea.span13 {
 
 .btn.primary {
     color: #fff;
-    background: #0064cd repeat-x;
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
-    border-color: #0064cd #0064cd #003f81;
-    border-color: rgba(0,0,0,0.1) rgba(0,0,0,0.1) rgba(0,0,0,0.25);
+    background: #02adea repeat-x;
+    border-color: #02adea;
 }
 
 input[type=file] {
@@ -235,7 +232,7 @@ input[type=checkbox] {
 }
 
 body { 
-    background-color: #eee;
+    background-color: #4f5861;
     font-family: "Helvetica Neue",Helvetica,"Hiragino Sans GB","STHeitiSC-Light","WenQuanYi Micro Hei","Microsoft YaHei","微软雅黑",Arial,sans-serif!important;
 }
 
@@ -259,7 +256,7 @@ div.container {
 }
 
 .hleft {
-    background-color: #0064cd;
+    background-color: #02adea;
     float: left;
     -moz-border-radius: 5px 0px 0px 5px;
     border-radius: 5px 0px 0px 5px;
@@ -285,8 +282,7 @@ div.container {
 }
 
 #footer p {
-    color: #99a;
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 1.0);
+    color: #fff;
     text-align: center;
 }
 
