@@ -2,18 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Login--{{ context.sitename }}</title>
+    <title>Login--MiniAkio</title>
     <link rel="stylesheet" href="{{ static_url("admin/style.css") }}" type="text/css"/>
   </head>
   <body>
     <div class="container">
       <div class="header box clearfix">
-        <div class="hright">
-          
-        </div>
-        <div class="hleft">
-          <h1><a href="/">{{ context.sitename }}</a></h1>
-        </div>
+        <div class="hright"></div>
+        <div class="hleft"><h1><a href="/">MiniAkio</a></h1></div>
       </div>
       <div id="content">
         <div class="signin">
@@ -26,7 +22,6 @@
           <div class="clearfix">
             <div class="input">
               <input name="password" type="password" class="span4" placeholder="Password" />
-              
             </div>
           </div><!-- /clearfix -->
           <div class="clearfix">
@@ -34,9 +29,9 @@
               <button type="submit" class="btn primary span5">LOG IN</button> 
             </div>
           </div><!-- /clearfix -->
-        </div>
         {{ xsrf_form_html() }}
         </form>
+        </div>
       </div>
       <div id="footer">
         <p>&copy; By <a href="https://github.com/SerhoLiu/serholiu.com">MiniAkio</a> 2009-2015</p>

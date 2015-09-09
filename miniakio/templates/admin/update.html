@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>Update Post--{{ context.sitename }}</title>
+    <title>Update Post--MiniAkio</title>
     <link rel="stylesheet" href="{{ static_url("admin/style.css") }}" type="text/css"/>
   </head>
   <body>
@@ -12,11 +12,11 @@
           <a href="/post/picky"><button class="btn">New Picky</button></a>
         </div>
         <div class="hleft">
-          <h1><a href="/">{{ context.sitename }}</a></h1>
+          <h1><a href="/">MiniAkio</a></h1>
         </div>
       </div>
       <div id="content">
-        <form action="/post/update/{{id}}" method="post">
+        <form action="/post/update/{{pid}}" method="post">
           <div class="clearfix">
             <div class="input">
               <textarea name="markdown" class="span13" id="textarea" rows="30" required></textarea>
@@ -24,12 +24,11 @@
           </div><!-- /clearfix -->
            <div class="clearfix">
             <div class="input">
-              关闭留言:<input type="checkbox" name="comment" id="" value="0" />
+              关闭留言 <input type="checkbox" name="comment" id="" value="0" />
             </div>
           </div><!-- /clearfix -->
           <div class="actions">
             <input type="submit" class="btn primary" value="更新文章">&nbsp;
-            <a href="/"><button type="reset" class="btn">放弃更新</button></a>
           </div>
           {{ xsrf_form_html() }}
         </form>
