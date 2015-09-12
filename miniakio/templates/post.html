@@ -42,9 +42,9 @@
   {% end %}
 <div class="navigation clearfix">
    上一篇:
-   {% if next_prev["next"] %}
-    <a href="/{{next_prev["next"].slug}}" title="{{next_prev["next"].title}}" class="previous">
-    {{next_prev["next"].title}}
+   {% if pager.next %}
+    <a href="/{{pager.next.slug}}" title="{{pager.next.title}}" class="previous">
+    {{pager.next.title}}
     </a>
     {% else %}
     没有了
@@ -53,10 +53,10 @@
     <br /><br />
     {% end %}
     <span class="next">
-    {% if next_prev["prev"] %}
+    {% if pager.prev %}
     下一篇:
-    <a href="/{{next_prev["prev"].slug}}" title="{{next_prev["prev"].title}}">
-    {{next_prev["prev"].title}}
+    <a href="/{{pager.prev.slug}}" title="{{pager.prev.title}}">
+    {{pager.prev.title}}
     </a>
     {% else %}
     没有了

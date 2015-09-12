@@ -23,13 +23,13 @@ class EntryHandler(BaseHandler, PostMixin):
         if not post:
             self.abort(404)
         tags = [tag.strip() for tag in post.tags.split(",")]
-        next_prev = self.get_next_prev_post(post.published)
+        pager = self.get_next_prev_post(post.published)
         signer = signer_encode(self.config.secret, str(post.id))
         self.render(
             "post.html",
             post=post,
             tags=tags,
-            next_prev=next_prev,
+            pager=pager,
             signer=signer
         )
 
@@ -138,7 +138,7 @@ class NewPostHandler(BaseHandler, PostMixin):
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
         post.update({"comment": 0 if comment == "0" else 1})
-        self.create_new_post(**post)
+        self.create_new_post(post)
 
         self.redirect("/%s" % post["slug"])
 
@@ -162,7 +162,7 @@ class UpdatePostHandler(BaseHandler, PostMixin):
         render = RenderMarkdownPost(markdown)
         post = render.get_render_post()
         post.update({"comment": 0 if comment == "0" else 1})
-        self.update_post_by_id(int(pid), **post)
+        self.update_post_by_id(pid, post)
 
         self.redirect("/%s" % post["slug"])
 

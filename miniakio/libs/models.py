@@ -1,34 +1,28 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from .utils import ObjectDict
+
 
 class UserMixin(object):
 
-    def get_user_by_id(self, id):
-        user = self.db.get("SELECT * FROM users WHERE id = ?", int(id))
-        return user
+    def get_user_by_id(self, uid):
+        return self.db.get("SELECT * FROM users WHERE id = ?", uid)
 
     def get_user_by_email(self, email):
-        user = self.db.get("SELECT * FROM users WHERE email = ?", email)
-        return user
+        return self.db.get("SELECT * FROM users WHERE email = ?", email)
 
-    def update_user_salt(self, id, salt):
-        user = self.get_user_by_id(id)
-        if not user:
-            return False
-        self.db.execute("UPDATE users SET salt=? WHERE id=?;", salt, id)
-        return True
+    def update_user_salt(self, uid, salt):
+        self.db.execute("UPDATE users SET salt=? WHERE id=?;", salt, uid)
 
 
 class PostMixin(object):
 
-    def get_post_by_id(self, id):
-        post = self.db.get("SELECT * FROM posts WHERE id = ?", id)
-        return post
+    def get_post_by_id(self, pid):
+        return self.db.get("SELECT * FROM posts WHERE id = ?", pid)
 
     def get_post_by_slug(self, slug):
-        post = self.db.get("SELECT * FROM posts WHERE slug = ?", slug)
-        return post
+        return self.db.get("SELECT * FROM posts WHERE slug = ?", slug)
 
     def get_posts_by_tag(self, tag):
         sql = """SELECT p.slug, p.title, p.published FROM posts AS p
@@ -37,16 +31,16 @@ class PostMixin(object):
                  WHERE t.name = ?
                  ORDER BY p.published DESC;
               """
-        posts = self.db.query(sql, tag)
-        return posts
+
+        return self.db.query(sql, tag)
 
     def get_posts_by_category(self, category):
         sql = """SELECT slug, title, published FROM posts
                  WHERE category = ?
                  ORDER BY published DESC;
               """
-        posts = self.db.query(sql, category)
-        return posts
+
+        return self.db.query(sql, category)
 
     def get_count_posts(self, count=None):
         if count:
@@ -60,7 +54,7 @@ class PostMixin(object):
 
         return posts
 
-    def create_new_post(self, **post):
+    def create_new_post(self, post):
         while True:
             p = self.get_post_by_slug(post["slug"])
             if not p:
@@ -72,72 +66,65 @@ class PostMixin(object):
                  VALUES (?, ?, ?, ?, ?, ?, ?);
               """
 
-        post_id = self.db.execute(
-            sql,
-            post["title"], post["slug"], post["content"],
-            post["tags"], post["category"], post["published"],
-            post['comment']
-        )
+        with self.db as db:
+            pid = db.execute(
+                sql,
+                post["title"], post["slug"], post["content"],
+                post["tags"], post["category"], post["published"],
+                post["comment"]
+            )
+            db.executemany(
+                "INSERT INTO tags (name, post_id) VALUES (?, ?);",
+                [(tag.strip(), pid) for tag in post["tags"].split(",")]
+            )
 
-        if post_id:
-            tags = [tag.strip() for tag in post["tags"].split(",")]
-            for tag in tags:
-                self.db.execute(
-                    "INSERT INTO tags (name, post_id) VALUES (?, ?);",
-                    tag,
-                    post_id
-                )
+        return pid
 
-        return post_id
-
-    def update_post_by_id(self, id, **post):
-        sql = """UPDATE posts SET title=?, slug=?, content=?, tags=?,
-                 category=?, published=?, comment=? WHERE id=?;
+    def update_post_by_id(self, pid, post):
+        sql = """UPDATE posts
+                 SET title=?, slug=?, content=?, tags=?,
+                 category=?, published=?, comment=?
+                 WHERE id=?;
               """
 
-        p = self.get_post_by_id(id)
-        if p.tags != post["tags"]:
-            has_new_tag = True
-        else:
-            has_new_tag = False
+        p = self.get_post_by_id(pid)
 
-        self.db.execute(
-            sql,
-            post["title"], post["slug"], post["content"],
-            post["tags"], post["category"], post["published"],
-            post['comment'],
-            id
-        )
+        with self.db as db:
+            db.execute(
+                sql,
+                post["title"], post["slug"], post["content"],
+                post["tags"], post["category"], post["published"],
+                post['comment'],
+                pid
+            )
 
-        if has_new_tag:
-            new_tags = [tag.strip() for tag in post["tags"].split(",")]
-            self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
-            for tag in new_tags:
-                self.db.execute(
-                    "INSERT INTO tags (name, post_id) VALUES (?, ?);",
-                    tag,
-                    id
-                )
+            if p.tags == post["tags"]:
+                return
 
-        return True
+            db.execute("DELETE FROM tags WHERE post_id=?;", pid)
+            db.executemany(
+                "INSERT INTO tags (name, post_id) VALUES (?, ?);",
+                [(tag.strip(), pid) for tag in post["tags"].split(",")]
+            )
 
-    def delete_post_by_id(self, id):
-        self.db.execute("DELETE FROM posts WHERE id=?;", id)
-        self.db.execute("DELETE FROM tags WHERE post_id=?;", id)
-        return True
+    def delete_post_by_id(self, pid):
+        with self.db as db:
+            db.execute("DELETE FROM posts WHERE id=?;", pid)
+            db.execute("DELETE FROM tags WHERE post_id=?;", pid)
 
     def get_next_prev_post(self, published):
-        sql = """SELECT slug, title FROM posts
-                 WHERE published > ? ORDER BY published ASC LIMIT 1;
-              """
-        next_post = self.db.get(sql, published)
+        next_sql = """SELECT slug, title FROM posts
+                      WHERE published > ? ORDER BY published ASC LIMIT 1;
+                   """
 
-        sql = """SELECT slug, title FROM posts
-                 WHERE published < ? ORDER BY published DESC LIMIT 1;
-              """
-        prev_post = self.db.get(sql, published)
+        prev_sql = """SELECT slug, title FROM posts
+                      WHERE published < ? ORDER BY published DESC LIMIT 1;
+                   """
 
-        return {"next": next_post, "prev": prev_post}
+        return ObjectDict({
+            "next": self.db.get(next_sql, published),
+            "prev": self.db.get(prev_sql, published)
+        })
 
 
 class TagMixin(object):
