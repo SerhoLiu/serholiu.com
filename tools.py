@@ -6,6 +6,7 @@
 
 import os
 import sys
+import os.path
 import base64
 import getopt
 import sqlite3
@@ -21,42 +22,25 @@ DBFILE = "example/newblog.db"  # 数据库名称，请保持和 blog/config.py �
 
 
 # 请不要改动下面的内容
+def create_tables(db):
+    pwd = os.path.dirname(os.path.realpath(__file__))
+    schema = os.path.join(pwd, "example", "sqlite3.sql")
+    c = db.cursor()
+    with open(schema, encoding="utf-8") as f:
+        c.executescript(f.read())
 
-def create_db(conn):
-    c = conn.cursor()
-    c.execute("""
-        CREATE TABLE users (id INTEGER NOT NULL PRIMARY KEY,
-        salt VARCHAR(12) NOT NULL, username VARCHAR(50) NOT NULL,
-        password VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL);
-        """)
-    c.execute("""
-        CREATE TABLE posts (id INTEGER NOT NULL PRIMARY KEY,
-        title VARCHAR(100) NOT NULL, slug VARCHAR(100) NOT NULL,
-        content TEXT NOT NULL, tags VARCHAR(255) NOT NULL,
-        category VARCHAR(30) NOT NULL, published VARCHAR(30) NOT NULL,
-        comment INTEGER NOT NULL);
-        """)
-    c.execute("""
-        CREATE TABLE tags (id INTEGER NOT NULL PRIMARY KEY,
-        name VARCHAR(50) NOT NULL, post_id INTEGER NOT NULL);
-        """)
-
-    c.execute("CREATE UNIQUE INDEX users_id ON users(id);")
-    c.execute("CREATE UNIQUE INDEX posts_id ON posts(id);")
-    c.execute("CREATE INDEX posts_slug ON posts(slug);")
-    c.execute("CREATE INDEX tags_name ON tags(name);")
-    c.execute("CREATE UNIQUE INDEX tags_id ON tags(id);")
-    conn.commit()
+    db.commit()
 
 
-def create_user(conn):
-    c = conn.cursor()
+def create_user(db):
+    c = db.cursor()
     salt = crypto.get_random_string()
     enpass = crypto.PasswordCrypto.get_encrypted(PASSWORD)
-    c.execute("""
-        INSERT INTO users ( salt, username, password, email) VALUES (?,?,?,?)
-        """, (salt, USERNAME, enpass, EMAIL))
-    conn.commit()
+    c.execute(
+        "INSERT INTO users (salt, username, password, email) VALUES (?,?,?,?)",
+        (salt, USERNAME, enpass, EMAIL)
+    )
+    db.commit()
 
 
 def get_secret():
@@ -64,7 +48,7 @@ def get_secret():
 
 
 def main(argv):
-    help = """
+    helps = """
 Usage: python tools -o <opt>
 
     opt list:
@@ -75,25 +59,25 @@ Usage: python tools -o <opt>
     try:
         opts, args = getopt.getopt(argv, "ho:", ["opt="])
     except getopt.GetoptError:
-        print(help)
+        print(helps)
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print(help)
+            print(helps)
             sys.exit()
         elif opt in ("-o", "--opt"):
             opt = arg
         else:
-            print(help)
+            print(helps)
             sys.exit()
 
     if opt == "createdb":
-        conn = sqlite3.connect(DBFILE)
+        db = sqlite3.connect(DBFILE)
         print("开始创建数据库...")
-        create_db(conn)
+        create_tables(db)
         print("数据库创建完毕，开始创建用户账户...")
-        create_user(conn)
-        conn.close()
+        create_user(db)
+        db.close()
         print("用户创建成功，请务必将生成的数据库文件拷贝到 blogconfig 中设置的目录里！！！")
     elif opt == "getsecret":
         print(get_secret())
