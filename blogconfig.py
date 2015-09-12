@@ -14,7 +14,8 @@ picky = os.path.join(os.path.dirname(__file__), "picky")
 database = os.path.join(os.path.dirname(__file__), "newblog.db")
 
 
-# 调试模式
+# 其他设置
+secret = "this is secret"
 debug = True
 
 

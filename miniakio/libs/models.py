@@ -121,10 +121,10 @@ class PostMixin(object):
                       WHERE published < ? ORDER BY published DESC LIMIT 1;
                    """
 
-        return ObjectDict({
-            "next": self.db.get(next_sql, published),
-            "prev": self.db.get(prev_sql, published)
-        })
+        return ObjectDict(dict(
+            next=self.db.get(next_sql, published),
+            prev=self.db.get(prev_sql, published)
+        ))
 
 
 class TagMixin(object):
