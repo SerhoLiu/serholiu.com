@@ -3,6 +3,7 @@
 
 import os.path
 import tornado.web
+from tornado.escape import xhtml_escape
 
 from .libs import sqlite3lib, utils
 from .blog import handlers as handler
@@ -40,5 +41,8 @@ class Application(tornado.web.Application):
             config["secret"] = config["secret"].encode()
         else:
             config["secret"] = utils.random_secret()
+
+        config["blogname"] = xhtml_escape(config["blogname"])
+        config["blogdesc"] = xhtml_escape(config["blogdesc"])
 
         self.config = utils.ObjectDict(config)

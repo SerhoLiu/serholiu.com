@@ -2,9 +2,9 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <title>{% block title %}{{escape(config.blogname)}}{% end %}</title>
+    <title>{% block title %}{{config.blogname}}{% end %}</title>
     <meta name="author" content="Serho Liu">
-    <meta name="description" content="{% block head %}SErHo's Blog, Please Call me Serho Liu.{% end %}" />
+    <meta name="description" content="{% block head %}{{config.blogdesc}}{% end %}" />
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
     <link href="/blog/feed" rel="alternate" type="application/atom+xml">
     <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
@@ -20,15 +20,7 @@
     {% if not context.is_mobile %}
     <header id="header" class="clearfix header-fixed-top">
       <div class="nav">
-        <h1><a href="/">{{escape(config.blogname)}}</a></h1>
-        <ul>
-          <li><a href="/picky/about-me">About</a></li>
-          <li><a href="/picky/all">Picky</a></li>
-          <li><a href="/picky/links">Links</a></li>
-          <li><a href="/blog/all">Archives</a></li>
-          <li><a href="/blog/tags">Tags</a></li>
-          <li><a href="/picky/projects">Projects</a></li>
-        </ul>
+        {% include "header.html" %}
       </div>
     </header>
     {% end %}
@@ -36,15 +28,7 @@
     <div id="container">
       {% if context.is_mobile %}
       <header id="mobile-header" class="clearfix">
-        <h1><a href="/">{{escape(config.blogname)}}</a></h1>
-        <ul>
-          <li><a href="/picky/about-me">About</a></li>
-          <li><a href="/picky/all">Picky</a></li>
-          <li><a href="/picky/links">Links</a></li>
-          <li><a href="/blog/all">Archives</a></li>
-          <li><a href="/blog/tags">Tags</a></li>
-          <li><a href="/picky/projects">Projects</a></li>
-        </ul>
+        {% include "header.html" %}
       </header>
       {% end %}
       <div class="content clearfix">
