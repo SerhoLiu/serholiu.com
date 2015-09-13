@@ -3,7 +3,7 @@
   {% set date_format = "%Y-%m-%dT%H:%M:%SZ" %}
   <title>{{config.blogname}}</title>
   {% if len(posts) > 0 %}
-    <updated>{{max(time(e.published) for e in posts).strftime(date_format)}}</updated>
+    <updated>{{max(format_time(e.published) for e in posts).strftime(date_format)}}</updated>
   {% else %}
     <updated>{{datetime.datetime.utcnow().strftime(date_format)}}</updated>
   {% end %}
@@ -16,7 +16,7 @@
       <id>http://{{request.host}}/{{post.slug}}</id>
       <title type="text">{{escape(post.title)}}</title>
       <link href="http://{{request.host}}/{{post.slug}}" rel="alternate" type="text/html"/>
-      <published>{{time(post.published).strftime(date_format)}}</published>
+      <published>{{format_time(post.published).strftime(date_format)}}</published>
       <id>http://serholiu.com/{{post.slug}}</id>
       <content type="html">
        <![CDATA[{{post.content}}]]>

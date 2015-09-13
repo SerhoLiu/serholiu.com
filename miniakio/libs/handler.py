@@ -9,9 +9,8 @@
 import traceback
 import tornado.web
 
-from .utils import ObjectDict
-from .utils import get_time_date, get_home_time
-from .utils import is_mobile, strip_tags
+from .utils import ObjectDict, is_mobile, strip_tags
+from .utils import get_time_date, get_home_time, format_time
 from .models import UserMixin
 
 
@@ -38,6 +37,7 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
             context=self.context,
             home_time=get_home_time,
             time_date=get_time_date,
+            format_time=format_time,
             strip_tags=strip_tags,
         ))
 
