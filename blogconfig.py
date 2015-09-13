@@ -10,7 +10,7 @@ blogcover = "//dn-serho.qbox.me/blogbg.jpg"
 
 # Picky 目录和数据库
 picky = "/home/serho/website/picky"
-database = "//home/serho/website/newblog.db"
+database = "/home/serho/website/newblog.db"
 
 
 # 其他设置
