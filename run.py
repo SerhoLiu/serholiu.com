@@ -4,7 +4,9 @@
 import tornado.ioloop
 import tornado.options
 import tornado.httpserver
+from tornado.log import gen_log
 from tornado.options import define, options
+
 from miniakio import Application
 
 
@@ -15,6 +17,7 @@ def start():
     tornado.options.parse_command_line()
     http_server = tornado.httpserver.HTTPServer(Application())
     http_server.listen(options.port)
+    gen_log.info("* start at: http://localhost:%d", options.port)
     tornado.ioloop.IOLoop.instance().start()
 
 
