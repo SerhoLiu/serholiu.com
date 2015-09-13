@@ -1,23 +1,19 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
-
 
 # 博客名和简介
-blogname = "I'm Force"
-blogdesc = "May the Force Be with you"
-blogcover = "/static/bg.jpg"
+blogname = "I'm SErHo"
+blogdesc = "SErHo's Blog, Please Call me Serho Liu."
+blogcover = "//dn-serho.qbox.me/blogbg.jpg"
 
 
-# 数据库和 Picky 目录
-picky = os.path.join(os.path.dirname(__file__), "picky")
-database = os.path.join(os.path.dirname(__file__), "newblog.db")
+# Picky 目录和数据库
+picky = "/home/serho/website/picky"
+database = "//home/serho/website/newblog.db"
 
 
 # 其他设置
-secret = "this is secret"
-debug = True
-
-
-del os
+# disqus = "serho"
+# secret = "use random"
+debug = False

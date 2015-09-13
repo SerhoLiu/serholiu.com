@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS posts (
     category VARCHAR(30) NOT NULL,
     published VARCHAR(30) NOT NULL,
     omment INTEGER NOT NULL,
-    cover VARCHAR(256)
+    cover VARCHAR(255)
 );
 CREATE UNIQUE INDEX IF NOT EXISTS posts_id ON posts(id);
 CREATE UNIQUE INDEX IF NOT EXISTS posts_slug ON posts(slug);
