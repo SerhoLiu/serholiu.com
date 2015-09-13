@@ -136,7 +136,6 @@ class RenderMarkdownPost(object):
         meta = {"title": title.strip()}
         items = re.findall(r"<li>(.*?)</li>", header, re.S)
         for item in items:
-            print(item)
             key, value = item.split(":", 1)
             meta[key.strip()] = value.strip()
 
