@@ -71,7 +71,7 @@ class PostMixin(object):
                 sql,
                 post["title"], post["slug"], post["content"],
                 post["tags"], post["category"], post["published"],
-                post["comment"], post["cover"]
+                post["comment"], post.get("cover")
             )
             db.executemany(
                 "INSERT INTO tags (name, post_id) VALUES (?, ?);",
@@ -94,7 +94,7 @@ class PostMixin(object):
                 sql,
                 post["title"], post["slug"], post["content"],
                 post["tags"], post["category"], post["published"],
-                post["comment"], post["cover"],
+                post["comment"], post.get("cover"),
                 pid
             )
 
