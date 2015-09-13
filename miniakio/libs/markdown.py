@@ -4,7 +4,6 @@
 import re
 import mistune
 
-from io import StringIO
 from pygments import highlight
 from pygments.formatters import HtmlFormatter
 from pygments.lexers import get_lexer_by_name
@@ -107,39 +106,37 @@ def markdown(text):
 
 
 class RenderMarkdownPost(object):
+    """
+    # Hello
 
-    def __init__(self, markdown=None):
+    - slug: hello-world
+    - tags: T, A
+
+    ---
+
+    this content
+    """
+
+    def __init__(self, markdown):
         self.markdown = markdown
 
     def get_render_post(self):
-        if not self.markdown:
-            return None
-        f = StringIO(self.markdown)
-        header = ""
-        body = None
-        for line in f:
-            if line.startswith("---"):
-                body = ""
-            elif body is not None:
-                body += line
-            else:
-                header += line
+        header, body = re.split(r"\n-{3,}", self.markdown, 1)
 
         meta = self._get_post_meta(header)
         content = markdown(body)
         meta.update({"content": content})
+
         return meta
 
     def _get_post_meta(self, header):
         header = markdown(header)
         title = re.findall(r"<h1>(.*)</h1>", header)[0]
 
-        meta = {"title": title}
+        meta = {"title": title.strip()}
         items = re.findall(r"<li>(.*?)</li>", header, re.S)
         for item in items:
-            index = item.find(":")
-            key = item[:index].rstrip()
-            value = item[index + 1:].lstrip()
-            meta[key] = value
+            key, value = item.split(":")
+            meta[key.strip()] = value.strip()
 
         return meta
