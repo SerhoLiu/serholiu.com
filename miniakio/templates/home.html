@@ -12,7 +12,10 @@
   </head>
 
   <body>
-    <img class='bg-image' src="{{static_url('bg.jpg')}}" />
+    {% if config.blogcover %}
+    <img class="bg-image" src="{{config.blogcover}}" />
+    {% end %}
+
     <header id="header" class="clearfix header-fixed-top">
       <div class="nav">
        {% include "header.html" %}

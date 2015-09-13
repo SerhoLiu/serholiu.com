@@ -7,6 +7,7 @@ import os
 # 博客名和简介
 blogname = "I'm Force"
 blogdesc = "May the Force Be with you"
+blogcover = "/static/bg.jpg"
 
 
 # 数据库和 Picky 目录

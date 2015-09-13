@@ -16,7 +16,10 @@
   </head>
 
   <body>
-    <img class='bg-image' src="{{static_url('bg.jpg')}}" />
+    {% if config.blogcover %}
+    <img class="bg-image" src="{{config.blogcover}}" />
+    {% end %}
+
     {% if not context.is_mobile %}
     <header id="header" class="clearfix header-fixed-top">
       <div class="nav">
