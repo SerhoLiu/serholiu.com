@@ -62,8 +62,8 @@ class PostMixin(object):
             post["slug"] += "-2"
 
         sql = """INSERT INTO posts (title, slug, content, tags,
-                 category, published, comment)
-                 VALUES (?, ?, ?, ?, ?, ?, ?);
+                 category, published, comment, cover)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?);
               """
 
         with self.db as db:
@@ -71,7 +71,7 @@ class PostMixin(object):
                 sql,
                 post["title"], post["slug"], post["content"],
                 post["tags"], post["category"], post["published"],
-                post["comment"]
+                post["comment"], post["cover"]
             )
             db.executemany(
                 "INSERT INTO tags (name, post_id) VALUES (?, ?);",
@@ -83,7 +83,7 @@ class PostMixin(object):
     def update_post_by_id(self, pid, post):
         sql = """UPDATE posts
                  SET title=?, slug=?, content=?, tags=?,
-                 category=?, published=?, comment=?
+                 category=?, published=?, comment=?, cover=?
                  WHERE id=?;
               """
 
@@ -94,7 +94,7 @@ class PostMixin(object):
                 sql,
                 post["title"], post["slug"], post["content"],
                 post["tags"], post["category"], post["published"],
-                post['comment'],
+                post["comment"], post["cover"],
                 pid
             )
 

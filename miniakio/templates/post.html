@@ -1,6 +1,15 @@
 {% extends "base.html" %}
 {% block title %}{{post.title}} - {{config.blogname}}{% end %}
 {% block head %}{{strip_tags(post.content[0:168])}}{% end %}
+
+{% block cover %}
+  {% if post.cover %}
+  <img class="bg-image" src="{{post.cover}}" />
+  {% elif config.blogcover %}
+  <img class="bg-image" src="{{config.blogcover}}" />
+  {% end %}
+{% end %}
+
 {% block content %}
 <article>
   {% if context.is_mobile %}
@@ -64,6 +73,3 @@
     </span>
   </div>
 {% end%}
-
-{% block nav %}
-{% end %}

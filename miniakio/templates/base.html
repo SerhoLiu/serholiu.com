@@ -16,8 +16,10 @@
   </head>
 
   <body>
-    {% if config.blogcover %}
-    <img class="bg-image" src="{{config.blogcover}}" />
+    {% block cover %}
+      {% if config.blogcover %}
+      <img class="bg-image" src="{{config.blogcover}}" />
+      {% end %}
     {% end %}
 
     {% if not context.is_mobile %}
@@ -36,7 +38,6 @@
       {% end %}
       <div class="content clearfix">
       {% block content %}{% end %}
-      {% block nav %}{% end %}
       </div>
 
       <footer id="footer" class="top-box clearfix">

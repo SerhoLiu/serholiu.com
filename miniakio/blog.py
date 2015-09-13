@@ -11,11 +11,23 @@ from .libs.handler import BaseHandler
 from .libs.crypto import PasswordCrypto, get_random_string
 from .libs.models import PostMixin, TagMixin
 from .libs.markdown import RenderMarkdownPost
+from .libs.utils import ObjectDict
 from .libs.utils import authenticated, get_time_year
 from .libs.utils import signer_encode, signer_check
 
 
-class EntryHandler(BaseHandler, PostMixin):
+class HomeHandler(BaseHandler, PostMixin):
+
+    def get(self):
+        if self.context.is_mobile:
+            posts = self.get_count_posts(1)
+            self.render("index.html", posts=posts)
+        else:
+            posts = self.get_count_posts(8)
+            self.render("home.html", posts=posts)
+
+
+class PostHandler(BaseHandler, PostMixin):
 
     @removeslash
     def get(self, slug):
@@ -32,94 +44,6 @@ class EntryHandler(BaseHandler, PostMixin):
             pager=pager,
             signer=signer
         )
-
-
-class TagsHandler(BaseHandler, PostMixin):
-
-    @removeslash
-    def get(self, name):
-        posts = self.get_posts_by_tag(name)
-        if not posts:
-            self.abort(404)
-        count = len(posts)
-        self.render(
-            "archive.html",
-            posts=posts,
-            type="tag",
-            name=name,
-            count=count
-        )
-
-
-class CategoryHandler(BaseHandler, PostMixin):
-
-    @removeslash
-    def get(self, category):
-        posts = self.get_posts_by_category(category)
-        if not posts:
-            self.abort(404)
-        count = len(posts)
-        self.render(
-            "archive.html",
-            posts=posts,
-            type="category",
-            name=category,
-            count=count
-        )
-
-
-class FeedHandler(BaseHandler, PostMixin):
-
-    def get(self):
-        posts = self.get_count_posts(10)
-        self.set_header("Content-Type", "application/atom+xml")
-        self.render("feed.xml", posts=posts)
-
-
-class HomeHandler(BaseHandler, PostMixin):
-
-    def get(self):
-        if self.context.is_mobile:
-            posts = self.get_count_posts(1)
-            self.render("index.html", posts=posts)
-        else:
-            posts = self.get_count_posts(8)
-            self.render("home.html", posts=posts)
-
-
-class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
-
-    def get(self):
-        posts = self.get_count_posts()
-        count = len(posts)
-        archives = {}
-
-        for post in posts:
-            year = get_time_year(post.published)
-            if year in archives:
-                archives[year].append(post)
-            else:
-                archives[year] = [post]
-
-        archives = sorted(
-            archives.items(),
-            key=lambda item: item[0],
-            reverse=True
-        )
-
-        self.render(
-            "archives.html",
-            count=count,
-            archives=archives
-        )
-
-
-class TagListHandler(BaseHandler, TagMixin):
-
-    def get(self):
-        tags = self.get_all_tag_count()
-        count = len(tags)
-        self.render("taglist.html", tags=tags, count=count)
 
 
 class NewPostHandler(BaseHandler, PostMixin):
@@ -191,10 +115,11 @@ class PickyHandler(BaseHandler):
         md.close()
         render = RenderMarkdownPost(markdown)
 
-        post = render.get_render_post()
+        picky = ObjectDict(render.get_render_post())
+        picky.slug = slug
         signer = signer_encode(self.config.secret, slug)
 
-        self.render("picky.html", post=post, slug=slug, signer=signer)
+        self.render("picky.html", picky=picky, signer=signer)
 
 
 class PickyDownHandler(BaseHandler):
@@ -251,6 +176,83 @@ class DeletePickyHandler(BaseHandler):
         mdfile = os.path.join(self.config.picky, slug + ".md")
         os.remove(mdfile)
         self.redirect("/")
+
+
+class TagsHandler(BaseHandler, PostMixin):
+
+    @removeslash
+    def get(self, name):
+        posts = self.get_posts_by_tag(name)
+        if not posts:
+            self.abort(404)
+        count = len(posts)
+        self.render(
+            "archive.html",
+            posts=posts,
+            type="tag",
+            name=name,
+            count=count
+        )
+
+
+class CategoryHandler(BaseHandler, PostMixin):
+
+    @removeslash
+    def get(self, category):
+        posts = self.get_posts_by_category(category)
+        if not posts:
+            self.abort(404)
+        count = len(posts)
+        self.render(
+            "archive.html",
+            posts=posts,
+            type="category",
+            name=category,
+            count=count
+        )
+
+
+class FeedHandler(BaseHandler, PostMixin):
+
+    def get(self):
+        posts = self.get_count_posts(10)
+        self.set_header("Content-Type", "application/atom+xml")
+        self.render("feed.xml", posts=posts)
+
+
+class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
+
+    def get(self):
+        posts = self.get_count_posts()
+        count = len(posts)
+        archives = {}
+
+        for post in posts:
+            year = get_time_year(post.published)
+            if year in archives:
+                archives[year].append(post)
+            else:
+                archives[year] = [post]
+
+        archives = sorted(
+            archives.items(),
+            key=lambda item: item[0],
+            reverse=True
+        )
+
+        self.render(
+            "archives.html",
+            count=count,
+            archives=archives
+        )
+
+
+class TagListHandler(BaseHandler, TagMixin):
+
+    def get(self):
+        tags = self.get_all_tag_count()
+        count = len(tags)
+        self.render("taglist.html", tags=tags, count=count)
 
 
 class SigninHandler(BaseHandler):
@@ -313,7 +315,7 @@ class PageNotFound(BaseHandler):
 
 handlers = [
     (r"/", HomeHandler),
-    (r"/([a-zA-Z0-9-]+)/*", EntryHandler),
+    (r"/([a-zA-Z0-9-]+)/*", PostHandler),
     (r"/picky/([a-zA-Z0-9-]+)/*", PickyHandler),
     (r"/picky/([a-zA-Z0-9-]+.md)", PickyDownHandler),
     (r"/tag/([^/]+)/*", TagsHandler),

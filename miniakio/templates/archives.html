@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}博客所有文章 - {{config.blogname}}{% end %}
+
 {% block content %}
 <section class="archives">
   {% set i = 0 %}
@@ -30,6 +31,7 @@
   <small><a href="/blog/all" title="Posts">{{count}}+</a></small>
 </blockquote>
 {% end %}
+
 {% block bottom %}
 <script type="text/javascript" src="//upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.3.min.js"></script>
 <script type="text/javascript">

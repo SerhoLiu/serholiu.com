@@ -1,18 +1,27 @@
 {% extends "base.html" %}
-{% block title %}{{post["title"]}} - {{config.blogname}}{% end %}
-{% block head %}{{strip_tags(post["content"][0:168])}}{% end %}
+{% block title %}{{picky.title}} - {{config.blogname}}{% end %}
+{% block head %}{{strip_tags(picky.content)}}{% end %}
+
+{% block cover %}
+  {% if picky.cover %}
+  <img class="bg-image" src="{{picky.cover}}" />
+  {% elif config.blogcover %}
+  <img class="bg-image" src="{{config.blogcover}}" />
+  {% end %}
+{% end %}
+
 {% block content %}
 <article>
-  <h2 class="content-title"><a href="/picky/{{slug}}">{{post["title"]}}</a></h2>
-    {{post["content"]}}
+  <h2 class="content-title"><a href="/picky/{{picky.slug}}">{{picky.title}}</a></h2>
+    {{picky.content}}
 </article>
 <hr>
 <blockquote>
   <small>
-    {{post["published"]}}
-    <a href="/picky/{{slug}}.md" title="{{post["title"]}}">Down Markdown File</a>
+    {{picky.published}}
+    <a href="/picky/{{picky.slug}}.md" title="{{picky.title}}">Down Markdown File</a>
     {% if current_user %}
-    &#160;&#160;<a href="/picky/delete/{{slug}}?check={{signer}}">Del</a>
+    &#160;&#160;<a href="/picky/delete/{{picky.slug}}?check={{signer}}">Del</a>
     {% end %}
   </small>
 </blockquote>
