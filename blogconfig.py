@@ -16,6 +16,7 @@ database = os.path.join(os.path.dirname(__file__), "newblog.db")
 
 
 # 其他设置
+disqus = "test"
 secret = "this is secret"
 debug = True
 
