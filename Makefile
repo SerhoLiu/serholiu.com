@@ -6,7 +6,7 @@ css:
 	lessc $(LESSPATH)effector.less > $(LESSPATH)style.css
 
 run:
-	python3.4 run.py
+	python3 run.py
 
 clean:
 	-find . -name '.DS_Store' -exec rm -f {} ';'
