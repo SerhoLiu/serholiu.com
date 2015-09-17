@@ -6,7 +6,7 @@ mincss:
 	lessc $(LESSPATH)effector.less --clean-css="--s1 --advanced" > $(LESSPATH)style.min.css
 
 run:
-	python3.4 run.py
+	python3 run.py
 
 clean:
 	-find . -name '.DS_Store' -exec rm -f {} ';'
