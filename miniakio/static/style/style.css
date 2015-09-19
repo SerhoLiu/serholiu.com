@@ -181,7 +181,7 @@ blockquote:after {
 }
 code,
 pre {
-  font-family: Monaco, Menlo, "Courier New", monospace;
+  font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
   font-size: 13px;
 }
 code {
@@ -227,10 +227,12 @@ p small {
 }
 body {
   background: #e6ebea fixed center top no-repeat;
+  font-weight: 400;
   font-size: 13px;
   line-height: 1;
-  font-family: "Quantico", "Helvetica Neue", Helvetica, "Hiragino Sans GB", "STHeitiSC-Light", "WenQuanYi Micro Hei", "Microsoft YaHei", "微软雅黑", Arial, sans-serif !important;
+  font-family: "Quantico", "Georgia", "Xin Gothic", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", sans-serif;
   color: #424242;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 .bg-image {
   min-width: 100%;
