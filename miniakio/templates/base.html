@@ -5,13 +5,10 @@
     <title>{% block title %}{{config.blogname}}{% end %}</title>
     <meta name="author" content="Serho Liu">
     <meta name="description" content="{% block head %}{{config.blogdesc}}{% end %}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
     <link href="/blog/feed" rel="alternate" type="application/atom+xml">
     <link href="{{static_url('style/style.css')}}" rel="stylesheet" type="text/css" media="all">
-    {% if context.is_mobile %}
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-    <link href="{{static_url('style/mobile.css')}}" rel="stylesheet" type="text/css" media="all">
-    {% end %}
     <link href="{{static_url('style/solarized.css')}}" rel="stylesheet" type="text/css">
   </head>
 
@@ -22,20 +19,13 @@
       {% end %}
     {% end %}
 
-    {% if not context.is_mobile %}
-    <header id="header" class="clearfix header-fixed-top">
+    <header id="header" class="clearfix header-fixed-top base-header">
       <div class="nav">
         {% include "header.html" %}
       </div>
     </header>
-    {% end %}
 
     <div id="container">
-      {% if context.is_mobile %}
-      <header id="mobile-header" class="clearfix">
-        {% include "header.html" %}
-      </header>
-      {% end %}
       <div class="content clearfix">
       {% block content %}{% end %}
       </div>

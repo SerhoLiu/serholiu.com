@@ -609,6 +609,92 @@ body {
   background: #ff5e99;
   color: #fff;
 }
+@media (max-width: 600px) {
+  #container {
+    width: auto;
+    margin-top: 0;
+  }
+  #header {
+    text-align: center;
+    background: #ffffff;
+    -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  }
+  #header .nav {
+    margin: 0;
+    width: 100%;
+  }
+  #header h1 {
+    float: none;
+    text-align: center;
+  }
+  #header h1 a {
+    font-size: 26px;
+    font-family: 'Quantico', sans-serif;
+    font-weight: 700;
+    color: #333;
+  }
+  #header ul {
+    margin: 10px auto;
+    font-size: 12px;
+    list-style: none;
+    display: inline-table;
+    float: none;
+  }
+  #header ul li {
+    display: inline;
+    margin: 0 2px;
+    line-height: 15px;
+  }
+  #header ul li a {
+    padding: 2px;
+    display: inline;
+    font-size: 15px;
+  }
+  .header-fixed-top {
+    position: static;
+  }
+  .base-header {
+    -moz-border-radius-bottomleft: 4px;
+    -moz-border-radius-bottomright: 4px;
+    -webkit-border-bottom-left-radius: 4px;
+    -webkit-border-bottom-right-radius: 4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+  .content .navigation .next {
+    float: none;
+    display: block;
+    margin-top: 10px;
+  }
+  .content article h2 {
+    line-height: 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  .content article h2 small {
+    margin-top: 10px;
+    display: block;
+    float: none;
+    color: #ced1d1;
+    font-size: 16px;
+  }
+  #home-container {
+    margin: 0 auto;
+    width: auto;
+  }
+  #home-container .curtain {
+    float: none;
+    width: 100%;
+    padding: 10px 0;
+  }
+  #home-container .curtain h2,
+  #home-container .curtain ul,
+  #home-container .curtain .footer {
+    margin: 10px;
+  }
+}
 @font-face {
   font-family: 'Quantico';
   font-style: normal;

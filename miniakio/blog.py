@@ -19,12 +19,8 @@ from .libs.utils import signer_encode, signer_check
 class HomeHandler(BaseHandler, PostMixin):
 
     def get(self):
-        if self.context.is_mobile:
-            posts = self.get_count_posts(1)
-            self.render("index.html", posts=posts)
-        else:
-            posts = self.get_count_posts(8)
-            self.render("home.html", posts=posts)
+        posts = self.get_count_posts(8)
+        self.render("home.html", posts=posts)
 
 
 class PostHandler(BaseHandler, PostMixin):

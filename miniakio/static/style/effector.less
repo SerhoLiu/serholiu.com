@@ -327,7 +327,7 @@ body{
 
 @media (max-width: 1024px)  {
     #home-container {
-         width: 720px;
+        width: 720px;
     }
 }
 
@@ -524,16 +524,6 @@ body{
     float: right;
 }
 
-.home-post {
-    margin: 0 0 5px;
-    border-bottom: 1px dashed #ddd;
-}
-
-.home-more {
-    text-align: center;
-    padding: 5px;
-}
-
 #footer {
     position:relative;
     background: #fff;
@@ -642,6 +632,104 @@ body{
 ::-moz-selection {
     background: #ff5e99;
     color: #fff;
+}
+
+@media (max-width: 680px) {
+
+    #container {
+        width: auto;
+        margin-top: 0;
+    }
+
+    #header {
+        text-align: center;
+        background: #ffffff;
+        .box-shadow;
+
+        .nav {
+            margin: 0;
+            width: 100%;
+        }
+
+        h1 {
+            float: none;
+            text-align: center;
+
+            a {
+                font-size: 26px;
+                font-family: 'Quantico', sans-serif;
+                font-weight: 700;
+                color: #333;
+            }
+        }
+
+        ul {
+            margin: 10px auto;
+            font-size: 12px;
+            list-style: none;
+            display: inline-table;
+            float: none;
+
+            li {
+                display: inline;
+                margin: 0 2px;
+                line-height: 15px;
+
+                a {
+                    padding: 2px;
+                    display: inline;
+                    font-size: 15px;
+                }
+            }
+        }
+    }
+
+    .header-fixed-top {
+        position: static;
+    }
+
+    .base-header {
+        .bottom-border-radius;
+    }
+
+    .content {
+
+        .navigation .next {
+            float: none;
+            display: block;
+            margin-top: 10px;
+        }
+
+        article h2 {
+            line-height: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+
+            small {
+                margin-top: 10px;
+                display: block;
+                float: none;
+                color: #ced1d1;
+                font-size: 16px;
+            }
+        }
+    }
+
+
+    #home-container {
+        margin: 0 auto;
+        width: auto;
+
+        .curtain {
+            float: none;
+            width: 100%;
+            padding: 10px 0;
+
+            h2, ul, .footer {
+                margin: 10px;
+            }
+        }
+    }
 }
 
 @font-face {
