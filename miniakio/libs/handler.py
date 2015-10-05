@@ -9,7 +9,7 @@
 import traceback
 import tornado.web
 
-from .utils import ObjectDict, is_mobile, strip_tags
+from .utils import ObjectDict, strip_tags
 from .utils import get_time_date, get_home_time, format_time
 from .models import UserMixin
 
@@ -26,9 +26,6 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
 
     def prepare(self):
         self.context = ObjectDict()
-        self.context.is_mobile = is_mobile(
-            self.request.headers.get("User-Agent", "")
-        )
 
     def get_template_namespace(self):
         namespace = super(BaseHandler, self).get_template_namespace()

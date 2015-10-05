@@ -12,14 +12,10 @@
 
 {% block content %}
 <article>
-  {% if context.is_mobile %}
-  <div class="post-meta">
-    <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
-    <span>{{post.published}}</span>
-  </div>
-  {% else %}
-  <h2><a href="/{{post.slug}}">{{post.title}}</a><small class="date-right">{{post.published}}</small></h2>
-  {% end %}
+  <h2>
+    <a href="/{{post.slug}}">{{post.title}}</a>
+    <small class="date-right">{{post.published}}</small>
+  </h2>
 
   {{post.content}}
 </article>
@@ -62,9 +58,6 @@
   </a>
   {% else %}
   没有了
-  {% end %}
-  {% if context.is_mobile %}
-  <br /><br />
   {% end %}
   <span class="next">
   {% if pager.prev %}

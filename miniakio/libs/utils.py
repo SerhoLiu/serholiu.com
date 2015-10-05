@@ -95,13 +95,6 @@ def signer_check(secret, signer, info):
     return base64.urlsafe_b64decode(signer) == check
 
 
-# Mobile Detect
-def is_mobile(user_agent):
-    detects = "iPod|iPhone|Android|Opera Mini|BlackBerry| \
-               webOS|UCWEB|Blazer|PSP|IEMobile"
-    return re.search(detects, user_agent)
-
-
 # 去除文章description中的html标签
 class MLStripper(HTMLParser):
 

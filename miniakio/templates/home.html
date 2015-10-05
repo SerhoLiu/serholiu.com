@@ -5,6 +5,7 @@
     <title>{{config.blogname}}</title>
     <meta name="author" content="Serho Liu">
     <meta name="description" content="{{config.blogdesc}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <link rel="shortcut icon" type="image/ico" href="/static/favicon.ico">
     <link href="/blog/feed" rel="alternate" type="application/atom+xml">
     <link href="{{static_url('style/style.min.css')}}" rel="stylesheet" type="text/css" media="all">
@@ -30,7 +31,7 @@
           </a>
         </div>
         <h2>Recent Post</h2>
-        <ul class="home-list">
+        <ul>
           {% for post in posts %}
           <li>
             <span>{{home_time(post.published)}}</span> &raquo;
