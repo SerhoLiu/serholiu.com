@@ -495,14 +495,6 @@ body {
 .date-right {
   float: right;
 }
-.home-post {
-  margin: 0 0 5px;
-  border-bottom: 1px dashed #ddd;
-}
-.home-more {
-  text-align: center;
-  padding: 5px;
-}
 #footer {
   position: relative;
   background: #fff;
@@ -609,7 +601,7 @@ body {
   background: #ff5e99;
   color: #fff;
 }
-@media (max-width: 600px) {
+@media (max-width: 680px) {
   #container {
     width: auto;
     margin-top: 0;
@@ -636,21 +628,20 @@ body {
     color: #333;
   }
   #header ul {
-    margin: 10px auto;
-    font-size: 12px;
-    list-style: none;
-    display: inline-table;
     float: none;
+    text-align: center;
   }
   #header ul li {
     display: inline;
-    margin: 0 2px;
-    line-height: 15px;
   }
   #header ul li a {
-    padding: 2px;
-    display: inline;
+    margin: 5px;
+    padding: 5px 0;
     font-size: 15px;
+    border-bottom: none;
+  }
+  #header ul li a:hover {
+    border-bottom: none;
   }
   .header-fixed-top {
     position: static;
