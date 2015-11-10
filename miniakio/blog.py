@@ -212,7 +212,7 @@ class FeedHandler(BaseHandler, PostMixin):
 
     def get(self):
         posts = self.get_count_posts(10)
-        self.set_header("Content-Type", "application/atom+xml")
+        self.set_header("Content-Type", "text/xml; charset=UTF-8")
         self.render("feed.xml", posts=posts)
 
 
