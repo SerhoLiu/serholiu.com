@@ -607,7 +607,6 @@ body {
     margin-top: 0;
   }
   #header {
-    text-align: center;
     background: #ffffff;
     -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
     -moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
@@ -616,6 +615,7 @@ body {
   #header .nav {
     margin: 0;
     width: 100%;
+    text-align: center;
   }
   #header h1 {
     float: none;
@@ -629,7 +629,8 @@ body {
   }
   #header ul {
     float: none;
-    text-align: center;
+    display: inline-block;
+    margin: 0;
   }
   #header ul li {
     display: inline;
