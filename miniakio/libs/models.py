@@ -13,7 +13,8 @@ class UserMixin(object):
         return self.db.get("SELECT * FROM users WHERE email = ?", email)
 
     def update_user_salt(self, uid, salt):
-        self.db.execute("UPDATE users SET salt=? WHERE id=?;", salt, uid)
+        with self.db as db:
+            db.execute("UPDATE users SET salt=? WHERE id=?;", salt, uid)
 
 
 class PostMixin(object):
