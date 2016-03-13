@@ -25,6 +25,9 @@ class BaseHandler(tornado.web.RequestHandler, UserMixin):
         return self.application.config
 
     def prepare(self):
+        if self.current_user:
+            self.add_header("Cache-control", "private, no-cache")
+
         self.context = ObjectDict()
 
     def get_template_namespace(self):

@@ -254,6 +254,8 @@ class TagListHandler(BaseHandler, TagMixin):
 class SigninHandler(BaseHandler):
 
     def get(self):
+        self.add_header("Cache-control", "private, no-cache")
+
         if self.current_user:
             self.redirect(self.get_argument("next", "/"))
             return
@@ -293,6 +295,8 @@ class SigninHandler(BaseHandler):
 class SignoutHandler(BaseHandler):
 
     def get(self):
+        self.add_header("Cache-control", "private, no-cache")
+
         user = self.current_user
         if not user:
             self.redirect("/")
