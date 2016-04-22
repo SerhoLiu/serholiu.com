@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title><![CDATA[{{config.blogname}}]]></title>
+    <updated>{{posts[0].published|time_ios8601}}</updated>
+    <id><![CDATA[{{config.blogurl}}/]]></id>
+    <link rel="alternate" href="{{config.blogurl}}/" title="{{config.blogname}}" type="text/html"/>
+    <link rel="self" href="{{config.blogurl}}/blog/feed" title="{{config.blogname}}" type="application/atom+xml"/>
+    <author><name><![CDATA[{{config.blogname}}]]></name></author>
+    {% for post in posts %}
+    <entry>
+      <id><![CDATA[http://{{config.blogurl}}/{{post.slug}}]]></id>
+      <title type="text"><![CDATA[{{post.title}}]]></title>
+      <link href="http://{{config.blogurl}}/{{post.slug}}" rel="alternate" type="text/html"/>
+      <published>{{post.published|time_ios8601}}</published>
+      <content type="html">
+       <![CDATA[{{post.content}}]]>
+      </content>
+    </entry>
+    {% endfor %}
+</feed>

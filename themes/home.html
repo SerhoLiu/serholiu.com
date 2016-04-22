@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{config.blogname}}</title>
+    <meta name="author" content="Serho Liu">
+    <meta name="description" content="{{config.blogdesc}}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
+    <link href="/blog/feed.xml" rel="alternate" type="application/atom+xml">
+    <link href="/assets/style/style.min.css" rel="stylesheet" type="text/css" media="all">
+    <link href="/assets/style/solarized.css" rel="stylesheet" type="text/css">
+  </head>
+
+  <body>
+    {% if config.blogcover %}
+    <img class="bg-image" src="{{config.blogcover}}" />
+    {% endif %}
+
+    <header id="header" class="clearfix header-fixed-top">
+      <div class="nav">
+       {% include "header.html" %}
+      </div>
+    </header>
+
+    <div id="home-container">
+      <div class="curtain">
+        <div class="avater">
+          <a href="/pickys/about-me">
+            <img src="/assets/avater.jpg"/>
+          </a>
+        </div>
+        <h2>Recent Post</h2>
+        <ul>
+          {% for post in posts %}
+          <li>
+            <span>{{post.published|time_home}}</span> &raquo;
+            <a href="/{{post.slug}}">{{post.title}}</a>
+          </li>
+          {% endfor %}
+        </ul>
+        <div class="footer">
+          &copy; 2009-2016 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
+          <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
