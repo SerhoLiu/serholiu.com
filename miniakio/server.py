@@ -4,6 +4,8 @@
 import os
 import sys
 import mimetypes
+from urllib.parse import unquote_plus, urlparse
+from wsgiref.util import request_uri
 from wsgiref.simple_server import make_server
 
 from miniakio.utils import echo
@@ -48,7 +50,8 @@ class Server:
             sys.exit()
 
     def wsgi(self, environ, start_response):
-        path = environ["PATH_INFO"]
+        url = urlparse(request_uri(environ))
+        path = unquote_plus(url.path)
         mime_types, encoding = mimetypes.guess_type(path)
         if not mime_types:
             mime_types = "text/html"

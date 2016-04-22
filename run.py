@@ -15,7 +15,7 @@ if __name__ == "__main__":
         echo.error(usage, sys.argv[0])
         sys.exit(1)
 
-    blog = Blog("_config.yaml")
+    blog = Blog("config.yaml")
     if sys.argv[1] == "build":
         try:
             start = time.time()

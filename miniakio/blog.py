@@ -61,7 +61,7 @@ class Blog:
         posts = []
         tags = {}
 
-        post_dir = self.config.get("posts", self._defalut_dir("_posts"))
+        post_dir = self.config.get("posts", self._defalut_dir("posts"))
         for md in tqdm.tqdm(glob.glob(os.path.join(post_dir, "*.md"))):
             markdown = read_file(md)
             post = Post(markdown)
@@ -85,7 +85,7 @@ class Blog:
 
     def _parse_pickys(self):
         pickys = []
-        picky_dir = self.config.get("pickys", self._defalut_dir("_pickys"))
+        picky_dir = self.config.get("pickys", self._defalut_dir("pickys"))
         for md in tqdm.tqdm(glob.glob(os.path.join(picky_dir, "*.md"))):
             basename = os.path.basename(md)
             slug = basename.split(".")[0]
