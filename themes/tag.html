@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}在「{{name}}」下的所有文章 - {{config.blogname}}{% endblock %}
+
+{% block content %}
+<h3>在「{{name}}」下的所有文章</h3>
+<section>
+  <ul class="posts-list">
+   {%for post in posts %}
+    <li>
+      <span>{{post.published|time_date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+    </li>
+   {% endfor %}
+  </ul>
+</section>
+<hr>
+<blockquote>
+  <small><a href="/{{type}}/{{name}}" title="Posts">{{posts|length}}+</a></small>
+</blockquote>
+{% endblock %}

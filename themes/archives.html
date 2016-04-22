@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}博客所有文章 - {{config.blogname}}{% endblock %}
+
+{% block content %}
+<section class="archives">
+  {% set i = 0 %}
+  {% for year, posts in archives %}
+  <h4 class="downarch">{{year}} +</h4>
+  {% set i = i + 1 %}
+  {% if i < 2 %}
+    <ul class="posts-list">
+    {% for post in posts %}
+    <li class="archiveli">
+      <span>{{post.published|time_date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+  {% else %}
+    <ul class="hidearch posts-list">
+    {% for post in posts %}
+    <li class="archiveli">
+      <span>{{post.published|time_date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+    </li>
+    {% endfor %}
+    </ul>
+   {% endif %}
+  {% endfor %}
+</section>
+<hr>
+<blockquote>
+  <small><a href="/blog/all" title="Posts">{{count}}+</a></small>
+</blockquote>
+{% endblock %}
+
+{% block bottom %}
+<script type="text/javascript" src="//upcdn.b0.upaiyun.com/libs/jquery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function($) {
+    $(document).ready(function() {
+        $(".archives ul.hidearch").hide();
+        $(".archives h4.downarch").click(function() {
+            $(this).next().slideToggle('fast');
+            return false;
+        });
+    });
+})
+</script>
+{% endblock %}

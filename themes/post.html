@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}{{post.title}} - {{config.blogname}}{% endblock %}
+{% block head %}{{post.content[0:168]|striptags|escape}}{% endblock %}
+
+{% block cover %}
+  {% if post.cover %}
+  <img class="bg-image" src="{{post.cover}}" />
+  {% elif config.blogcover %}
+  <img class="bg-image" src="{{config.blogcover}}" />
+  {% endif %}
+{% endblock %}
+
+{% block content %}
+<article>
+  <h2>
+    <a href="/{{post.slug}}">{{post.title}}</a>
+    <small class="date-right">{{post.published}}</small>
+  </h2>
+
+  {{post.content}}
+</article>
+
+<div class="tag-list">Tags:
+  {% for tag in post.tags%}
+  <a href="/tag/{{tag}}">#{{tag}}</a>
+  {% endfor %}
+</div>
+
+{% if post.comment and config.disqus %}
+<![if !IE]>
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+  /* * * CONFIGURATION VARIABLES * * */
+  // Required: on line below, replace text in quotes with your forum shortname
+  var disqus_shortname = '{{config.disqus}}';
+  
+  /* * * DON'T EDIT BELOW THIS LINE * * */
+  (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<![endif]>
+{% endif %}
+
+<div class="navigation clearfix">
+ 上一篇:
+ {% if post.next %}
+  <a href="/{{post.next.slug}}" title="{{post.next.title}}" class="previous">
+  {{post.next.title}}
+  </a>
+  {% else %}
+  没有了
+  {% endif %}
+  <span class="next">
+  {% if post.prev %}
+  下一篇:
+  <a href="/{{post.prev.slug}}" title="{{post.prev.title}}">
+  {{post.prev.title}}
+  </a>
+  {% else %}
+  没有了
+  {% endif %}
+  </span>
+</div>
+{% endblock %}

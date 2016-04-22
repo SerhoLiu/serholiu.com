@@ -1,228 +1,120 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import re
-import os
+import glob
+import tqdm
+import yaml
+import shutil
 import os.path
-from tornado.web import removeslash
-from tornado.log import access_log
+from jinja2 import Environment, FileSystemLoader
 
-from .libs.handler import BaseHandler
-from .libs.crypto import PasswordCrypto, get_random_string
-from .libs.models import PostMixin, TagMixin
-from .libs.markdown import RenderMarkdownPost
-from .libs.utils import ObjectDict
-from .libs.utils import authenticated, get_time_year
-from .libs.utils import signer_encode, signer_check
+from miniakio.server import Server
+from miniakio.models import Post, Picky
+from miniakio.utils import ensure_dir_exists
+from miniakio.utils import read_file, write_file, echo
+from miniakio.utils import get_time_year, get_time_date
+from miniakio.utils import get_home_time, get_ios8601_time
 
 
-class HomeHandler(BaseHandler, PostMixin):
+class Blog:
 
-    def get(self):
-        posts = self.get_count_posts(8)
-        self.render("home.html", posts=posts)
+    HomePosts = 8
+    FeedPosts = 10
 
+    def __init__(self, config):
+        """
+        :param config: path of config
+        """
+        config_path = os.path.abspath(config)
+        self.basedir = os.path.dirname(config_path)
+        self.config = yaml.load(read_file(config_path))
 
-class PostHandler(BaseHandler, PostMixin):
+        self._site_dir = self.config.get("sites", self._defalut_dir("_site"))
+        self._page_dir = os.path.join(self._site_dir, "blog")
+        ensure_dir_exists(self._page_dir)
 
-    @removeslash
-    def get(self, slug):
-        post = self.get_post_by_slug(slug.lower())
-        if not post:
-            self.abort(404)
-        tags = [tag.strip() for tag in post.tags.split(",")]
-        pager = self.get_next_prev_post(post.published)
-        signer = signer_encode(self.config.secret, str(post.id))
-        self.render(
-            "post.html",
-            post=post,
-            tags=tags,
-            pager=pager,
-            signer=signer
+        self._jinja = self._init_jinja()
+
+    def _init_jinja(self):
+        theme_dir = self.config.get("themes", self._defalut_dir("themes"))
+        jinja = Environment(
+            loader=FileSystemLoader(theme_dir),
+            trim_blocks=True,
+            lstrip_blocks=True,
+            autoescape=False,
         )
 
+        jinja.globals.update({"config": self.config})
+        jinja.filters.update({
+            "time_date": get_time_date,
+            "time_home": get_home_time,
+            "time_ios8601": get_ios8601_time,
+        })
 
-class NewPostHandler(BaseHandler, PostMixin):
+        return jinja
 
-    @authenticated
-    def get(self):
-        self.render("admin/post.html")
+    def _defalut_dir(self, name):
+        return os.path.join(self.basedir, name)
 
-    @authenticated
-    def post(self):
-        markdown = self.get_argument("markdown", None)
-        comment = self.get_argument("comment", 1)
-        if not markdown:
-            self.redirect("/post/new")
+    def _parse_posts(self):
+        index = {}
+        posts = []
+        tags = {}
 
-        render = RenderMarkdownPost(markdown)
-        post = render.get_render_post()
-        post.update({"comment": 0 if comment == "0" else 1})
-        self.create_new_post(post)
+        post_dir = self.config.get("posts", self._defalut_dir("_posts"))
+        for md in tqdm.tqdm(glob.glob(os.path.join(post_dir, "*.md"))):
+            markdown = read_file(md)
+            post = Post(markdown)
+            if post.slug in index:
+                raise Exception("post %s and %s slug duplicate" % (
+                    index[post.slug], md
+                ))
 
-        self.redirect("/%s" % post["slug"])
+            index[post.slug] = md
+            posts.append(post)
 
+            for tag in post.tags:
+                if tag in tags:
+                    tags[tag].append(post)
+                else:
+                    tags[tag] = [post]
 
-class UpdatePostHandler(BaseHandler, PostMixin):
+        posts.sort(key=lambda p: p.published, reverse=True)
 
-    @authenticated
-    def get(self, pid):
-        post = self.get_post_by_id(int(pid))
-        if not post:
-            self.redirect("/")
-        self.render("admin/update.html", pid=pid)
+        return posts, tags
 
-    @authenticated
-    def post(self, pid):
-        markdown = self.get_argument("markdown", None)
-        comment = self.get_argument("comment", 1)
-        if not markdown:
-            self.redirect("/post/update/%s" % pid)
+    def _parse_pickys(self):
+        pickys = []
+        picky_dir = self.config.get("pickys", self._defalut_dir("_pickys"))
+        for md in tqdm.tqdm(glob.glob(os.path.join(picky_dir, "*.md"))):
+            basename = os.path.basename(md)
+            slug = basename.split(".")[0]
+            markdown = read_file(md)
+            pickys.append(Picky(str(slug), markdown))
 
-        render = RenderMarkdownPost(markdown)
-        post = render.get_render_post()
-        post.update({"comment": 0 if comment == "0" else 1})
-        self.update_post_by_id(pid, post)
+        return pickys
 
-        self.redirect("/%s" % post["slug"])
+    def _build_posts(self, posts):
+        """
+        :type posts: list[Post]
+        """
+        output_dir = self._site_dir
+        template = self._jinja.get_template("post.html")
 
-
-class DeletePostHandler(BaseHandler, PostMixin):
-
-    @authenticated
-    def get(self, pid):
-        signer = self.get_argument("check", None)
-        if signer_check(self.config.secret, signer, pid):
-            self.delete_post_by_id(int(pid))
-        self.redirect("/")
-
-
-class PickyHandler(BaseHandler):
-
-    @removeslash
-    def get(self, slug):
-        mdfile = os.path.join(self.config.picky, slug + ".md")
-        try:
-            md = open(mdfile, "r", encoding="utf-8")
-        except IOError:
-            self.abort(404)
-
-        markdown = md.read()
-        md.close()
-        render = RenderMarkdownPost(markdown)
-
-        picky = ObjectDict(render.get_render_post())
-        picky.slug = slug
-        signer = signer_encode(self.config.secret, slug)
-
-        self.render("picky.html", picky=picky, signer=signer)
-
-
-class PickyDownHandler(BaseHandler):
-
-    def get(self, slug):
-        mdfile = os.path.join(self.config.picky, slug)
-        try:
-            md = open(mdfile, "r", encoding="utf-8")
-        except IOError:
-            self.abort(404)
-        markdown = md.read()
-        md.close()
-
-        self.set_header("Content-Type", "text/x-markdown")
-        self.write(markdown)
-
-
-class NewPickyHandler(BaseHandler):
-
-    @authenticated
-    def get(self):
-        self.render("admin/picky.html")
-
-    @authenticated
-    def post(self):
-        try:
-            files = self.request.files["picky"][0]
-        except KeyError:
-            self.redirect("/post/picky")
-            return
-
-        ext = files["filename"].split(".").pop().lower()
-        if files["body"] and (ext == "md"):
-            f = open(os.path.join(self.config.picky, files['filename']), 'wb')
-            f.write(files['body'])
-            f.close()
-
-            slug = files["filename"].split(".")[0]
-            self.redirect("/picky/%s" % slug)
-            return
-
-        self.redirect("/post/picky")
-
-
-class DeletePickyHandler(BaseHandler):
-
-    @authenticated
-    def get(self, slug):
-        signer = self.get_argument("check", None)
-        if not signer_check(self.config.secret, signer, slug):
-            self.redirect("/picky/%s" % slug)
-            return
-
-        mdfile = os.path.join(self.config.picky, slug + ".md")
-        os.remove(mdfile)
-        self.redirect("/")
-
-
-class TagsHandler(BaseHandler, PostMixin):
-
-    @removeslash
-    def get(self, name):
-        posts = self.get_posts_by_tag(name)
-        if not posts:
-            self.abort(404)
         count = len(posts)
-        self.render(
-            "archive.html",
-            posts=posts,
-            type="tag",
-            name=name,
-            count=count
-        )
+        tq = tqdm.tqdm(total=count)
+        for i, post in enumerate(posts):
+            post.prev = None if i < 1 else posts[i - 1]
+            post.next = None if i > count - 2 else posts[i + 1]
+            html = template.render(post=post)
+            filepath = os.path.join(output_dir, "%s.html" % post.slug)
+            write_file(filepath, html)
+            tq.update(1)
+        tq.close()
 
-
-class CategoryHandler(BaseHandler, PostMixin):
-
-    @removeslash
-    def get(self, category):
-        posts = self.get_posts_by_category(category)
-        if not posts:
-            self.abort(404)
-        count = len(posts)
-        self.render(
-            "archive.html",
-            posts=posts,
-            type="category",
-            name=category,
-            count=count
-        )
-
-
-class FeedHandler(BaseHandler, PostMixin):
-
-    def get(self):
-        posts = self.get_count_posts(10)
-        self.set_header("Content-Type", "text/xml; charset=UTF-8")
-        self.render("feed.xml", posts=posts)
-
-
-class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
-
-    def get(self):
-        posts = self.get_count_posts()
-        count = len(posts)
+        # archives
+        template = self._jinja.get_template("archives.html")
         archives = {}
-
         for post in posts:
             year = get_time_year(post.published)
             if year in archives:
@@ -231,104 +123,89 @@ class ArchiveHandler(BaseHandler, PostMixin, TagMixin):
                 archives[year] = [post]
 
         archives = sorted(
-            archives.items(),
-            key=lambda item: item[0],
-            reverse=True
+            archives.items(), key=lambda item: item[0], reverse=True
         )
+        html = template.render(count=count, archives=archives)
+        filepath = os.path.join(self._page_dir, "all.html")
+        write_file(filepath, html)
 
-        self.render(
-            "archives.html",
-            count=count,
-            archives=archives
+    def _build_pickys(self, pickys):
+        output_dir = os.path.join(self._site_dir, "picky")
+        ensure_dir_exists(output_dir)
+        template = self._jinja.get_template("picky.html")
+
+        for picky in tqdm.tqdm(pickys):
+            html = template.render(picky=picky)
+            filepath = os.path.join(output_dir, "%s.html" % picky.slug)
+            write_file(filepath, html)
+
+    def _build_tags(self, tags):
+        """
+        :type tags: dict[unicode, list[Post]]
+        """
+        output_dir = os.path.join(self._site_dir, "tag")
+        ensure_dir_exists(output_dir)
+        template = self._jinja.get_template("tag.html")
+
+        taglist = {}
+        tq = tqdm.tqdm(total=len(tags))
+        for tag, posts in tags.items():
+            taglist[tag] = len(posts)
+            posts.sort(key=lambda p: p.published, reverse=True)
+            html = template.render(name=tag, posts=posts)
+            filepath = os.path.join(output_dir, "%s.html" % tag)
+            write_file(filepath, html)
+            tq.update(1)
+        tq.close()
+
+        # taglist
+        taglist = sorted(
+            taglist.items(), key=lambda item: item[1], reverse=True
         )
+        template = self._jinja.get_template("taglist.html")
+        html = template.render(tags=taglist)
+        filepath = os.path.join(self._page_dir, "tags.html")
+        write_file(filepath, html)
 
+    def _build_assets(self):
+        asset_dir = self.config.get("assets", self._defalut_dir("assets"))
+        dst_dir = os.path.join(self._site_dir, "assets")
+        if os.path.exists(dst_dir) and os.path.isdir(dst_dir):
+            shutil.rmtree(dst_dir)
+        shutil.copytree(asset_dir, dst_dir)
 
-class TagListHandler(BaseHandler, TagMixin):
+    def build(self):
+        self._build_assets()
 
-    def get(self):
-        tags = self.get_all_tag_count()
-        count = len(tags)
-        self.render("taglist.html", tags=tags, count=count)
+        echo.info("parsing pickys...")
+        pickys = self._parse_pickys()
+        echo.info("parsing posts...")
+        posts, tags = self._parse_posts()
 
+        echo.info("building pickys...")
+        self._build_pickys(pickys)
+        echo.info("building posts...")
+        self._build_posts(posts)
+        echo.info("building tags...")
+        self._build_tags(tags)
 
-class SigninHandler(BaseHandler):
+        # home
+        echo.info("building index...")
+        template = self._jinja.get_template("home.html")
+        html = template.render(posts=posts[:self.HomePosts])
+        write_file(os.path.join(self._site_dir, "index.html"), html)
 
-    def get(self):
-        self.add_header("Cache-control", "private, no-cache")
+        # feed
+        echo.info("building feed...")
+        template = self._jinja.get_template("feed.xml")
+        xml = template.render(posts=posts[:self.FeedPosts])
+        write_file(os.path.join(self._page_dir, "feed.xml"), xml)
 
-        if self.current_user:
-            self.redirect(self.get_argument("next", "/"))
-            return
-        self.render("admin/signin.html")
+        # 404
+        echo.info("building 404...")
+        template = self._jinja.get_template("e404.html")
+        html = template.render()
+        write_file(os.path.join(self._page_dir, "e404.html"), html)
 
-    def post(self):
-        email = self.get_argument("email", None)
-        password = self.get_argument("password", None)
-        if (not email) or (not password):
-            self.redirect("/auth/signin")
-            return
-
-        pattern = r"^.+@[^.].*\.[a-z]{2,10}$"
-        if isinstance(pattern, str):
-            pattern = re.compile(pattern, flags=0)
-
-        if not pattern.match(email):
-            self.redirect("/auth/signin")
-            return
-
-        user = self.get_user_by_email(email)
-        if not user:
-            access_log.error("Login Error for email: %s" % email)
-            self.redirect("/")
-            return
-
-        encryped_pass = user.password
-        if PasswordCrypto.authenticate(password, encryped_pass):
-            token = user.salt + "/" + str(user.id)
-            self.set_secure_cookie("token", token)
-            self.redirect(self.get_argument("next", "/post/new"))
-        else:
-            access_log.error("Login Error for password: %s!" % password)
-            self.redirect("/")
-
-
-class SignoutHandler(BaseHandler):
-
-    def get(self):
-        self.add_header("Cache-control", "private, no-cache")
-
-        user = self.current_user
-        if not user:
-            self.redirect("/")
-            return
-        salt = get_random_string()
-        self.update_user_salt(user.id, salt)
-        self.clear_cookie("token")
-        self.redirect("/")
-
-
-class PageNotFound(BaseHandler):
-
-    def get(self):
-        self.abort(404)
-
-
-handlers = [
-    (r"/", HomeHandler),
-    (r"/([a-zA-Z0-9-]+)/*", PostHandler),
-    (r"/picky/([a-zA-Z0-9-]+)/*", PickyHandler),
-    (r"/picky/([a-zA-Z0-9-]+.md)", PickyDownHandler),
-    (r"/tag/([^/]+)/*", TagsHandler),
-    (r"/category/([^/]+)/*", CategoryHandler),
-    (r"/post/new", NewPostHandler),
-    (r"/post/delete/([0-9]+)", DeletePostHandler),
-    (r"/post/update/([0-9]+)", UpdatePostHandler),
-    (r"/post/picky", NewPickyHandler),
-    (r"/picky/delete/([a-zA-Z0-9-]+)", DeletePickyHandler),
-    (r"/auth/signin", SigninHandler),
-    (r"/auth/signout", SignoutHandler),
-    (r"/blog/feed", FeedHandler),
-    (r"/blog/all", ArchiveHandler),
-    (r"/blog/tags", TagListHandler),
-    (r".*", PageNotFound),
-]
+    def server(self, port=8000):
+        Server(self._site_dir).serve_forever(port=port)

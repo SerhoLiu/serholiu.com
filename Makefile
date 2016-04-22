@@ -1,14 +1,16 @@
-all: css run
+all: css build
 
-LESSPATH = miniakio/static/style/
+LESSPATH = assets/style/
 
-mincss:
+css:
 	lessc $(LESSPATH)effector.less --clean-css="--s1 --advanced" > $(LESSPATH)style.min.css
 
-run:
-	python3 run.py
+build: css
+	python run.py build
+
+server:
+	python run.py server
 
 clean:
 	-find . -name '.DS_Store' -exec rm -f {} ';'
 	-find . -name '*.py[co]' -exec rm -f {} ';'
-	-find . -name '__pycache__' | xargs rm -rf {}
