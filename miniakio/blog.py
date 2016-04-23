@@ -74,6 +74,7 @@ class Blog:
             posts.append(post)
 
             for tag in post.tags:
+                tag = tag.lower()
                 if tag in tags:
                     tags[tag].append(post)
                 else:
@@ -165,7 +166,7 @@ class Blog:
 
         # taglist
         taglist = sorted(
-            taglist.items(), key=lambda item: item[1], reverse=True
+            taglist.items(), reverse=True
         )
         template = self._jinja.get_template("taglist.html")
         html = template.render(tags=taglist)
