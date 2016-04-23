@@ -4,9 +4,9 @@
 import os
 import sys
 import mimetypes
-from urllib.parse import unquote_plus, urlparse
 from wsgiref.util import request_uri
 from wsgiref.simple_server import make_server
+from urllib.parse import unquote_plus, urlparse
 
 from miniakio.utils import echo
 

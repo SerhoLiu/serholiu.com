@@ -26,7 +26,7 @@
     <div id="home-container">
       <div class="curtain">
         <div class="avater">
-          <a href="/pickys/about-me">
+          <a href="/picky/about-me">
             <img src="/assets/avater.jpg"/>
           </a>
         </div>
@@ -34,7 +34,7 @@
         <ul>
           {% for post in posts %}
           <li>
-            <span>{{post.published|time_home}}</span> &raquo;
+            <span>{{post.published.home}}</span> &raquo;
             <a href="/{{post.slug}}">{{post.title}}</a>
           </li>
           {% endfor %}

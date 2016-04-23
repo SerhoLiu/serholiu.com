@@ -7,7 +7,7 @@
   <ul class="posts-list">
    {%for post in posts %}
     <li>
-      <span>{{post.published|time_date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+      <span>{{post.published.date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
     </li>
    {% endfor %}
   </ul>

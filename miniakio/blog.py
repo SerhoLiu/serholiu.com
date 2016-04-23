@@ -12,8 +12,6 @@ from miniakio.server import Server
 from miniakio.models import Post, Picky
 from miniakio.utils import ensure_dir_exists
 from miniakio.utils import read_file, write_file, echo
-from miniakio.utils import get_time_year, get_time_date
-from miniakio.utils import get_home_time, get_ios8601_time
 
 
 class Blog:
@@ -45,11 +43,6 @@ class Blog:
         )
 
         jinja.globals.update({"config": self.config})
-        jinja.filters.update({
-            "time_date": get_time_date,
-            "time_home": get_home_time,
-            "time_ios8601": get_ios8601_time,
-        })
 
         return jinja
 
@@ -64,7 +57,11 @@ class Blog:
         post_dir = self.config.get("posts", self._defalut_dir("posts"))
         for md in tqdm.tqdm(glob.glob(os.path.join(post_dir, "*.md"))):
             markdown = read_file(md)
-            post = Post(markdown)
+            try:
+                post = Post(markdown)
+            except Exception as e:
+                raise Exception("parse '%s', %s" % (md, e)) from None
+
             if post.slug in index:
                 raise Exception("post %s and %s slug duplicate" % (
                     index[post.slug], md
@@ -90,7 +87,12 @@ class Blog:
             basename = os.path.basename(md)
             slug = basename.split(".")[0]
             markdown = read_file(md)
-            pickys.append(Picky(str(slug), markdown))
+            try:
+                picky = Picky(str(slug), markdown)
+            except Exception as e:
+                raise Exception("parse '%s', %s" % (md, e)) from None
+
+            pickys.append(picky)
 
         return pickys
 
@@ -116,7 +118,7 @@ class Blog:
         template = self._jinja.get_template("archives.html")
         archives = {}
         for post in posts:
-            year = get_time_year(post.published)
+            year = post.published.year
             if year in archives:
                 archives[year].append(post)
             else:

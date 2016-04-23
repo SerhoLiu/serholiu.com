@@ -7,6 +7,7 @@ import io
 import sys
 import errno
 import datetime
+from functools import total_ordering
 
 try:
     import curses
@@ -34,52 +35,58 @@ def ensure_dir_exists(dirname):
             raise
 
 
-def parse_time(time):
-    """
-    :param time: 2016-04-20 21:49:34
-    :return: datetime.datetime
-    """
-    t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
-    t.append(0)
-    return datetime.datetime(*t)
+@total_ordering
+class StringTime:
 
+    def __init__(self, time):
+        """
+        :param time: 2016-04-20 21:49:34
+        """
+        self.time = time
 
-def get_time_date(time):
-    """
-    :param time: 2016-04-20 21:49:34
-    :return: 2016-04-20
-    """
-    time = time.split(" ")[0].strip()
-    return time
+        t = [int(tt) for tt in re.findall(r"[0-9]+", time)]
+        t.append(0)
+        self._datetime = datetime.datetime(*t)
 
+    def __str__(self):
+        return self.time
 
-def get_time_year(time):
-    """
-    :param time: 2016-04-20 21:49:34
-    :return: 2016
-    """
-    year = time.split("-")[0].strip()
-    return year
+    def __eq__(self, other):
+        return self.time == other.time
 
+    def __lt__(self, other):
+        return self.time < other.time
 
-def get_home_time(time):
-    """
-    :param time: 2016-04-20 21:49:34
-    :return: 20 Apr
-    """
-    return parse_time(time).strftime("%d %b")
+    @property
+    def date(self):
+        """
+        :return: 2016-04-20
+        """
+        return self.time.split(" ")[0].strip()
 
+    @property
+    def year(self):
+        """
+        :return: 2016
+        """
+        return self.time.split("-")[0].strip()
 
-def get_ios8601_time(time):
-    """
-    :param time: 2016-04-20 21:49:34
-    :return: 2016-04-20T21:49:34Z
-    """
-    t = parse_time(time)
-    iso8601 = t.isoformat()
-    if t.tzinfo:
-        return iso8601
-    return iso8601 + "Z"
+    @property
+    def home(self):
+        """
+        :return: 20 Apr
+        """
+        return self._datetime.strftime("%d %b")
+
+    @property
+    def ios8601(self):
+        """
+        :return: 2016-04-20T21:49:34Z
+        """
+        iso8601 = self._datetime.isoformat()
+        if self._datetime.tzinfo:
+            return iso8601
+        return iso8601 + "Z"
 
 
 def _stdout_supports_color():

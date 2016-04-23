@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import re
+from miniakio.utils import StringTime
 from miniakio.markdown import render_markdown
 
 
@@ -26,7 +27,7 @@ class BasePost:
         header, body = re.split(r"\n-{3,}", markdown, 1)
         self._meta = self._get_meta(header)
         self.title = self._meta["title"]
-        self.published = self._meta["published"]
+        self.published = StringTime(self._meta["published"])
         self.cover = self._meta.get("cover")
 
         self.content = render_markdown(body)
