@@ -166,7 +166,9 @@ class Blog:
 
         # taglist
         taglist = sorted(
-            taglist.items(), reverse=True
+            taglist.items(),
+            key=lambda item: (item[1], item[0]),
+            reverse=True
         )
         template = self._jinja.get_template("taglist.html")
         html = template.render(tags=taglist)

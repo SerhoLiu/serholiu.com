@@ -22,7 +22,7 @@
 
 <div class="tag-list">Tags:
   {% for tag in post.tags%}
-  <a href="/tag/{{tag}}">#{{tag}}</a>
+  <a href="/tag/{{tag|lower}}">#{{tag}}</a>
   {% endfor %}
 </div>
 
