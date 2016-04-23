@@ -23,18 +23,18 @@ class Blog:
         """
         :param config: path of config
         """
-        config_path = os.path.abspath(config)
+        config_path = os.path.abspath(os.path.expanduser(config))
         self.basedir = os.path.dirname(config_path)
         self.config = yaml.load(read_file(config_path))
 
-        self._site_dir = self.config.get("sites", self._defalut_dir("_site"))
+        self._site_dir = self._config_item_path("sites")
         self._page_dir = os.path.join(self._site_dir, "blog")
         ensure_dir_exists(self._page_dir)
 
         self._jinja = self._init_jinja()
 
     def _init_jinja(self):
-        theme_dir = self.config.get("themes", self._defalut_dir("themes"))
+        theme_dir = self._config_item_path("themes")
         jinja = Environment(
             loader=FileSystemLoader(theme_dir),
             trim_blocks=True,
@@ -46,15 +46,18 @@ class Blog:
 
         return jinja
 
-    def _defalut_dir(self, name):
-        return os.path.join(self.basedir, name)
+    def _config_item_path(self, name):
+        defalut_dir = os.path.join(self.basedir, name)
+        path = self.config.get(name, defalut_dir)
+
+        return os.path.expanduser(path)
 
     def _parse_posts(self):
         index = {}
         posts = []
         tags = {}
 
-        post_dir = self.config.get("posts", self._defalut_dir("posts"))
+        post_dir = self._config_item_path("posts")
         for md in tqdm.tqdm(glob.glob(os.path.join(post_dir, "*.md"))):
             markdown = read_file(md)
             try:
@@ -82,7 +85,7 @@ class Blog:
 
     def _parse_pickys(self):
         pickys = []
-        picky_dir = self.config.get("pickys", self._defalut_dir("pickys"))
+        picky_dir = self._config_item_path("pickys")
         for md in tqdm.tqdm(glob.glob(os.path.join(picky_dir, "*.md"))):
             basename = os.path.basename(md)
             slug = basename.split(".")[0]
@@ -170,13 +173,14 @@ class Blog:
         write_file(filepath, html)
 
     def _build_assets(self):
-        asset_dir = self.config.get("assets", self._defalut_dir("assets"))
+        asset_dir = self._config_item_path("assets")
         dst_dir = os.path.join(self._site_dir, "assets")
         if os.path.exists(dst_dir) and os.path.isdir(dst_dir):
             shutil.rmtree(dst_dir)
         shutil.copytree(asset_dir, dst_dir)
 
     def build(self):
+        echo.info("start, output to %s", self._site_dir)
         self._build_assets()
 
         echo.info("parsing pickys...")
