@@ -10,8 +10,10 @@
 
 不只是关于网络的，这里记录我的生活点滴，我的想法等，想以后无聊之时再回首往事，阅读自己以前的想法、看看自己以前的生活，还有什么比这更有趣的呢。博客程序使用 Python 开发。如果你也喜欢独立博客，或者有加入的意向，可以联系我，我会提供帮助，关于我的联系方式，[请看这里][2]。
 
+
 ### 博客历程
 
+> * 2016.04.23: 生成静态博客，由 Nginx 直接带动
 > * 2015.08.29: 博客只支持 Python3.4 及以上，修改一些样式
 > * 2014.12.27: 开始使用 HTTPS + SPDY
 > * 2014.02.10: 开始运行在 [DigitalOcean][5] 512M VPS 上
@@ -26,9 +28,9 @@
 > * 2009.03.24: 在火山互联注册 serho.name 域名，开始搭建独立博客，最先使用的是 PJblog
 
 
-[1]:/my-serho-blog-setup-time
-[2]:/picky/about-me
-[3]:https://github.com/SerhoLiu/MiniAkio
-[4]:https://github.com/SerhoLiu/serholiu.com
+[1]: /my-serho-blog-setup-time
+[2]: /picky/about-me
+[3]: https://github.com/SerhoLiu/MiniAkio
+[4]: https://github.com/SerhoLiu/serholiu.com
 [5]: https://www.digitalocean.com/?refcode=2a478f8739fc
 

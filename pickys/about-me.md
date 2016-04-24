@@ -25,7 +25,6 @@
 * __社交平台__: [Twitter][1] • [Github][2]
 
 
-[1]:https://twitter.com/SerhoLiu
-[2]:https://github.com/SerhoLiu
-
+[1]: https://twitter.com/SerhoLiu
+[2]: https://github.com/SerhoLiu
 

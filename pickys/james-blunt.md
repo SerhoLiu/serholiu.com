@@ -28,8 +28,9 @@
 
 **因为这几张专辑在国内很难买到，如果不是通过这种途径，很难找到，也只好这样分享**
 
-[1]:http://zh.wikipedia.org/wiki/詹姆仕·布朗特
-[2]:http://115.com/file/clivdeek
-[3]:http://115.com/file/cliv5hyq
-[4]:http://115.com/file/dnasuidd
-[5]:/picky/about-me
+[1]: http://zh.wikipedia.org/wiki/詹姆仕·布朗特
+[2]: http://115.com/file/clivdeek
+[3]: http://115.com/file/cliv5hyq
+[4]: http://115.com/file/dnasuidd
+[5]: /picky/about-me
+
