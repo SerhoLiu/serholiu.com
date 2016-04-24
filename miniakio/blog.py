@@ -110,8 +110,8 @@ class Blog:
         count = len(posts)
         tq = tqdm.tqdm(total=count)
         for i, post in enumerate(posts):
-            post.prev = None if i < 1 else posts[i - 1]
-            post.next = None if i > count - 2 else posts[i + 1]
+            post.next = None if i < 1 else posts[i - 1]
+            post.prev = None if i > count - 2 else posts[i + 1]
             html = template.render(post=post)
             filepath = os.path.join(output_dir, "%s.html" % post.slug)
             write_file(filepath, html)

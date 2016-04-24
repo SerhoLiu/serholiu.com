@@ -46,23 +46,22 @@
 {% endif %}
 
 <div class="navigation clearfix">
- 上一篇:
- {% if post.next %}
-  <a href="/{{post.next.slug}}" title="{{post.next.title}}" class="previous">
-  {{post.next.title}}
-  </a>
-  {% else %}
-  没有了
-  {% endif %}
-  <span class="next">
-  {% if post.prev %}
-  下一篇:
-  <a href="/{{post.prev.slug}}" title="{{post.prev.title}}">
-  {{post.prev.title}}
-  </a>
-  {% else %}
-  没有了
-  {% endif %}
+  上一篇:
+    {% if post.prev %}
+    <a href="/{{post.prev.slug}}" title="{{post.prev.title}}" class="previous">
+        {{post.prev.title}}
+    </a>
+    {% else %}
+        没有了
+    {% endif %}
+  <span class="next">下一篇:
+    {% if post.next %}
+    <a href="/{{post.next.slug}}" title="{{post.next.title}}">
+        {{post.next.title}}
+    </a>
+    {% else %}
+    没有了
+    {% endif %}
   </span>
 </div>
 {% endblock %}
