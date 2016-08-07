@@ -27,6 +27,9 @@ class Blog:
         self.basedir = os.path.dirname(config_path)
         self.config = yaml.load(read_file(config_path))
 
+        privacies = self.config.get("privacies")
+        self._privacies = set(privacies) if privacies else {}
+
         self._site_dir = self._config_item_path("sites")
         self._page_dir = os.path.join(self._site_dir, "blog")
         ensure_dir_exists(self._page_dir)
@@ -72,6 +75,10 @@ class Blog:
 
             index[post.slug] = md
             posts.append(post)
+
+            # 私密文章不在 tag 列表里面出现
+            if post.slug in self._privacies:
+                continue
 
             for tag in post.tags:
                 tag = tag.lower()
@@ -122,6 +129,9 @@ class Blog:
         template = self._jinja.get_template("archives.html")
         archives = {}
         for post in posts:
+            if post.slug in self._privacies:
+                continue
+
             year = post.published.year
             if year in archives:
                 archives[year].append(post)
@@ -131,6 +141,8 @@ class Blog:
         archives = sorted(
             archives.items(), key=lambda item: item[0], reverse=True
         )
+
+        # count 包括私密文章
         html = template.render(count=count, archives=archives)
         filepath = os.path.join(self._page_dir, "all.html")
         write_file(filepath, html)
@@ -201,7 +213,11 @@ class Blog:
         # home
         echo.info("building index...")
         template = self._jinja.get_template("home.html")
-        html = template.render(posts=posts[:self.HomePosts])
+        home_posts = filter(
+            lambda post: post.slug not in self._privacies,
+            posts[:self.HomePosts]
+        )
+        html = template.render(posts=home_posts)
         write_file(os.path.join(self._site_dir, "index.html"), html)
 
         # feed
