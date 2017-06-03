@@ -388,7 +388,7 @@ body{
 
 .content {
     background-color: #fff;
-    margin: 20px 0;
+    margin: 20px 0 10px;
     padding: 0 20px;
     .border-radius;
     .box-shadow;
@@ -687,11 +687,14 @@ body{
         position: static;
     }
 
-    .base-header {
-        .bottom-border-radius;
-    }
-
     .content {
+        margin-bottom: 0;
+
+        .border-radius(0);
+
+        img {
+            .border-radius(0);
+        }
 
         .navigation .next {
             float: none;
@@ -712,8 +715,11 @@ body{
                 font-size: 16px;
             }
         }
-    }
 
+        figure {
+            margin: 0 -20px 15px;
+        }
+    }
 
     #home-container {
         margin: 0 auto;
