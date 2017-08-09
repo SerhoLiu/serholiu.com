@@ -3,11 +3,9 @@
 
 {% block content %}
 <section class="archives">
-  {% set i = 0 %}
   {% for year, posts in archives %}
   <h4 class="downarch">{{year}} +</h4>
-  {% set i = i + 1 %}
-  {% if i < 4 %}
+  {% if loop.index < 4 %}
     <ul class="posts-list">
     {% for post in posts %}
     <li class="archiveli">
