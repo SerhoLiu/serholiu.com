@@ -1,36 +1,16 @@
 // 基本样式
-@link-color: #f95b1f;
-@link-hover-color: #a33b14;
-@bg-color: #e6ebea;
+@link-color: #628feb;
+@text-color: #303133;
+@second-text-color: #828282;
+@tiny-text-color: #bbbbbb;
+@tiny-color: #eeeeee;
+@bg-color: #fdfdfd;
+@header-bg-color: #f5f5f5;
 
 .border-radius (@radius: 5px) {
     border-radius: @radius;
     -moz-border-radius: @radius;
     -webkit-border-radius: @radius;
-}
-
-.top-border-radius (@radius: 4px) {
-    -moz-border-radius-topleft: @radius;
-    -moz-border-radius-topright: @radius;
-    -webkit-border-top-left-radius: @radius;
-    -webkit-border-top-right-radius: @radius;
-    border-top-left-radius: @radius;
-    border-top-right-radius: @radius;
-}
-
-.bottom-border-radius (@radius: 4px) {
-    -moz-border-radius-bottomleft: @radius;
-    -moz-border-radius-bottomright: @radius;
-    -webkit-border-bottom-left-radius: @radius;
-    -webkit-border-bottom-right-radius: @radius;
-    border-bottom-left-radius: @radius;
-    border-bottom-right-radius: @radius;
-}
-
-.box-shadow(@shadow: 0 1px 3px rgba(0,0,0,.25)) {
-  -webkit-box-shadow: @shadow;
-     -moz-box-shadow: @shadow;
-          box-shadow: @shadow;
 }
 
 html,body,div,span,applet,object,iframe,
@@ -56,7 +36,8 @@ a {
     text-decoration: none;
 
     &:hover {
-        color: @link-hover-color;    
+        color: @text-color;
+        text-decoration: underline;
     }
 }
 
@@ -65,35 +46,41 @@ h1, h2, h3, h4 {
     text-rendering: optimizelegibility;
 
     small {
-        color: #ced1d1;
+        color: @tiny-text-color;
     }
 }
 
 h2 {
     line-height: 60px;
-    font-size: 20px;
+    font-size: 24px;
+    font-weight: 500;
 
     small {
-        font-size: 16px;    
+        font-size: 16px;
+        font-weight: normal;
     }
 }
 
 h3, h4 {
-    color:  #777;
-    background-color: #f7f7f7;
-    margin:  20px -20px;
+    color: @text-color;
+    margin:  10px 0;
     font-size:  20px;
-    padding:  0 20px;
-    line-height:  35px;
+    line-height:  30px;
 
     small {
         font-size: 18px;    
     }
+
+    &:before {
+        position: relative;
+        margin-right: 10px;
+        content: '#';
+        color: @tiny-color;
+    }
 }
 
-
 ul, ol {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 30px;
     padding: 0;
     margin: 0 0 10px 25px;
@@ -141,21 +128,21 @@ abbr {
 }
 
 blockquote {
-    color:  #777;
+    color:  @second-text-color;
     margin-bottom: 15px;
     padding: 0 0 0 14px;
-    border-left: 5px solid #eee;
+    border-left: 5px solid @tiny-color;
 
     p {
         margin-bottom: 0;
-        color:  #777;
+        color:  @second-text-color;
     }
 
     small {
         display: block;
         font-size: 12px;
         line-height: 18px;
-        color: #999;
+        color: @tiny-text-color;
 
         &:before {
             content: "\2014 \00A0";
@@ -174,7 +161,6 @@ code, pre {
 
 code {
     padding: 3px 4px;
-    color: #93a1a1;
     background-color: #f7f7f9;
     .border-radius(3px);
 }
@@ -184,8 +170,7 @@ pre {
     padding: 8px;
     line-height: 20px;
     background-color: #f7f7f9;
-    border: 1px solid #e1e1e8;
-    .border-radius(4px);
+    .border-radius(3px);
     
     overflow: auto;
 }
@@ -207,12 +192,12 @@ cite {
 
 p {
     margin-bottom: 15px;
-    font-size: 15px;
+    font-size: 16px;
     line-height: 30px;
 
     small {
         font-size: 14px;
-        color: #999;
+        color: @tiny-text-color;
     }
 }
 
@@ -220,19 +205,14 @@ body{
     background: @bg-color fixed center top no-repeat;
     font-weight: 400;
     font-size: 13px;
-    line-height: 1;
-    font-family: "Quantico", "Georgia", "Xin Gothic", "Hiragino Sans GB", "Droid Sans Fallback", "Microsoft YaHei", sans-serif;;
-    color: #555;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;
+    color: @text-color;
+    font-kerning: normal;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
     -webkit-font-smoothing: subpixel-antialiased;
-}
-
-.bg-image {
-    min-width: 100%;
-    min-height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: -2;
 }
 
 .highlighttable {
@@ -246,166 +226,91 @@ body{
         width: 40px;
         margin: 0;
         padding: 0;
-      
-        border-right: 0;
+        border-right: 1px solid #e1e1e8;
 
         pre {
-            .border-radius(4px 0 0 4px);
+            .border-radius(3px 0 0 3px);
             border-right: none;
             color: #bebec5;
-            text-shadow: 0 1px 0 #fff;
             text-align: right;
         }
     }
 
     .highlight pre {
-        .border-radius(0 4px 4px 0);
+        .border-radius(0 3px 3px 0);
     }
 }
 
-.header-fixed-top {
-    position: fixed;
-    top: 0;
-    right: 0;
-    left: 0;
-    z-index: 1030;
-    margin-bottom: 0;
-}
-
 #header {
-    width:100%;
-    background: #fff;
-    .box-shadow;
-    
+    width: 100%;
+    min-height: 50px;
+    background: @header-bg-color;
+
     .nav {
         margin: 0 auto;
-        width: 720px;
+        width: 760px;
+        line-height: 54px;
+    }
+
+    a {
+        color: @text-color;
+
+        &:hover {
+            text-decoration: none;
+        }
     }
 
     h1 {
         font-size: 26px;
         float: left;
-        padding-top: 10px;
 
         a {
-            font-family: "Quantico", sans-serif;
-            font-weight: 700;
-            color: #333;
+            font-weight: 400;
         }
     }
 
-    ul {
+    .site-nav {
         float: right;
-        margin-bottom: 0;
-        list-style: none;
 
-        li {
-            float: left;
+        .nav-trigger {
+            display: none;
+        }
 
-            a {
-                margin: 5px 5px 0 5px;
-                line-height: 15px;
-                display: block;
-                padding: 10px 5px;
-                font-size: 14px;
-                border-bottom: 3px solid #fff;
+        .menu-icon {
+            display: none;
+        }
 
-                &:hover {
-                    border-bottom: 3px solid #b94a48;
-                }
+        .page-link {
+            color: @text-color;
+            font-size: 14px;
+            line-height: 1.5;
+
+            &:not(:last-child) {
+              margin-right: 20px;
             }
         }
     }
 }
 
-// home page style
-#home-container {
-    margin: 0 auto;
-    width: 920px;
-}
-
-@media (max-width: 1024px)  {
-    #home-container {
-        width: 720px;
-    }
-}
-
-.curtain {
-    float: right;
-    width: 300px;
-    padding: 60px 20px 10px;
-    background: rgb(51,52,68);
-    background: rgba(51,52,68,0.4);
-    text-align: center;
-    color: #fff;
-
-    .avater {
-        width: 120px;
-        height:120px;
-        margin:20px auto;
-        border: 5px solid #fff;
-        .border-radius(100px);
-        .box-shadow;
-        overflow:hidden;
-        position:relative;
-        z-index:1;
-
-        img {
-            max-width: 100%;
-        }
-    }
-
-    h2 {
-        line-height: 30px;
-    }
-
-    ul {
-        font-size: 14px;
-        list-style: none;
-        margin-left: 5px;
-
-        a {
-            color: #fff;
-        }
-
-        span {
-            color: #ccc;
-        }
-    }
-
-    .footer {
-        margin-top: 20px;
-        padding-top: 10px;
-        border-top:1px solid #ccc;
-    }
-    
-}
-
 #container {
-    margin: 60px auto 0;
-    width: 680px;
+    padding: 20px 0;
+    flex: 1;
 }
 
 .content {
-    background-color: #fff;
-    margin: 20px 0 10px;
+    margin: 0 auto;
+    width: 760px;
     padding: 0 20px;
-    .border-radius;
-    .box-shadow;
 
     img {
         max-width: 100%;
         margin: 0 auto;
         height: auto;
         display: block;
-        .border-radius;
+        .border-radius(3px);
     }
 
     article {
-
-        a {
-            border-bottom: 1px dashed #ced1d1;
-        }
 
         h2 a {
             border-bottom: none;
@@ -414,9 +319,9 @@ body{
         hr {
             display: block;
             width: 18%;
-            margin: 31px auto;
+            margin: 30px auto;
             border: 0 none;
-            border-top: 3px dotted #dededc;
+            border-top: 3px dotted @tiny-text-color;
         }
 
         .footnote-ref a {
@@ -430,7 +335,7 @@ body{
                 font-size: 13px;
                 line-height: 26px;
                 font-weight: 300;
-                color: #777;
+                color: @second-text-color;
                 margin-bottom: 5px;
             }
         }
@@ -463,7 +368,7 @@ body{
             }
 
             thead {
-                color: #9393a1;
+                color: @tiny-text-color;
                 background-color: #f7f7f9;
                 text-align: left;
                 vertical-align: bottom;
@@ -472,7 +377,6 @@ body{
     }
 
     .tag-list {
-        border-top: 1px solid #ddd;
         margin: 15px 0 10px;
         padding-top: 3px;
         font-size: 12px;
@@ -508,11 +412,10 @@ body{
             text-align: center;
             left: 0;
             margin: 10px auto;
-            //margin-bottom: 0;
             font-weight: 300;
             font-size: 13px;
             line-height: 26px;
-            color: #999;
+            color: @tiny-text-color;
         }
     }
 }
@@ -523,34 +426,49 @@ body{
 }
 
 #footer {
-    position:relative;
-    background: #fff;
-    padding:10px 20px;
-    .box-shadow;
+    width: 100%;
+    min-height: 50px;
+    background: @header-bg-color;
 
-    .to-top {
-        position: absolute;
-        right: 20px;
-        top: 10px;
-        cursor: pointer;
-        display: block;
-        font-weight: bold;
+    .desc {
+        margin: 0 auto;
+        width: 760px;
+        line-height: 54px;
+        text-align: center;
     }
 }
 
 .posts-list {
     margin: 0 0 10px 0;
-    font-size: 15px;
+    font-size: 16px;
 
-    li{
+    li {
         list-style: none;
         padding: 5px 3px;
         margin: 0;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px dotted #eee;
 
-        span{
+        span {
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 14px;
             color: #bbb;
             float: right;
+        }
+    }
+}
+
+.home-list {
+    margin: 0 0 10px 0;
+
+    li {
+        list-style: none;
+        padding: 5px 3px;
+        margin: 0;
+
+        span {
+            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
+            font-size: 14px;
+            color: #bbb;
         }
     }
 }
@@ -584,14 +502,6 @@ body{
     }
 }
 
-.top-box {
-    .top-border-radius;
-}
-
-.bottom-box {
-    .bottom-border-radius;
-}
-
 .label {
     padding: 3px 3px 2px;
     font-size: 11.25px;
@@ -623,74 +533,72 @@ body{
     zoom: 1;
 }
 
-::selection {
-    background: #ff5e99;
-    color: #fff;
-}
-::-moz-selection {
-    background: #ff5e99;
-    color: #fff;
-}
-
 @media (max-width: 680px) {
 
-    #container {
-        width: auto;
-        margin-top: 0;
-    }
-
     #header {
-        background: #ffffff;
-        .box-shadow;
 
         .nav {
             margin: 0;
+            padding-left: 20px;
             width: 100%;
-            text-align: center;
         }
 
-        h1 {
-            float: none;
-            text-align: center;
+        .site-nav {
+            position: absolute;
+            top: 9px;
+            right: 20px;
+            background-color: @header-bg-color;
+            text-align: right;
 
-            a {
-                font-size: 26px;
-                font-family: "Quantico", sans-serif;
-                font-weight: 700;
-                color: #333;
+            label[for="nav-trigger"] {
+                display: block;
+                float: right;
+                width: 36px;
+                height: 36px;
+                z-index: 2;
+                cursor: pointer;
             }
-        }
 
-        ul {
-            float: none;
-            display: inline-block;
-            margin: 0;
+            .menu-icon {
+                display: block;
+                float: right;
+                width: 36px;
+                height: 26px;
+                line-height: 0;
+                padding-top: 10px;
+                text-align: center;
 
-            li {
-                display: inline;
-
-                a {
-                    margin: 5px;
-                    padding: 5px 0;
-                    font-size: 15px;
-                    border-bottom: none;
-
-                    &:hover {
-                        border-bottom: none;
-                    }
+                > svg {
+                    fill: #424242;
                 }
             }
-        }
-    }
 
-    .header-fixed-top {
-        position: static;
+            input ~ .trigger {
+                clear: both;
+                display: none;
+            }
+
+            input:checked ~ .trigger {
+                display: inline-block;
+                padding-bottom: 5px;
+            }
+
+            .page-link {
+                display: block;
+                padding: 5px 10px;
+
+                &:not(:last-child) {
+                    margin-right: 0;
+                }
+                margin-left: 20px;
+            }
+        }
     }
 
     .content {
+        width: auto;
+        margin-top: 0;
         margin-bottom: 0;
-
-        .border-radius(0);
 
         img {
             .border-radius(0);
@@ -703,7 +611,7 @@ body{
         }
 
         article h2 {
-            line-height: 20px;
+            line-height: 40px;
             margin-top: 10px;
             margin-bottom: 10px;
 
@@ -721,25 +629,9 @@ body{
         }
     }
 
-    #home-container {
-        margin: 0 auto;
-        width: auto;
-
-        .curtain {
-            float: none;
+    #footer {
+        .desc {
             width: 100%;
-            padding: 10px 0;
-
-            h2, ul, .footer {
-                margin: 10px;
-            }
         }
     }
-}
-
-@font-face {
-    font-family: "Quantico";
-    font-style: normal;
-    font-weight: 400;
-    src: local("Quantico"), local("Quantico-Regular"), url(Quantico.woff) format("woff");
 }

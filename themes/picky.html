@@ -2,17 +2,9 @@
 {% block title %}{{picky.title}} - {{config.blogname}}{% endblock %}
 {% block head %}{{picky.content[0:168]|striptags|escape}}{% endblock %}
 
-{% block cover %}
-  {% if picky.cover %}
-  <img class="bg-image" src="{{picky.cover}}" />
-  {% elif config.blogcover %}
-  <img class="bg-image" src="{{config.blogcover}}" />
-  {% endif %}
-{% endblock %}
-
 {% block content %}
 <article>
-  <h2 class="content-title"><a href="/picky/{{picky.slug}}">{{picky.title}}</a></h2>
+  <h2>{{picky.title}}</h2>
     {{picky.content}}
 </article>
 <hr>

@@ -9,22 +9,15 @@
     <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
     <link href="/blog/feed.xml" rel="alternate" type="application/atom+xml">
     <link href="/assets/style/style.min.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/assets/style/solarized.css" rel="stylesheet" type="text/css">
+    <link href="/assets/style/trac.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    {% block cover %}
-      {% if config.blogcover %}
-      <img class="bg-image" src="{{config.blogcover}}" />
-      {% endif %}
-    {% endblock %}
-
-    <header id="header" class="clearfix header-fixed-top">
+  <header id="header">
       <div class="nav">
         {% include "header.html" %}
       </div>
     </header>
-
     <div id="container">
       <div class="content clearfix">
       {% block content %}{% endblock %}

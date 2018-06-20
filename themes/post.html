@@ -2,18 +2,10 @@
 {% block title %}{{post.title}} - {{config.blogname}}{% endblock %}
 {% block head %}{{post.content[0:168]|striptags|escape}}{% endblock %}
 
-{% block cover %}
-  {% if post.cover %}
-  <img class="bg-image" src="{{post.cover}}" />
-  {% elif config.blogcover %}
-  <img class="bg-image" src="{{config.blogcover}}" />
-  {% endif %}
-{% endblock %}
-
 {% block content %}
 <article>
   <h2>
-    <a href="/{{post.slug}}">{{post.title}}</a>
+    {{post.title}}
     <small class="date-right">{{post.published}}</small>
   </h2>
 

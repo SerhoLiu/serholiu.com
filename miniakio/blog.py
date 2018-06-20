@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import glob
 import tqdm
 import yaml
 import shutil
-import os.path
 from jinja2 import Environment, FileSystemLoader
 
 from miniakio.server import Server
@@ -16,8 +16,8 @@ from miniakio.utils import read_file, write_file, echo
 
 class Blog:
 
-    HomePosts = 8
-    FeedPosts = 10
+    HOME_POSTS = 10
+    FEED_POSTS = 10
 
     def __init__(self, config):
         """
@@ -215,7 +215,7 @@ class Blog:
         template = self._jinja.get_template("home.html")
         home_posts = filter(
             lambda post: post.slug not in self._privacies,
-            posts[:self.HomePosts]
+            posts[:self.HOME_POSTS]
         )
         html = template.render(posts=home_posts)
         write_file(os.path.join(self._site_dir, "index.html"), html)
@@ -223,7 +223,7 @@ class Blog:
         # feed
         echo.info("building feed...")
         template = self._jinja.get_template("feed.xml")
-        xml = template.render(posts=posts[:self.FeedPosts])
+        xml = template.render(posts=posts[:self.FEED_POSTS])
         write_file(os.path.join(self._page_dir, "feed.xml"), xml)
 
         # 404

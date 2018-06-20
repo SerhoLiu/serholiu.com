@@ -9,41 +9,34 @@
     <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
     <link href="/blog/feed.xml" rel="alternate" type="application/atom+xml">
     <link href="/assets/style/style.min.css" rel="stylesheet" type="text/css" media="all">
-    <link href="/assets/style/solarized.css" rel="stylesheet" type="text/css">
+    <link href="/assets/style/trac.css" rel="stylesheet" type="text/css">
   </head>
 
   <body>
-    {% if config.blogcover %}
-    <img class="bg-image" src="{{config.blogcover}}" />
-    {% endif %}
-
-    <header id="header" class="clearfix header-fixed-top">
+  <header id="header">
       <div class="nav">
-       {% include "header.html" %}
+        {% include "header.html" %}
       </div>
     </header>
-
-    <div id="home-container">
-      <div class="curtain">
-        <div class="avater">
-          <a href="/picky/about-me">
-            <img src="/assets/avater.jpg"/>
-          </a>
-        </div>
-        <h2>Recent Post</h2>
-        <ul>
+    <div id="container">
+      <div class="content clearfix">
+          <p>记录偶然的灵感、平静的生活和纯粹的思考。我相信人生是充满不确定的，而回首自己的往事，正是感悟这种不确定的美，它充满想象、它足够恐怖，它是「耶和华」，而我愿一直追随。</p>
+      <h2>Recent Posts</h2>
+        <ul class="home-list">
           {% for post in posts %}
           <li>
-            <span>{{post.published.home}}</span> &raquo;
+            <span>{{post.published.home}} &raquo;</span>
             <a href="/{{post.slug}}">{{post.title}}</a>
           </li>
           {% endfor %}
         </ul>
-        <div class="footer">
+      </div>
+    </div>
+    <div id="footer">
+        <div class="desc">
           &copy; 2009-2018 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
           <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
         </div>
-      </div>
     </div>
   </body>
 </html>
