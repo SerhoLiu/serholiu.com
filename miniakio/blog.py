@@ -10,8 +10,8 @@ from jinja2 import Environment, FileSystemLoader
 
 from miniakio.server import Server
 from miniakio.models import Post, Picky
-from miniakio.utils import ensure_dir_exists
-from miniakio.utils import read_file, write_file, echo
+from miniakio.utils import echo, StaticAssetUrl
+from miniakio.utils import ensure_dir_exists, read_file, write_file
 
 
 class Blog:
@@ -45,7 +45,8 @@ class Blog:
             autoescape=False,
         )
 
-        jinja.globals.update({"config": self.config})
+        jinja.globals["config"] = self.config
+        jinja.filters["static_url"] = StaticAssetUrl(self._site_dir)
 
         return jinja
 

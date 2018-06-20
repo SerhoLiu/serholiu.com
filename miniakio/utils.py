@@ -6,7 +6,10 @@ import re
 import io
 import sys
 import errno
+import shutil
+import hashlib
 import datetime
+import posixpath
 from functools import total_ordering
 
 try:
@@ -33,6 +36,72 @@ def ensure_dir_exists(dirname):
             pass
         else:
             raise
+
+
+def calc_file_md5(filepath):
+    """
+    Calc file md5 checksum
+    """
+    md5 = hashlib.md5()
+    with open(filepath, "rb") as f:
+        while True:
+            data = f.read(64 * 1024)
+            if not data:
+                break
+            md5.update(data)
+
+    return md5.hexdigest()
+
+
+class StaticAssetUrl:
+
+    def __init__(self, base_dir):
+        self._base_dir = base_dir
+        self._cache = {}
+
+    def __call__(self, *args, **kwargs):
+        if len(args) > 0:
+            url = args[0]
+        else:
+            url = kwargs.get("url")
+
+        if url is None:
+            raise Exception("need 'url' args")
+
+        value = self._cache.get(url)
+        if value:
+            return value
+
+        value = self._add_md5(url)
+        self._cache[url] = value
+
+        return value
+
+    def _add_md5(self, url):
+        """
+        给静态资源加上 md5 string
+        """
+        _url = url.lstrip("/") if url.startswith("/") else url
+        static_path = os.path.join(self._base_dir, _url)
+        if not os.path.exists(static_path):
+            raise Exception(
+                "static '{}' file not exists in dir '{}'".format(
+                    url, self._base_dir
+                )
+            )
+
+        md5 = calc_file_md5(static_path)
+        dirname = os.path.dirname(static_path)
+        filename = os.path.basename(static_path)
+        parts = filename.split(".", 1)
+        parts.insert(1, md5)
+        new_path = os.path.join(dirname, ".".join(parts))
+        if not os.path.exists(new_path):
+            shutil.move(static_path, new_path)
+
+        base_url = posixpath.dirname(url)
+
+        return posixpath.join(base_url, ".".join(parts))
 
 
 @total_ordering
