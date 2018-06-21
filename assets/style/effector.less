@@ -1,5 +1,5 @@
 // 基本样式
-@link-color: #628feb;
+@link-color: #2a7ae2;
 @text-color: #303133;
 @second-text-color: #828282;
 @tiny-text-color: #bbbbbb;
@@ -201,7 +201,7 @@ p {
     }
 }
 
-body{
+body {
     background: @bg-color fixed center top no-repeat;
     font-weight: 400;
     font-size: 13px;
@@ -215,33 +215,8 @@ body{
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-.highlighttable {
-    width: 100%;
-    margin-bottom: 15px;
-    table-layout: fixed;
-    border-collapse: collapse;
-    border-spacing: 0;
-
-    .linenos {
-        width: 40px;
-        margin: 0;
-        padding: 0;
-        border-right: 1px solid #e1e1e8;
-
-        pre {
-            .border-radius(3px 0 0 3px);
-            border-right: none;
-            color: #bebec5;
-            text-align: right;
-        }
-    }
-
-    .highlight pre {
-        .border-radius(0 3px 3px 0);
-    }
-}
-
 #header {
+
     width: 100%;
     min-height: 50px;
     background: @header-bg-color;
@@ -414,6 +389,32 @@ body{
             font-size: 13px;
             line-height: 26px;
             color: @second-text-color;
+        }
+    }
+
+    .highlighttable {
+        width: 100%;
+        margin-bottom: 15px;
+        table-layout: fixed;
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        .linenos {
+            width: 40px;
+            margin: 0;
+            padding: 0;
+            border-right: 1px solid #e1e1e8;
+
+            pre {
+                .border-radius(3px 0 0 3px);
+                border-right: none;
+                color: #bebec5;
+                text-align: right;
+            }
+        }
+
+        .highlight pre {
+            .border-radius(0 3px 3px 0);
         }
     }
 }
@@ -621,6 +622,11 @@ body{
 
         figure {
             margin: 0 -20px 15px;
+        }
+
+        .highlight-pre {
+            margin-right: -20px;
+            margin-left: -20px;
         }
     }
 
