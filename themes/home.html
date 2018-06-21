@@ -14,10 +14,11 @@
 
   <body>
   <header id="header">
-      <div class="nav">
-        {% include "header.html" %}
-      </div>
-    </header>
+    <div class="nav">
+      <h1><a href="/">{{config.blogname}}</a></h1>
+      {% include "_nav.html" %}
+    </div>
+  </header>
     <div id="container">
       <div class="content clearfix">
           <p>记录偶然的灵感、平静的生活和纯粹的思考。我相信人生是充满不确定的，而回首自己的往事，正是感悟这种不确定的美，它充满想象、它足够恐怖，它是「耶和华」，而我愿一直追随。</p>
@@ -33,10 +34,10 @@
       </div>
     </div>
     <div id="footer">
-        <div class="desc">
-          &copy; 2009-2018 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
-          <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
-        </div>
+      <div class="desc">
+        &copy; 2009-2018 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
+        <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
+      </div>
     </div>
   </body>
 </html>
