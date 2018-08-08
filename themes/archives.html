@@ -9,7 +9,9 @@
     <ul class="posts-list">
     {% for post in posts %}
     <li class="archiveli">
-      <span>{{post.published.date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+      <span>{{post.published.date}}</span>
+      <br>
+      <a href="/{{post.slug}}">{{post.title}}</a>
     </li>
     {% endfor %}
     </ul>
@@ -17,7 +19,9 @@
     <ul class="hidearch posts-list">
     {% for post in posts %}
     <li class="archiveli">
-      <span>{{post.published.date}}</span><a href="/{{post.slug}}">{{post.title}}</a>
+      <span>{{post.published.date}}</span>
+      <br>
+      <a href="/{{post.slug}}">{{post.title}}</a>
     </li>
     {% endfor %}
     </ul>

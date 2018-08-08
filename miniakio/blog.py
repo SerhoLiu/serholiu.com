@@ -16,7 +16,7 @@ from miniakio.utils import ensure_dir_exists, read_file, write_file
 
 class Blog:
 
-    HOME_POSTS = 10
+    HOME_POSTS = 6
     FEED_POSTS = 10
 
     def __init__(self, config):

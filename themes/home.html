@@ -26,7 +26,8 @@
         <ul class="home-list">
           {% for post in posts %}
           <li>
-            <span>{{post.published.home}} &raquo;</span>
+            <span>{{post.published.date}}</span>
+            <br>
             <a href="/{{post.slug}}">{{post.title}}</a>
           </li>
           {% endfor %}

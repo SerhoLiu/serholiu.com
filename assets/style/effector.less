@@ -138,7 +138,6 @@ blockquote {
         font-size: 12px;
         line-height: 18px;
         color: @tiny-text-color;
-        font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 
         &:before {
             content: "\2014 \00A0";
@@ -444,10 +443,7 @@ body {
         border-bottom: 1px dotted #eee;
 
         span {
-            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
             font-size: 14px;
-            color: #bbb;
-            float: right;
         }
     }
 }
@@ -459,11 +455,10 @@ body {
         list-style: none;
         padding: 5px 3px;
         margin: 0;
+        font-size: 18px;
 
         span {
-            font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
             font-size: 14px;
-            color: #bbb;
         }
     }
 }
@@ -471,28 +466,31 @@ body {
 .group-tags {
 
     .tag-box {
-        list-style:none;
-        margin:0;
-        padding:5px 0 ;
-        overflow:hidden;
+        list-style: none;
+        margin: 0;
+        padding: 5px 0 ;
+        overflow: hidden;
 
         li {
-            line-height:28px;
+            line-height: 28px;
             float: left;
         }
+
         a {
             padding: 3px 6px;
             margin: 2px;
-            text-decoration:none;
+            color: @text-color;
+            text-decoration: none;
+
             span {
-                vertical-align:super;
-                font-size:0.8em;
+                vertical-align: super;
+                font-size: 0.8em;
             }
         }
     }
 
     span.more {
-        padding:3px 6px ;
+        padding: 3px 6px;
         margin: 2px;
     }
 }

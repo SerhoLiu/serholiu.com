@@ -127,13 +127,6 @@ class StringTime:
         return self.time < other.time
 
     @property
-    def date(self):
-        """
-        :return: 2016-04-20
-        """
-        return self.time.split(" ")[0].strip()
-
-    @property
     def year(self):
         """
         :return: 2016
@@ -141,11 +134,11 @@ class StringTime:
         return self.time.split("-")[0].strip()
 
     @property
-    def home(self):
+    def date(self):
         """
-        :return: 20 Apr
+        :return: 20 Apr, 2018
         """
-        return self._datetime.strftime("%d %b")
+        return self._datetime.strftime("%d %b, %Y")
 
     @property
     def ios8601(self):
