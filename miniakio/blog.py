@@ -82,15 +82,16 @@ class Blog:
                 continue
 
             for tag in post.tags:
-                tag = tag.lower()
-                if tag in tags:
-                    tags[tag].append(post)
+                # 统一大小写
+                _tag = tag.lower()
+                if _tag in tags:
+                    tags[_tag][1].append(post)
                 else:
-                    tags[tag] = [post]
+                    tags[_tag] = (tag, [post])
 
         posts.sort(key=lambda p: p.published, reverse=True)
 
-        return posts, tags
+        return posts, tags.values()
 
     def _parse_pickys(self):
         pickys = []
@@ -160,16 +161,14 @@ class Blog:
 
     def _build_tags(self, tags):
         """
-        :type tags: dict[unicode, list[Post]]
+        :type tags: list[(str, list[Post])]
         """
         output_dir = os.path.join(self._site_dir, "tag")
         ensure_dir_exists(output_dir)
         template = self._jinja.get_template("tag.html")
 
-        taglist = {}
         tq = tqdm.tqdm(total=len(tags))
-        for tag, posts in tags.items():
-            taglist[tag] = len(posts)
+        for tag, posts in tags:
             posts.sort(key=lambda p: p.published, reverse=True)
             html = template.render(name=tag, posts=posts)
             filepath = os.path.join(output_dir, "%s.html" % tag)
@@ -178,11 +177,9 @@ class Blog:
         tq.close()
 
         # taglist
-        taglist = sorted(
-            taglist.items(),
-            key=lambda item: (item[1], item[0]),
-            reverse=True
-        )
+        taglist = [(tag, len(posts)) for tag, posts in tags]
+        taglist.sort(key=lambda item: (item[1], item[0]), reverse=True)
+
         template = self._jinja.get_template("taglist.html")
         html = template.render(tags=taglist)
         filepath = os.path.join(self._page_dir, "tags.html")
@@ -209,7 +206,7 @@ class Blog:
         echo.info("building posts...")
         self._build_posts(posts)
         echo.info("building tags...")
-        self._build_tags(tags)
+        self._build_tags(list(tags))
 
         # home
         echo.info("building index...")
