@@ -5,7 +5,7 @@
     <section class="group-tags">
       <ul class="tag-box">
       {% for name, count in tags %}
-        <li><a href="/tag/{{name}}">{{name}} <span>{{count}}</span></a></li>
+        <li><a href="/tag/{{name | lower}}">{{name}} <span>{{count}}</span></a></li>
       {% endfor %}
       </ul>
     </section>

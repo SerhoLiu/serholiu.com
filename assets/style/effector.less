@@ -1,9 +1,9 @@
 // 基本样式
-@link-color: #2a7ae2;
+@link-color: #303133;
 @text-color: #303133;
 @second-text-color: #828282;
 @tiny-text-color: #bbbbbb;
-@tiny-color: #eeeeee;
+@tiny-color: #dddddd;
 @bg-color: #fdfdfd;
 @header-bg-color: #f5f5f5;
 
@@ -86,7 +86,7 @@ ul, ol {
 }
 
 ul {
-    list-style: circle;
+    list-style: disc;
 
     .unstyled {
         margin-left: 0;
@@ -123,14 +123,12 @@ abbr {
 }
 
 blockquote {
-    color:  @second-text-color;
     margin-bottom: 15px;
     padding: 0 0 0 14px;
     border-left: 5px solid @tiny-color;
 
     p {
         margin-bottom: 0;
-        color:  @second-text-color;
     }
 
     small {
@@ -282,6 +280,10 @@ body {
 
     article {
 
+        a {
+            text-decoration: underline;
+        }
+
         h2 a {
             border-bottom: none;
         }
@@ -349,11 +351,10 @@ body {
         margin: 15px 0 10px;
         padding-top: 3px;
         font-size: 12px;
-        color: #93a1a1;
 
         a {
-            color: #93a1a1;
-            margin-left: 3px
+            margin-left: 3px;
+            text-decoration: underline;
         }
     }
 
@@ -361,6 +362,10 @@ body {
         margin-top: 7px;
         padding: 10px 0;
         border-top: 1px dashed #ddd;
+
+        a {
+            text-decoration: underline;
+        }
 
         .next {
             float: right;
@@ -414,12 +419,12 @@ body {
     }
 }
 
-
 .date-right {
     float: right;
 }
 
 #footer {
+
     width: 100%;
     min-height: 50px;
     background: @header-bg-color;
@@ -443,6 +448,7 @@ body {
         border-bottom: 1px dotted #eee;
 
         span {
+            color: @second-text-color;
             font-size: 14px;
         }
     }
@@ -458,6 +464,7 @@ body {
         font-size: 18px;
 
         span {
+            color: @second-text-color;
             font-size: 14px;
         }
     }
