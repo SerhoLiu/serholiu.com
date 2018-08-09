@@ -2,6 +2,12 @@
 {% block title %}{{post.title}} - {{config.blogname}}{% endblock %}
 {% block head %}{{post.content[0:168]|striptags|escape}}{% endblock %}
 
+{% block cover %}
+  {% if post.cover %}
+    <div class="post-cover" style="background-image:url({{post.cover}})"></div>
+  {% endif %}
+{% endblock %}
+
 {% block content %}
 <article>
   <h2>
