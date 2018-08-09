@@ -21,13 +21,9 @@ class AkioRender(mistune.Renderer):
         else:
             return "<pre><code>%s</code></pre>" % code.strip()
 
-        formatter = HtmlFormatter(
-            noclasses=False,
-            linenos=True,
-        )
+        formatter = HtmlFormatter()
 
-        code = highlight(code, lexer, formatter)
-        return '<div class="highlight-pre">%s</div>' % code
+        return highlight(code, lexer, formatter)
 
     def table(self, header, body):
         return (

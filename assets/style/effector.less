@@ -64,10 +64,8 @@ h2 {
 h3, h4 {
     color: @text-color;
     margin:  20px 0;
-    padding-left: 10px;
-    font-size:  20px;
     line-height:  35px;
-    border-left: 5px solid @tiny-color;
+    font-size:  20px;
 
     small {
         font-size: 18px;    
@@ -154,15 +152,15 @@ code, pre {
 
 code {
     padding: 3px 4px;
-    background-color: #f7f7f9;
+    background-color: #f7f7f7;
     .border-radius(3px);
 }
 
 pre {
     display: block;
-    padding: 8px;
+    padding: 10px;
     line-height: 20px;
-    background-color: #f7f7f9;
+    background-color: #f7f7f7;
     .border-radius(3px);
     
     overflow: auto;
@@ -390,30 +388,12 @@ body {
         }
     }
 
-    .highlighttable {
+    .highlight {
         width: 100%;
         margin-bottom: 15px;
         table-layout: fixed;
         border-collapse: collapse;
         border-spacing: 0;
-
-        .linenos {
-            width: 40px;
-            margin: 0;
-            padding: 0;
-            border-right: 1px solid #e1e1e8;
-
-            pre {
-                .border-radius(3px 0 0 3px);
-                border-right: none;
-                color: #bebec5;
-                text-align: right;
-            }
-        }
-
-        .highlight pre {
-            .border-radius(0 3px 3px 0);
-        }
     }
 }
 
