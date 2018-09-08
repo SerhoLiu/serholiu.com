@@ -34,7 +34,7 @@ class BasePost:
 
     @staticmethod
     def _get_meta(header):
-        header = render_markdown(header)
+        header = render_markdown(header, meta=True)
         title = re.findall(r"<h1>(.*)</h1>", header)[0]
 
         meta = {"title": title.strip()}

@@ -91,7 +91,20 @@ class AkioRender(mistune.Renderer):
         return '<a href="%s">%s</a>' % (link, title)
 
 
-def render_markdown(markdown):
-    render = AkioRender()
+class MetaRender(mistune.Renderer):
+    """
+    meta header render
+    """
+
+    def autolink(self, link, is_email=False):
+        return link
+
+
+def render_markdown(markdown, meta=False):
+    if meta:
+        render = MetaRender()
+    else:
+        render = AkioRender()
+
     md = mistune.Markdown(renderer=render)
     return md.render(markdown)
