@@ -25,7 +25,7 @@ class Blog:
         """
         config_path = os.path.abspath(os.path.expanduser(config))
         self.basedir = os.path.dirname(config_path)
-        self.config = yaml.load(read_file(config_path))
+        self.config = yaml.safe_load(read_file(config_path))
 
         privacies = self.config.get("privacies")
         self._privacies = set(privacies) if privacies else {}
