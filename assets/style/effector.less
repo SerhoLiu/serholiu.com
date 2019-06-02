@@ -62,13 +62,13 @@ h2 {
 }
 
 h3, h4 {
+    margin: 15px 0;
     color: @text-color;
-    margin:  20px 0;
-    line-height:  35px;
-    font-size:  20px;
+    font-size:  18px;
+    font-weight: bold;
 
     small {
-        font-size: 18px;    
+        font-size: 18px;
     }
 }
 
@@ -210,7 +210,7 @@ body {
 
     width: 100%;
     min-height: 50px;
-    background: @header-bg-color;
+    border-bottom: 1px solid #eee;
 
     .nav {
         margin: 0 auto;
@@ -365,7 +365,7 @@ body {
     .navigation {
         margin-top: 7px;
         padding: 10px 0;
-        border-top: 1px dashed #ddd;
+        border-top: 1px solid #eee;
         color: @second-text-color;
 
         .next {
@@ -408,13 +408,14 @@ body {
 
     width: 100%;
     min-height: 50px;
-    background: @header-bg-color;
 
     .desc {
         margin: 0 auto;
         width: 760px;
+        border-top: 1px solid #eee;
         line-height: 54px;
         text-align: center;
+        color: #999;
     }
 }
 
@@ -442,7 +443,7 @@ body {
         list-style: none;
         padding: 5px 3px;
         margin: 0;
-        font-size: 18px;
+        font-size: 16px;
 
         span {
             color: @second-text-color;
@@ -529,7 +530,6 @@ body {
             position: absolute;
             top: 9px;
             right: 20px;
-            background-color: @header-bg-color;
             text-align: right;
 
             label[for="nav-trigger"] {
@@ -563,6 +563,9 @@ body {
             input:checked ~ .trigger {
                 display: inline-block;
                 padding-bottom: 5px;
+                background-color: @bg-color;
+                border: 1px solid #e8e8e8;
+                border-radius: 5px;
             }
 
             .page-link {
