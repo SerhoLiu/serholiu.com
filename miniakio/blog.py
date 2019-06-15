@@ -32,7 +32,6 @@ class Blog:
 
         self._site_dir = self._config_item_path("sites")
         self._page_dir = os.path.join(self._site_dir, "blog")
-        ensure_dir_exists(self._page_dir)
 
         self._jinja = self._init_jinja()
 
@@ -171,7 +170,7 @@ class Blog:
         for tag, posts in tags:
             posts.sort(key=lambda p: p.published, reverse=True)
             html = template.render(name=tag, posts=posts)
-            filepath = os.path.join(output_dir, "%s.html" % tag)
+            filepath = os.path.join(output_dir, "%s.html" % tag.lower())
             write_file(filepath, html)
             tq.update(1)
         tq.close()
@@ -188,11 +187,18 @@ class Blog:
     def _build_assets(self):
         asset_dir = self._config_item_path("assets")
         dst_dir = os.path.join(self._site_dir, "assets")
-        if os.path.exists(dst_dir) and os.path.isdir(dst_dir):
-            shutil.rmtree(dst_dir)
         shutil.copytree(asset_dir, dst_dir)
 
     def build(self):
+        if os.path.exists(self._site_dir):
+            if os.path.isfile(self._site_dir):
+                raise Exception("output {} is file".format(self._site_dir))
+            echo.info("output {} exists, delete it".format(self._site_dir))
+            shutil.rmtree(self._site_dir)
+
+        ensure_dir_exists(self._site_dir)
+        ensure_dir_exists(self._page_dir)
+
         echo.info("start, output to %s", self._site_dir)
         self._build_assets()
 
