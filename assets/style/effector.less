@@ -42,45 +42,26 @@ a {
 }
 
 h1, h2, h3, h4 {
-    font-weight: normal;
+    color: @text-color;
+    font-weight: bold;
     text-rendering: optimizelegibility;
-
-    small {
-        color: @tiny-text-color;
-    }
 }
 
 h2 {
-    line-height: 60px;
+    margin: 20px 0;
     font-size: 24px;
-    font-weight: 500;
-
-    small {
-        font-size: 16px;
-        font-weight: normal;
-    }
 }
 
 h3, h4 {
     margin: 15px 0;
-    color: @text-color;
     font-size:  18px;
-    font-weight: bold;
-
-    small {
-        font-size: 18px;
-    }
 }
 
 ul, ol {
     font-size: 16px;
     line-height: 30px;
     padding: 0;
-    margin: 0 0 10px 25px;
-
-    ul, ol {
-        margin-bottom: 0;    
-    }
+    margin: 15px 0 15px 25px;
 }
 
 ul {
@@ -97,7 +78,7 @@ ol {
 }
 
 hr { 
-    margin: 20px 0 19px;
+    margin: 10px 0;
     border: 0;
     border-bottom: 1px solid #ddd;
 }
@@ -121,27 +102,22 @@ abbr {
 }
 
 blockquote {
-    margin-bottom: 15px;
-    padding: 0 0 0 14px;
+    margin: 15px 0;
+    padding: 0 10px;
+    color: @second-text-color;
     border-left: 5px solid @tiny-color;
 
-    p {
-        margin-bottom: 0;
+    a {
+        color: @second-text-color;
     }
 
     small {
         display: block;
-        font-size: 12px;
-        line-height: 18px;
         color: @tiny-text-color;
 
         &:before {
             content: "\2014 \00A0";
         }
-    }
-
-    &:before, &:after {
-        content: "";
     }
 }
 
@@ -162,7 +138,7 @@ pre {
     line-height: 20px;
     background-color: #f7f7f7;
     .border-radius(3px);
-    
+
     overflow: auto;
 }
 
@@ -182,7 +158,7 @@ cite {
 }
 
 p {
-    margin-bottom: 15px;
+    margin: 15px 0;
     font-size: 16px;
     line-height: 30px;
 
@@ -247,7 +223,7 @@ body {
         }
 
         .page-link {
-            color: @text-color;
+            color: @second-text-color;
             font-size: 14px;
             line-height: 1.5;
 
@@ -283,12 +259,17 @@ body {
 
     article {
 
+        h2 {
+            margin-bottom: 10px;
+        }
+
         a {
             text-decoration: underline;
         }
 
-        h2 a {
-            border-bottom: none;
+        .datetime {
+            color: @second-text-color;
+            font-size: 16px;
         }
 
         hr {
@@ -320,7 +301,7 @@ body {
         }
 
         .akio-table {
-            margin-bottom: 15px;
+            margin: 15px 0;
             font-size: 15px;
             line-height: 26px;
             color: #555;
@@ -351,20 +332,20 @@ body {
     }
 
     .tag-list {
-        margin: 15px 0 10px;
-        padding-top: 3px;
-        font-size: 12px;
-        color: @second-text-color;
+        margin: 20px 0;
 
         a {
             margin-left: 3px;
+            padding: 3px 4px;
+            background-color: #f7f7f7;
             color: @second-text-color;
+            .border-radius(3px);
         }
     }
 
     .navigation {
-        margin-top: 7px;
-        padding: 10px 0;
+        margin: 20px 0;
+        padding-top: 10px;
         border-top: 1px solid #eee;
         color: @second-text-color;
 
@@ -377,7 +358,7 @@ body {
         position: relative;
         clear: both;
         outline: 0;
-        margin: 0 0 15px;
+        margin: 15px 0;
         padding: 0;
         min-height: 100px;
 
@@ -386,7 +367,7 @@ body {
             width: 80%;
             text-align: center;
             left: 0;
-            margin: 10px auto;
+            margin: 5px auto;
             font-size: 13px;
             line-height: 26px;
             color: @second-text-color;
@@ -394,14 +375,10 @@ body {
     }
 
     .highlight {
-        margin-bottom: 15px;
+        margin: 15px 0;
         border-collapse: collapse;
         border-spacing: 0;
     }
-}
-
-.date-right {
-    float: right;
 }
 
 #footer {
@@ -415,7 +392,11 @@ body {
         border-top: 1px solid #eee;
         line-height: 54px;
         text-align: center;
-        color: #999;
+        color: @tiny-text-color;
+
+        a {
+            color: @tiny-text-color;
+        }
     }
 }
 
@@ -436,11 +417,47 @@ body {
     }
 }
 
+
+.intro {
+    margin: 20px 0 30px;
+
+    .avatar {
+        float: left;
+        margin-right: 30px;
+        width: 86px;
+        height: 86px;
+
+        img {
+            .border-radius(86px);
+        }
+    }
+
+    .title {
+        h2 {
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            font-size: 22px;
+            font-weight: 300;
+            color: @second-text-color;
+        }
+    }
+
+    hr {
+        display: block;
+        width: 50%;
+        margin: 30px 0;
+        border: 0 none;
+        border-top: 3px solid @tiny-text-color;
+    }
+}
+
 .home-list {
     margin: 0 0 10px 0;
 
-    li {
-        list-style: none;
+    .post {
         padding: 5px 3px;
         margin: 0;
         font-size: 16px;
@@ -448,7 +465,23 @@ body {
         span {
             color: @second-text-color;
             font-size: 14px;
+            font-weight: bold;
         }
+
+        p {
+            color: @second-text-color;
+        }
+    }
+}
+
+.read-more {
+    margin: 20px 0 30px;
+
+    a {
+        padding: 5px;
+        background-color: #f7f7f7;
+        color: @second-text-color;
+        .border-radius(3px);
     }
 }
 
@@ -603,25 +636,14 @@ body {
             margin-top: 10px;
         }
 
-        article h2 {
-            line-height: 40px;
-
-            small {
-                display: block;
-                float: none;
-                color: @second-text-color;
-                font-size: 16px;
-            }
-        }
-
-        figure {
-            margin: 0 -10px 15px;
-        }
-
-        .highlight {
+        figure, blockquote, .highlight {
             margin-right: -10px;
             margin-left: -10px;
         }
+    }
+
+    .intro .avatar {
+        display: none;
     }
 
     #footer {

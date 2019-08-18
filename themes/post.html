@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{post.title}} - {{config.blogname}}{% endblock %}
-{% block head %}{{post.content[0:168]|striptags|escape}}{% endblock %}
+{% block head %}{{post.content|striptags|escape|truncate(100)}}{% endblock %}
 
 {% block cover %}
   {% if post.cover %}
@@ -12,18 +12,15 @@
 <article>
   <h2>
     {{post.title}}
-    <small class="date-right">{{post.published.date}}</small>
   </h2>
-
+  <div class="datetime">{{post.published.date}}</div>
   {{post.content}}
 </article>
-
-<div class="tag-list">Tags:
-  {% for tag in post.tags%}
-  <a href="/tag/{{tag|lower}}">#{{tag}}</a>
-  {% endfor %}
+    <div class="tag-list">
+      {% for tag in post.tags%}
+      <a href="/tag/{{tag|lower}}">#{{tag}}</a>
+      {% endfor %}
 </div>
-
 {% if post.comment and config.disqus %}
 <![if !IE]>
 <div id="disqus_thread"></div>

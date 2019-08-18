@@ -29,6 +29,7 @@ class BasePost:
         self.title = self._meta["title"]
         self.published = StringTime(self._meta["published"])
         self.cover = self._meta.get("cover")
+        self.markdown = body
 
         self.content = render_markdown(body)
 

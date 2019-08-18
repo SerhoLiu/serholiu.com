@@ -15,27 +15,38 @@
   <body>
   <header id="header">
     <div class="nav">
-      <h1><a href="/">{{config.blogname}}</a></h1>
+      <h1>
+          <a href="/">
+              <svg viewBox="0 0 50 50" width="20px" height="20px">
+                  <path style="fill:#828282;" d="M 25 1.0507812 C 24.7825 1.0507812 24.565859 1.1197656 24.380859 1.2597656 L 1.3808594 19.210938 C 0.95085938 19.550938 0.8709375 20.179141 1.2109375 20.619141 C 1.5509375 21.049141 2.1791406 21.129062 2.6191406 20.789062 L 4 19.710938 L 4 46 C 4 46.55 4.45 47 5 47 L 19 47 L 19 29 L 31 29 L 31 47 L 45 47 C 45.55 47 46 46.55 46 46 L 46 19.710938 L 47.380859 20.789062 C 47.570859 20.929063 47.78 21 48 21 C 48.3 21 48.589063 20.869141 48.789062 20.619141 C 49.129063 20.179141 49.049141 19.550938 48.619141 19.210938 L 25.619141 1.2597656 C 25.434141 1.1197656 25.2175 1.0507812 25 1.0507812 z M 35 5 L 35 6.0507812 L 41 10.730469 L 41 5 L 35 5 z"/>
+              </svg>
+          </a>
+      </h1>
       {% include "_nav.html" %}
     </div>
   </header>
     <div id="container">
       <div class="content clearfix">
-          <br>
-          <p>记录偶然的灵感、平静的生活和纯粹的思考。我相信人生是充满不确定的，而回首自己的往事，正是感悟这种不确定的美，它充满想象、它足够恐怖，它是「耶和华」，而我愿一直追随。</p>
-      <h2>
-          <svg viewBox="0 0 24 24" height="18px" width="18px" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><g><g><path clip-rule="evenodd" d="M12,0C5.375,0,0.003,5.373,0.003,12c0,6.627,5.372,12,11.997,12    c6.626,0,11.997-5.373,11.997-12C23.997,5.373,18.626,0,12,0z M16.412,16.709l-0.35,0.35c-0.291,0.291-0.782,0.305-1.088,0.029    l-4.52-3.955c-0.308-0.275-0.541-0.838-0.521-1.25l0.419-7.134C10.374,4.336,10.729,4,11.142,4h0.493    c0.413,0,0.767,0.336,0.787,0.748l0.343,5.934c0.021,0.413,0.262,1,0.535,1.309l3.144,3.628    C16.717,15.928,16.704,16.418,16.412,16.709z" fill-rule="evenodd"/></g></g></svg>
-          Recent Posts
-      </h2>
-        <ul class="home-list">
-          {% for post in posts %}
-          <li>
-            <span>{{post.published.date}}</span>
-            <br>
-            <a href="/{{post.slug}}">{{post.title}}</a>
-          </li>
-          {% endfor %}
-        </ul>
+          <div class="intro">
+              <div class="avatar">
+                  <img src="/assets/avatar.jpg">
+              </div>
+              <div class="title">
+                  <h2>{{config.blogname}}</h2>
+                  <div class="subtitle">记录偶然的灵感、平静的生活和纯粹的思考</div>
+              </div>
+              <hr>
+          </div>
+            <div class="home-list">
+              {% for post in posts %}
+                  <div class="post">
+                  <span>{{post.published.date}}</span>
+                  <h3><a href="/{{post.slug}}">{{post.title}}</a></h3>
+                  <p>{{post.content|striptags|escape|truncate(128)}}</p>
+                  </div>
+              {% endfor %}
+            </div>
+          <div class="read-more"><a href="/blog/all">阅读更多....</a></div>
       </div>
     </div>
     <div id="footer">
