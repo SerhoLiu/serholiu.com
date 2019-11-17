@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import re
@@ -73,3 +72,20 @@ class Picky(BasePost):
         super(Picky, self).__init__(markdown)
 
         self.slug = slug
+
+
+class Photo:
+
+    _SUPPORT_IMAGES = (1, 2, 3, 4, 6, 8)
+
+    def __init__(self, config):
+        self.title = config["title"]
+        self.location = config["location"]
+        self.published = StringTime(config["published"])
+        self.images = config["images"]
+
+        if len(self.images) not in self._SUPPORT_IMAGES:
+            raise Exception(
+                f"the number images must is {self._SUPPORT_IMAGES}"
+            )
+        self.full = config.get("full", False) and len(self.images) == 1

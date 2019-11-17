@@ -1,11 +1,10 @@
 // 基本样式
-@link-color: #303133;
-@text-color: #303133;
+@link-color: #333;
+@text-color: #333;
 @second-text-color: #828282;
 @tiny-text-color: #bbbbbb;
 @tiny-color: #dddddd;
-@bg-color: #fdfdfd;
-@header-bg-color: #f5f5f5;
+@bg-color: #ffffff;
 
 .border-radius (@radius: 5px) {
     border-radius: @radius;
@@ -465,7 +464,11 @@ body {
         span {
             color: @second-text-color;
             font-size: 14px;
-            font-weight: bold;
+        }
+
+        h3 {
+            font-size: 20px;
+            font-weight: 400;
         }
 
         p {
@@ -564,6 +567,7 @@ body {
             top: 9px;
             right: 20px;
             text-align: right;
+            z-index: 1000;
 
             label[for="nav-trigger"] {
                 display: block;

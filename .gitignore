@@ -1,7 +1,6 @@
 *.py[co]
-config.yaml
 .idea
 _site
 .DS_Store
 .python-version
-miniakio/__pycache__/
+__pycache__

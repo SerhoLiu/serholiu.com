@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    {% if curr_page == 1 %}
+    <title>Photos - {{config.blogname}}</title>
+    {% else %}
+    <title>Photos / Page {{ curr_page }} - {{config.blogname}}</title>
+    {% endif %}
+    <meta name="description" content="My Photos">
+    <meta name="keywords" content="Photo, FUJIFILM, X100S">
+    <meta name="author" content="SErHo">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
+    <link href="/blog/feed.xml" rel="alternate" type="application/atom+xml">
+    <link href="{{ '/assets/style/style.min.css' | static_url }}" rel="stylesheet" type="text/css" media="all">
+    <link rel="stylesheet" href="/assets/gallery/style.css">
+    <link rel="stylesheet" href="/assets/gallery/griddd.min.css">
+    <link rel="stylesheet" href="/assets/gallery/photoswipe.css">
+    <link rel="stylesheet" href="/assets/gallery/default-skin/default-skin.css">
+  </head>
+
+  <body>
+      <header id="header">
+          <div class="nav">
+          <h1>
+              <a href="/">
+                  <svg viewBox="0 0 50 50" width="20px" height="20px">
+                      <path style="fill:#828282;" d="M 25 1.0507812 C 24.7825 1.0507812 24.565859 1.1197656 24.380859 1.2597656 L 1.3808594 19.210938 C 0.95085938 19.550938 0.8709375 20.179141 1.2109375 20.619141 C 1.5509375 21.049141 2.1791406 21.129062 2.6191406 20.789062 L 4 19.710938 L 4 46 C 4 46.55 4.45 47 5 47 L 19 47 L 19 29 L 31 29 L 31 47 L 45 47 C 45.55 47 46 46.55 46 46 L 46 19.710938 L 47.380859 20.789062 C 47.570859 20.929063 47.78 21 48 21 C 48.3 21 48.589063 20.869141 48.789062 20.619141 C 49.129063 20.179141 49.049141 19.550938 48.619141 19.210938 L 25.619141 1.2597656 C 25.434141 1.1197656 25.2175 1.0507812 25 1.0507812 z M 35 5 L 35 6.0507812 L 41 10.730469 L 41 5 L 35 5 z"/>
+                  </svg>
+              </a>
+          </h1>
+          {% include "_nav.html" %}
+          </div>
+      </header>
+
+      <div id="container">
+          <div class="photos">
+              <div class="column">
+                <h1>Photos</h1>
+                <p>人生的有趣在于过去不能回去, 但是可以回忆 📷</p>
+              </div>
+          </div>
+
+          {% for photo in photos %}
+          <div class="columns">
+              <div class="list my-gallery">
+              {% if photo.images|length == 1 %}
+                  {% if photo.full %}
+                  <img class="p_img img-zoomable" src="{{ photo.images[0] }}" />
+                  {% else %}
+                  <img class="p_img_3 is-10 img-zoomable" src="{{ photo.images[0] }}"  />
+                  {% endif %}
+              {% elif photo.images|length == 2 %}
+                  {% for image in photo.images %}
+                  <img class="p_img_2 is-5 img-zoomable" src="{{ image }}" />
+                  {% endfor %}
+              {% elif photo.images|length == 3 %}
+                  {% for image in photo.images %}
+                  <img class="p_img_3 is-4 img-zoomable" src="{{ image }}" />
+                  {% endfor %}
+              {% elif photo.images|length == 4 %}
+                  {% for image in photo.images %}
+                  <img class="p_img_4 is-6 img-zoomable" src="{{ image }}" />
+                  {% endfor %}
+              {% elif photo.images|length == 6 %}
+                  {% for image in photo.images %}
+                  <img class="p_img_6 is-4 img-zoomable" src="{{ image }}" />
+                  {% endfor %}
+              {% elif photo.images|length == 8 %}
+                  {% for image in photo.images %}
+                  <img class="p_img_6 is-3 img-zoomable" src="{{ image }}" />
+                  {% endfor %}
+              {% endif %}
+              </div>
+          </div>
+          <div class="title">
+            <h4 class="subtitle">{{ photo.published.date }}</h4>
+            <h3 class="p_title"><span>{{ photo.title }}</span></h3>
+            <p class="location">{{ photo.location }}</p>
+          </div>
+          {% endfor %}
+
+          <div class="pagination">
+            <div class="level">
+              {% if prev_page %}
+              <div class="level-left">
+                <div class="level-item">
+                  {% if prev_page == 1 %}
+                  <a class="button" href="/photos">
+                    <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#181818"></path></svg>
+                  </a>
+                  {% else %}
+                  <a class="button" href="/photos-{{ prev_page }}">
+                    <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M589.088 790.624L310.464 512l278.624-278.624 45.248 45.248L400.96 512l233.376 233.376z" fill="#181818"></path></svg>
+                  </a>
+                  {% endif %}
+                </div>
+              </div>
+              {% endif %}
+              {% if next_page %}
+              <div class="level-right">
+                <div class="level-item">
+                  <a class="button" href="/photos-{{ next_page }}">
+                      <svg class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" width="18" height="18"><path d="M434.944 790.624l-45.248-45.248L623.04 512l-233.376-233.376 45.248-45.248L713.568 512z" fill="#181818"></path></svg>
+                  </a>
+                </div>
+              </div>
+              {% endif %}
+            </div>
+          </div>
+      </div>
+      <div id="footer">
+          <div class="desc">
+            &copy; 2009-2019 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
+            <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
+          </div>
+      </div>
+
+      <div id="gallery" class="pswp" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="pswp__bg"></div>
+
+          <div class="pswp__scroll-wrap">
+
+              <div class="pswp__container">
+                  <div class="pswp__item"></div>
+                  <div class="pswp__item"></div>
+                  <div class="pswp__item"></div>
+              </div>
+
+          <div class="pswp__ui pswp__ui--hidden">
+
+              <div class="pswp__top-bar">
+
+				  <div class="pswp__counter"></div>
+
+				  <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+
+				  <button class="pswp__button pswp__button--share" title="Share"></button>
+
+				  <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+
+				  <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>
+
+				  <div class="pswp__preloader">
+					  <div class="pswp__preloader__icn">
+                          <div class="pswp__preloader__cut"><div class="pswp__preloader__donut"></div></div>
+                      </div>
+				  </div>
+              </div>
+
+              <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
+              <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
+          </div>
+          </div>
+      </div>
+
+      <script src="/assets/gallery/photoswipe.min.js"></script>
+      <script src="/assets/gallery/photoswipe-ui-default.min.js"></script>
+      <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          var initPhotoSwipeFromDOM = function(gallerySelector) {
+
+              var parseThumbnailElements = function(el) {
+                  var elements = el.childNodes,
+                      numNodes = elements.length,
+                      items = [],
+                      elem,
+                      item;
+
+                  for(var i = 0; i < numNodes; i++) {
+                      elem = elements[i];
+                      if (elem.nodeName.toUpperCase() !== "IMG") {
+                          continue;
+                      }
+
+                      item = {
+                          src: elem.getAttribute('src'),
+                          w: elem.naturalWidth,
+                          h: elem.naturalHeight
+                      };
+
+                      item.el = elem;
+                      items.push(item);
+                  }
+
+                  return items;
+              };
+
+              // find nearest parent element
+              var closest = function closest(el, fn) {
+                  return el && ( fn(el) ? el : closest(el.parentNode, fn) );
+              };
+
+              // triggers when user clicks on thumbnail
+              var onThumbnailsClick = function(e) {
+                  e = e || window.event;
+                  e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+                  var eTarget = e.target || e.srcElement;
+
+                  var clickedListItem = closest(eTarget, function(el) {
+                      return (el.tagName && el.tagName.toUpperCase() === 'IMG');
+                  });
+
+                  if(!clickedListItem) {
+                      return;
+                  }
+
+                  // find index of clicked item by looping through all child nodes
+                  // alternatively, you may define index via data- attribute
+                  var clickedGallery = clickedListItem.parentNode,
+                      childNodes = clickedListItem.parentNode.childNodes,
+                      numChildNodes = childNodes.length,
+                      nodeIndex = 0,
+                      index;
+
+                  for (var i = 0; i < numChildNodes; i++) {
+                      if(childNodes[i].nodeType !== 1) {
+                          continue;
+                      }
+
+                      if (childNodes[i].nodeName.toUpperCase() !== "IMG") {
+                          continue;
+                      }
+
+                      if(childNodes[i] === clickedListItem) {
+                          index = nodeIndex;
+                          break;
+                      }
+                      nodeIndex++;
+                  }
+
+                  if(index >= 0) {
+                      openPhotoSwipe(index, clickedGallery);
+                  }
+
+                  return false;
+              };
+
+              var openPhotoSwipe = function(index, galleryElement) {
+                  var pswpElement = document.querySelectorAll('.pswp')[0],
+                      gallery,
+                      options,
+                      items;
+
+                  items = parseThumbnailElements(galleryElement);
+
+                  // define options (if needed)
+                  options = {
+                      shareEl: false,
+                      captionEl: false,
+                      history: false,
+
+                      index: index,
+
+                      getThumbBoundsFn: function(index) {
+                          var pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+                              rect = items[index].el.getBoundingClientRect();
+
+                          return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+                      }
+                  };
+
+                  // Pass data to PhotoSwipe and initialize it
+                  gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+                  gallery.init();
+              };
+
+              // loop through all gallery elements and bind events
+              var galleryElements = document.querySelectorAll(gallerySelector);
+              for(var i = 0, l = galleryElements.length; i < l; i++) {
+                  galleryElements[i].onclick = onThumbnailsClick;
+              }
+          };
+
+          initPhotoSwipeFromDOM('.my-gallery');
+      })
+      </script>
+  </body>
+</html>

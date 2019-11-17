@@ -40,9 +40,11 @@
             <div class="home-list">
               {% for post in posts %}
                   <div class="post">
-                  <span>{{post.published.date}}</span>
-                  <h3><a href="/{{post.slug}}">{{post.title}}</a></h3>
-                  <p>{{post.content|striptags|escape|truncate(128)}}</p>
+                    <span>{{post.published.date}}</span>
+                    <h3><a href="/{{post.slug}}">{{post.title}}</a></h3>
+                    {% if loop.index == 1 %}
+                    <p>{{post.content|striptags|escape|truncate(128)}}</p>
+                    {% endif %}
                   </div>
               {% endfor %}
             </div>

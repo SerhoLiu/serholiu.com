@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 import os
@@ -9,7 +8,7 @@ import shutil
 from jinja2 import Environment, FileSystemLoader
 
 from miniakio.server import Server
-from miniakio.models import Post, Picky
+from miniakio.models import Post, Picky, Photo
 from miniakio.utils import echo, StaticAssetUrl
 from miniakio.utils import ensure_dir_exists, read_file, write_file
 
@@ -18,14 +17,17 @@ class Blog:
 
     HOME_POSTS = 6
     FEED_POSTS = 10
+    PAGE_PHOTOS = 10
 
-    def __init__(self, config):
+    def __init__(self, basedir, config):
         """
+        :param basedir: path of source
         :param config: path of config
         """
         config_path = os.path.abspath(os.path.expanduser(config))
-        self.basedir = os.path.dirname(config_path)
         self.config = yaml.safe_load(read_file(config_path))
+
+        self.basedir = basedir
 
         privacies = self.config.get("privacies")
         self._privacies = set(privacies) if privacies else {}
@@ -189,6 +191,32 @@ class Blog:
         dst_dir = os.path.join(self._site_dir, "assets")
         shutil.copytree(asset_dir, dst_dir)
 
+    def _build_photos(self):
+        defalut_file = os.path.join(self.basedir, "photos.yaml")
+        path = self.config.get("photos", defalut_file)
+        config_file = os.path.expanduser(path)
+
+        config = yaml.safe_load(read_file(config_file))
+        photos = [Photo(conf) for conf in config["photos"]]
+        photos.sort(key=lambda p: p.published, reverse=True)
+
+        template = self._jinja.get_template("photos.html")
+
+        total = len(photos)
+        for page, start in enumerate(range(0, total, self.PAGE_PHOTOS)):
+            end = start + self.PAGE_PHOTOS
+            _page = page + 1
+            prev_page = None if _page == 1 else _page - 1
+            next_page = None if end >= total else _page + 1
+            html = template.render(
+                photos=photos[start:end],
+                curr_page=_page,
+                prev_page=prev_page,
+                next_page=next_page
+            )
+            filename = "photos.html" if _page == 1 else f"photos-{_page}.html"
+            write_file(os.path.join(self._site_dir, filename), html)
+
     def build(self):
         if os.path.exists(self._site_dir):
             if os.path.isfile(self._site_dir):
@@ -223,6 +251,10 @@ class Blog:
         )
         html = template.render(posts=home_posts)
         write_file(os.path.join(self._site_dir, "index.html"), html)
+
+        # photos
+        echo.info("building photos...")
+        self._build_photos()
 
         # feed
         echo.info("building feed...")

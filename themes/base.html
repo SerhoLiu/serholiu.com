@@ -4,12 +4,13 @@
     <meta charset="UTF-8" />
     <title>{% block title %}{{config.blogname}}{% endblock %}</title>
     <meta name="author" content="Serho Liu">
-    <meta name="description" content="{% block head %}{{config.blogdesc}}{% endblock %}" />
+    <meta name="description" content="{% block description %}{{config.blogdesc}}{% endblock %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
     <link rel="shortcut icon" type="image/ico" href="/assets/favicon.ico">
     <link href="/blog/feed.xml" rel="alternate" type="application/atom+xml">
     <link href="{{ '/assets/style/style.min.css' | static_url }}" rel="stylesheet" type="text/css" media="all">
     <link href="{{ '/assets/style/trac.css' | static_url }}" rel="stylesheet" type="text/css">
+    {% block head %}{% endblock %}
   </head>
 
   <body>

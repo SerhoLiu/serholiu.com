@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{picky.title}} - {{config.blogname}}{% endblock %}
-{% block head %}{{picky.content|striptags|escape|truncate(100)}}{% endblock %}
+{% block description %}{{picky.content|striptags|escape|truncate(100)}}{% endblock %}
 
 {% block cover %}
   {% if picky.cover %}

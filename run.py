@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
 import sys
 import time
 import traceback
@@ -15,7 +16,13 @@ if __name__ == "__main__":
         echo.error(usage, sys.argv[0])
         sys.exit(1)
 
-    blog = Blog("config.yaml")
+    conf = os.environ.get("ENV_MINIAKIO_CONF", "config.yaml")
+    if not os.path.exists(conf):
+        echo.error("config file '%s' not exists", conf)
+
+    pwd = os.path.dirname(__file__)
+
+    blog = Blog(pwd, conf)
     if sys.argv[1] == "build":
         try:
             start = time.time()

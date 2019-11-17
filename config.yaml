@@ -3,7 +3,9 @@ blogname: I'm SErHo
 blogdesc: SErHo's Blog, Please Call me Serho Liu.
 blogcover: //dn-serho.qbox.me/blogbg.jpg
 
+photos: photos.yaml
+
 disqus:
-sites: ~/Documents/serholiu.com
+sites: _site
 
 privacies:

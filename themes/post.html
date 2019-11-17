@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{post.title}} - {{config.blogname}}{% endblock %}
-{% block head %}{{post.content|striptags|escape|truncate(100)}}{% endblock %}
+{% block description %}{{post.content|striptags|escape|truncate(100)}}{% endblock %}
 
 {% block cover %}
   {% if post.cover %}
