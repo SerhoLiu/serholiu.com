@@ -6,6 +6,7 @@ blogcover: //dn-serho.qbox.me/blogbg.jpg
 photos: photos.yaml
 
 disqus:
+ga:
 sites: _site
 
 privacies:
