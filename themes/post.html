@@ -4,6 +4,7 @@
 
 {% block cover %}
   {% if post.cover %}
+    <style>#header { border-bottom: none }</style>
     <div class="post-cover" style="background-image:url({{post.cover}})"></div>
   {% endif %}
 {% endblock %}

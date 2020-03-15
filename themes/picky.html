@@ -4,6 +4,7 @@
 
 {% block cover %}
   {% if picky.cover %}
+    <style>#header { border-bottom: none }</style>
     <div class="post-cover" style="background-image:url({{picky.cover}})"></div>
   {% endif %}
 {% endblock %}
