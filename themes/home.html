@@ -37,25 +37,27 @@
     </div>
   </header>
     <div id="container">
-      <div class="content clearfix">
-          <div class="intro">
-              <div class="avatar">
-                  <img src="/assets/avatar.jpg">
-              </div>
-              <div class="title">
-                  <h2>{{config.blogname}}</h2>
-                  <div class="subtitle">记录偶然的灵感、平静的生活和纯粹的思考</div>
-              </div>
-              <hr>
+        <style>#header { border-bottom: none }</style>
+        <div class="home-header" style="background-image:url({{ config.blogcover }})">
+          <div class="vertical">
+            <div class="inner">
+                <h1 class="title">{{config.blogname}}</h1>
+                <h2 class="description">记录偶然的灵感、平静的生活和纯粹的思考</h2>
+            </div>
           </div>
+        </div>
+      <div class="content clearfix">
             <div class="home-list">
               {% for post in posts %}
                   <div class="post">
-                    <span>{{post.published.date}}</span>
-                    <h3><a href="/{{post.slug}}">{{post.title}}</a></h3>
-                    {% if loop.index == 1 %}
-                    <p>{{post.content|striptags|escape|truncate(128)}}</p>
-                    {% endif %}
+                      <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
+                      <p>{{post.content|striptags|escape|truncate(128)}}</p>
+                      <div class="post-meta">
+                          <div class="time">{{post.published.date}}</div>
+                            {% for tag in post.tags%}
+                            <a href="/tag/{{tag|lower}}">#{{tag}}</a>
+                            {% endfor %}
+                      </div>
                   </div>
               {% endfor %}
             </div>

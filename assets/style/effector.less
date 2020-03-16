@@ -388,7 +388,6 @@ body {
     .desc {
         margin: 0 auto;
         width: 760px;
-        border-top: 1px solid #eee;
         line-height: 54px;
         text-align: center;
         color: @tiny-text-color;
@@ -407,7 +406,6 @@ body {
         list-style: none;
         padding: 5px 3px;
         margin: 0;
-        border-bottom: 1px dotted #eee;
 
         span {
             color: @second-text-color;
@@ -416,40 +414,37 @@ body {
     }
 }
 
+.home-header {
+    position: relative;
+    display: table;
+    width: 100%;
+    height: 280px;
+    background: @second-text-color no-repeat center center;
+    background-size: cover;
+    overflow: hidden;
 
-.intro {
-    margin: 20px 0 30px;
+    .vertical {
+        display: table-cell;
+        vertical-align: middle;
 
-    .avatar {
-        float: left;
-        margin-right: 30px;
-        width: 86px;
-        height: 86px;
+        .inner {
+            width: 760px;
+            position: relative;
+            margin: 0 auto;
 
-        img {
-            .border-radius(86px);
+            .title {
+                margin: 10px 0 10px 0;
+                font-size: 38px;
+                color: #fff;
+            }
+
+            .description {
+                margin: 0;
+                font-size: 22px;
+                font-weight: 300;
+                color: rgba(255,255,255,0.8);
+            }
         }
-    }
-
-    .title {
-        h2 {
-            margin-bottom: 10px;
-            font-size: 28px;
-        }
-
-        .subtitle {
-            font-size: 22px;
-            font-weight: 300;
-            color: @second-text-color;
-        }
-    }
-
-    hr {
-        display: block;
-        width: 50%;
-        margin: 30px 0;
-        border: 0 none;
-        border-top: 3px solid @tiny-text-color;
     }
 }
 
@@ -457,22 +452,28 @@ body {
     margin: 0 0 10px 0;
 
     .post {
-        padding: 5px 3px;
-        margin: 0;
+        padding-bottom: 30px;
         font-size: 16px;
+        border-bottom: #eee 1px solid;
 
-        span {
+        .post-meta {
+            margin-top: 20px;
             color: @second-text-color;
             font-size: 14px;
-        }
 
-        h3 {
-            font-size: 20px;
-            font-weight: 400;
-        }
+            a {
+                margin-left: 3px;
+                padding: 3px 4px;
+                background-color: #f7f7f7;
+                color: @second-text-color;
+                .border-radius(3px);
+            }
 
-        p {
-            color: @second-text-color;
+            .time {
+                display: inline-block;
+                margin-right: 8px;
+                padding-right: 12px;
+            }
         }
     }
 }
@@ -646,8 +647,13 @@ body {
         }
     }
 
-    .intro .avatar {
-        display: none;
+    .home-header {
+        max-height: 200px;
+
+        .vertical .inner {
+            width: auto;
+            padding: 10px;
+        }
     }
 
     #footer {
