@@ -14,3 +14,7 @@ server:
 clean:
 	-find . -name '.DS_Store' -exec rm -f {} ';'
 	-find . -name '*.py[co]' -exec rm -f {} ';'
+
+initenv:
+	npm install -g less less-plugin-clean-css
+	poetry install
