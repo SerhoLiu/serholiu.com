@@ -51,7 +51,7 @@
               {% for post in posts %}
                   <div class="post">
                       <h2><a href="/{{post.slug}}">{{post.title}}</a></h2>
-                      <p>{{post.content|striptags|escape|truncate(128)}}</p>
+                      <p>{{post.content|striptags|escape|truncate(128, True)}}</p>
                       <div class="post-meta">
                           <div class="time">{{post.published.date}}</div>
                             {% for tag in post.tags%}
@@ -66,7 +66,7 @@
     </div>
     <div id="footer">
       <div class="desc">
-        &copy; 2009-2021 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
+        &copy; 2009-2022 | <a href="/picky/about-blog" title="By Serho Liu">SErHo's Blog</a> with
         <a href="https://github.com/SerhoLiu/serholiu.com"> MiniAkio</a>.
       </div>
     </div>
