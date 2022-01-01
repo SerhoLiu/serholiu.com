@@ -4,10 +4,15 @@ import os
 import sys
 import mimetypes
 from wsgiref.util import request_uri
-from wsgiref.simple_server import make_server
+from wsgiref.simple_server import WSGIServer, make_server
 from urllib.parse import unquote_plus, urlparse
+from http.server import ThreadingHTTPServer
 
 from miniakio.utils import echo
+
+
+class ThreadingWSGIServer(ThreadingHTTPServer, WSGIServer):
+    pass
 
 
 class Server:
@@ -44,7 +49,12 @@ class Server:
     def serve_forever(self, host="0.0.0.0", port=8000):
         echo.info("Start server at http://%s:%s", host, port)
         try:
-            make_server(host, int(port), self.wsgi).serve_forever()
+            make_server(
+                host,
+                int(port),
+                self.wsgi,
+                server_class=ThreadingWSGIServer
+            ).serve_forever()
         except KeyboardInterrupt:
             sys.exit()
 
