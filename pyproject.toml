@@ -10,9 +10,9 @@ python = "^3.9"
 mistune = "^0.8.4"
 tqdm = "^4.59.0"
 Cython = "^0.29.22"
-Jinja2 = "^2.11.3"
-Pygments = "^2.8.1"
-PyYAML = "^5.4.1"
+Jinja2 = "^3.1.2"
+Pygments = "^2.16.1"
+PyYAML = "^6.0.1"
 
 [tool.poetry.dev-dependencies]
 
